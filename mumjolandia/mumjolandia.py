@@ -6,14 +6,15 @@ class Mumjolandia:
     def __init__(self):
         self.console = Console()
         self.taskSupervisor = TaskSupervisor()
+        self.mode = 1  # dont need to type first word for command
 
     def run(self):
         while True:
             command = self.console.get_next_command()
-            if command == 'xD':
+            if command.name == 'xD':
                 self.taskSupervisor.print()
-            elif command == 'exit':
+            elif command.name == 'exit':
                 break
             else:
-                self.taskSupervisor.add_task(command)
+                self.taskSupervisor.add_task(command.name)
                 # print(command)

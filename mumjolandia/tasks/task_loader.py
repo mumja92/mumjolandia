@@ -1,10 +1,13 @@
 from mumjolandia.tasks.task import Task
 import xml.etree.ElementTree as ET
 
+from mumjolandia.tasks.task_factory import TaskFactory
+
 
 class TaskLoader:
     def __init__(self, task_file_name):
         self.task_file = task_file_name
+        self.task_factory = TaskFactory()
 
     def get_tasks(self):
         tasks = []
@@ -16,7 +19,7 @@ class TaskLoader:
                 attrib = child.get('name')
                 #print(tag)
                 print(attrib)
-                tasks.append(Task(attrib))
+                tasks.append(self.task_factory.get_task(attrib))
         except FileNotFoundError:
             print('file not found')
         return tasks

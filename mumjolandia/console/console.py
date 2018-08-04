@@ -1,3 +1,9 @@
+from mumjolandia.command.command_factory import CommandFactory
+
+
 class Console:
+    def __init__(self):
+        self.command_factory = CommandFactory()
+
     def get_next_command(self):
-        return input()
+        return self.command_factory.get_command(input())
