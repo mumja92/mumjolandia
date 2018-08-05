@@ -16,3 +16,25 @@ class TaskSupervisor:
 
     def add_task(self, name):
         self.tasks.append(Task(name))
+        return 1
+
+    def execute(self, command):
+        command_length = len(command.arguments)
+        if command_length == 0:
+            print('Commands:')
+            print('print, add x')
+            return 0
+        if command.arguments[0] == 'print':
+            self.print()
+            return 0
+        elif command.arguments[0] == 'add':
+            if command_length < 2:
+                print('Task name not given')
+                return 0
+            else:
+                if self.add_task(command.arguments[1]):
+                    print('ok')
+                    return 0
+                return 1
+        else:
+            return 1

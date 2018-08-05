@@ -15,10 +15,10 @@ class TaskLoader:
             tree = ET.parse(self.task_file)
             root_element = tree.getroot()
             for child in root_element:
-                tag = child.tag
+                # tag = child.tag
                 attrib = child.get('name')
-                #print(tag)
-                print(attrib)
+                # print(tag)
+                # print(attrib)
                 tasks.append(self.task_factory.get_task(attrib))
         except FileNotFoundError:
             print('file not found')
