@@ -1,5 +1,5 @@
 from mumjolandia.tasks.task import Task
-from mumjolandia.tasks.task_loader import TaskLoader
+from mumjolandia.tasks.task_loader_xml import TaskLoader
 
 
 class TaskSupervisor:
@@ -11,6 +11,7 @@ class TaskSupervisor:
         self.task_loader.save_tasks(self.tasks)
 
     def print(self):
+        print(len(self.tasks), 'items:')
         for t in self.tasks:
             print(t.text)
 

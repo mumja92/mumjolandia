@@ -15,10 +15,10 @@ class Mumjolandia:
             print(' ')
             command = self.console.get_next_command()
             if command.arguments[0] == 'task':
-                passed = command
-                passed.arguments.pop(0)
-                if self.taskSupervisor.execute(passed):
-                    print('Command not recognized :(')
+                arg_placeholder = command.arguments.pop(0)
+                if self.taskSupervisor.execute(command):
+                    command.arguments.insert(0, arg_placeholder)
+                    print(command.arguments, '- Command not recognized :(')
                     continue
             elif command.arguments[0] == 'exit':
                 break
