@@ -1,3 +1,3 @@
-from mumjolandia.mumjolandia import Mumjolandia
+from mumjolandiaa.mumjolandia import Mumjolandia
 
 Mumjolandia().run()

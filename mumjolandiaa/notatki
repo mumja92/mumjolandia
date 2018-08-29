@@ -1,0 +1,18 @@
+### to xml(string)
+def to_xml(self):
+    root_element = ET.Element("game", name=self.name)
+    for t in self.tags:
+        ET.SubElement(root_element, "tag").text = t
+        # ET.SubElement(root_element, "tag", name=t.text).text = "none"
+    # xmlstr = ET.tostring(root_element, encoding='utf8', method='xml')
+    xmlstr = ET.tostring(root_element).decode()
+    print(xmlstr)
+    return xmlstr
+
+###to xml(file)
+tree = ET.ElementTree(root_element)
+        tree.write(self.task_file)
+
+### Reading the data from a string:
+root = ET.fromstring(country_data_as_string)
+

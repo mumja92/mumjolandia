@@ -1,4 +1,4 @@
-from mumjolandia.command.command import Command
+from mumjolandiaa.command.command import Command
 
 
 class CommandFactory:
