@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-from mumjolandiaa.console.console import Console
-from mumjolandiaa.mumjolandia_mode import MumjolandiaMode
-from mumjolandiaa.views.tasks.task_supervisor import TaskSupervisor
+from mumjolandia.console.console import Console
+from mumjolandia.mumjolandia_mode import MumjolandiaMode
+from mumjolandia.views.tasks.task_supervisor import TaskSupervisor
+
 
 class Mumjolandia:
     def __init__(self):

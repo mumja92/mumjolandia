@@ -1,5 +1,5 @@
 import pickle
-from mumjolandiaa.views.tasks.task_factory import TaskFactory
+from mumjolandia.views.tasks.task_factory import TaskFactory
 
 
 class TaskLoader:

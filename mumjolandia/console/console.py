@@ -1,4 +1,4 @@
-from mumjolandiaa.command.command_factory import CommandFactory
+from mumjolandia.command.command_factory import CommandFactory
 
 
 class Console:

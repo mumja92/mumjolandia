@@ -1,5 +1,5 @@
-from mumjolandiaa.views.tasks.task import Task
-from mumjolandiaa.views.tasks import TaskLoader
+from mumjolandia.views.tasks.task import Task
+from mumjolandia.views.tasks.task_loader_xml import TaskLoader
 
 
 class TaskSupervisor:
