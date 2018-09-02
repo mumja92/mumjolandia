@@ -1,19 +1,23 @@
-#!/usr/bin/env python
-from mumjolandia.console.console import Console
-from mumjolandia.mumjolandia_mode import MumjolandiaMode
-from mumjolandia.views.tasks.task_supervisor import TaskSupervisor
+import time
+from threading import Thread
+
+from src.modules.command.command_factory import CommandFactory
+from src.modules.mumjolandia.mumjolandia_mode import MumjolandiaMode
+from src.modules.tasks.task_supervisor import TaskSupervisor
 
 
-class Mumjolandia:
-    def __init__(self):
-        self.console = Console()
+class MumjolandiaThread(Thread):
+    def __init__(self, val):
+        Thread.__init__(self)
+        self.arg = val
         self.taskSupervisor = TaskSupervisor()
         self.mode = MumjolandiaMode.none
 
     def run(self):
         while True:
             print(' ')
-            command = self.console.get_next_command()
+            command_string = self.__get_next_command()
+            command = CommandFactory.get_command(command_string)
             if command.arguments[0] == 'task':
                 arg_placeholder = command.arguments.pop(0)
                 if self.taskSupervisor.execute(command):
@@ -25,3 +29,7 @@ class Mumjolandia:
             else:
                 print('Unrecognized command: ')
                 print(command.arguments, end=" ")
+
+    def __get_next_command(self):
+        time.sleep(600)
+        return 'abc'

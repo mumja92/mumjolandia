@@ -1,4 +1,4 @@
-from mumjolandia.views.tasks.task import Task
+from src.modules.tasks.task import Task
 
 
 class TaskFactory:

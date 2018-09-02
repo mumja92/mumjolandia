@@ -1,3 +1,3 @@
-from mumjolandia.mumjolandia import Mumjolandia
+from src.modules.mumjolandia.mumjolandia_supervisor import Mumjolandia
 
-Mumjolandia().run()
+Mumjolandia().run_gui()
