@@ -1,9 +1,11 @@
+from threading import Thread
 from src.modules.console.console import Console
 
 
-class MumjolandiaGui():
-    def __init__(self, val):
-        self.arg = val
+class MumjolandiaCli(Thread):
+    def __init__(self, queue):
+        Thread.__init__(self)
+        self.queue = queue
         self.console = Console()
 
     def run(self):
@@ -11,7 +13,14 @@ class MumjolandiaGui():
             print(' ')
             command = self.console.get_next_text()
             self.__pass_command(command)
+            if self.__command_exit(command):
+                break
+        print('cli exiting')
 
     def __pass_command(self, command):
-        # todo: pass command to mumjolandia
-        pass
+        self.queue.put(command)
+
+    def __command_exit(self, command):
+        if command.startswith("exit"):
+            return True
+        return False

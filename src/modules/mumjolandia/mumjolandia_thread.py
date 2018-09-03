@@ -7,15 +7,14 @@ from src.modules.tasks.task_supervisor import TaskSupervisor
 
 
 class MumjolandiaThread(Thread):
-    def __init__(self, val):
+    def __init__(self, queue):
         Thread.__init__(self)
-        self.arg = val
+        self.queue = queue
         self.taskSupervisor = TaskSupervisor()
         self.mode = MumjolandiaMode.none
 
     def run(self):
         while True:
-            print(' ')
             command_string = self.__get_next_command()
             command = CommandFactory.get_command(command_string)
             if command.arguments[0] == 'task':
@@ -25,11 +24,13 @@ class MumjolandiaThread(Thread):
                     print(command.arguments, '- Command not recognized :(')
                     continue
             elif command.arguments[0] == 'exit':
+                print('mumjolandia exiting')
                 break
             else:
                 print('Unrecognized command: ')
                 print(command.arguments, end=" ")
 
     def __get_next_command(self):
-        time.sleep(600)
-        return 'abc'
+        command = self.queue.get()
+        self.queue.task_done()
+        return command
