@@ -1,6 +1,8 @@
 import time
 from threading import Thread
 
+import sys
+
 from src.modules.command.command_factory import CommandFactory
 from src.modules.mumjolandia.mumjolandia_mode import MumjolandiaMode
 from src.modules.tasks.task_supervisor import TaskSupervisor
@@ -27,8 +29,7 @@ class MumjolandiaThread(Thread):
                 print('mumjolandia exiting')
                 break
             else:
-                print('Unrecognized command: ')
-                print(command.arguments, end=" ")
+                print('Unrecognized command: ', command.arguments, sep=' ', end='\n', file=sys.stdout, flush=False)
 
     def __get_next_command(self):
         command = self.queue.get()

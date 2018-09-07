@@ -10,7 +10,6 @@ class MumjolandiaCli(Thread):
 
     def run(self):
         while True:
-            print(' ')
             command = self.console.get_next_text()
             self.__pass_command(command)
             if self.__command_exit(command):

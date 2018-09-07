@@ -1,5 +1,4 @@
+-add logging system
 -check if sql enums are correct with db (or add mechanism to create them based on db)
 -funciton to add games to db quickly
 -gui to based on /\ to add games even more quickly
--redesign to allow cli/gui modes (cover cli with gui)
--threading sync uses queue. Make sure that it's fifo
