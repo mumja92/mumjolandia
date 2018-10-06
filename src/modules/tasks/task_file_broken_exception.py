@@ -1,0 +1,2 @@
+class TaskFileBrokenException(Exception):
+    pass

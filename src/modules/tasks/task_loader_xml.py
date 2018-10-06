@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from src.modules.tasks.task_factory import TaskFactory
+from src.modules.tasks.task_file_broken_exception import TaskFileBrokenException
 
 
 class TaskLoader:
@@ -9,17 +10,26 @@ class TaskLoader:
 
     def get_tasks(self):
         tasks = []
+        brokenFileFlag = False
         try:
             tree = ET.parse(self.task_file)
             root_element = tree.getroot()
             for child in root_element:
+                attrib = 'error'
                 # tag = child.tag
                 attrib = child.get('name')
+                if attrib is None:
+                    brokenFileFlag = True
+                    attrib = 'error'
                 # print(tag)
                 # print(attrib)
                 tasks.append(self.task_factory.get_task(attrib))
         except FileNotFoundError:
-            pass
+            raise FileNotFoundError
+        except ET.ParseError:
+            raise TaskFileBrokenException(tasks)
+        if brokenFileFlag:
+            raise TaskFileBrokenException(tasks)
         return tasks
 
     def save_tasks(self, tasks):

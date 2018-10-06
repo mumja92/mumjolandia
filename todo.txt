@@ -1,3 +1,4 @@
+-introduce working tasks with pdd (parowa driven developement)
 -adding meals quickly:
     -all enums corresponding to db types
     -function to add items by name (enums)
