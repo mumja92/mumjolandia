@@ -1,4 +1,4 @@
-from src.modules.tasks.task import Task
+from src.modules.tasks.task_factory import TaskFactory
 from src.modules.tasks.task_file_broken_exception import TaskFileBrokenException
 from src.modules.tasks.task_loader_xml import TaskLoader
 
@@ -27,8 +27,8 @@ class TaskSupervisor:
             print(t.text)
 
     def add_task(self, name):
-        self.tasks.append(Task(name))
-        return 1
+        self.tasks.append(TaskFactory.get_task(name))
+        return 0
 
     def execute(self, command):
         command_length = len(command.arguments)
@@ -44,7 +44,8 @@ class TaskSupervisor:
                 print('Task name not given')
                 return 0
             else:
-                if self.add_task(command.arguments[1]):
+                task_name = ' '.join(command.arguments[1:])  #concat every arg but first into one
+                if not self.add_task(task_name):
                     print('ok')
                     return 0
                 return 1
