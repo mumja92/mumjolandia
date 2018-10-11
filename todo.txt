@@ -1,10 +1,7 @@
--introduce working tasks with pdd (parowa driven developement)
 -adding meals quickly:
     -all enums corresponding to db types
     -function to add items by name (enums)
--add logging system
--refactor code to use /\ objects instead of separate values
 -check if conenction to database is successfull
 -check if sql enums are correct with db (or add mechanism to create them based on db)
--funciton to add games to db quickly
--gui to based on /\ to add games even more quickly
+-function to add games to db quickly
+-gui to based on funciton to add games, to add games even more quickly

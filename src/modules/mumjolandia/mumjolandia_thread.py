@@ -1,5 +1,6 @@
 from threading import Thread
 import sys
+
 import logging
 
 from src.modules.command.command_factory import CommandFactory
@@ -15,6 +16,7 @@ class MumjolandiaThread(Thread):
         self.mode = MumjolandiaMode.none
 
     def run(self):
+        logging.info('mumjolandia thread started')
         while True:
             command_string = self.__get_next_command()
             command = CommandFactory.get_command(command_string)
@@ -25,7 +27,7 @@ class MumjolandiaThread(Thread):
                     print(command.arguments, '- Command not recognized :(')
                     continue
             elif command.arguments[0] == 'exit':
-                print('mumjolandia exiting')
+                logging.info('mumjolandia thread exiting')
                 break
             else:
                 print('Unrecognized command: ', command.arguments, sep=' ', end='\n', file=sys.stdout, flush=False)

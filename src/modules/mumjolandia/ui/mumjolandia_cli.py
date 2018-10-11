@@ -1,4 +1,7 @@
 from threading import Thread
+
+import logging
+
 from src.modules.console.console import Console
 
 
@@ -9,12 +12,13 @@ class MumjolandiaCli(Thread):
         self.console = Console()
 
     def run(self):
+        logging.info('mumjolandia cli started')
         while True:
             command = self.console.get_next_text()
             self.__pass_command(command)
             if self.__command_exit(command):
                 break
-        print('cli exiting')
+        logging.info('mumjolandia cli exiting')
 
     def __pass_command(self, command):
         self.queue.put(command)
