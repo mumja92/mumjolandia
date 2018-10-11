@@ -1,7 +1,6 @@
-import time
 from threading import Thread
-
 import sys
+import logging
 
 from src.modules.command.command_factory import CommandFactory
 from src.modules.mumjolandia.mumjolandia_mode import MumjolandiaMode
@@ -35,3 +34,5 @@ class MumjolandiaThread(Thread):
         command = self.queue.get()
         self.queue.task_done()
         return command
+
+
