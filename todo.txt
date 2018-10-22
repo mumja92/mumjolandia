@@ -1,3 +1,7 @@
+-logging - add log prints to entire program
+-task priority - add user friendly name conversions (and constructor from user friendly name?)
+-task date
+    -everything is saved as string. does it work correctly when restored?
 -adding meals quickly:
     -all enums corresponding to db types
     -function to add items by name (enums)

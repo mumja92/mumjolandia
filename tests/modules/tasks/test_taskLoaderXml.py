@@ -1,9 +1,13 @@
 from unittest import TestCase
 
+import datetime
+
 from src.modules.tasks.task_factory import TaskFactory
 from src.modules.tasks.task_file_broken_exception import TaskFileBrokenException
 from src.modules.tasks.task_loader_xml import TaskLoader
 import os
+
+from src.modules.tasks.task_priority import TaskPriority
 
 
 class TestTaskLoaderXml(TestCase):
@@ -51,13 +55,17 @@ class TestTaskLoaderXml(TestCase):
             except OSError as e:
                 print("Error: %s - %s." % (e.filename, e.strerror))
         with open(test_file, 'w') as file:
-            file.write('<tasks><task name="task1">none</task><task name="task drugi">none</task></tasks>')
+            file.write('<tasks><task date="2018-10-22" name="task1" priority="TaskPriority.ez">none</task><task date="2018-10-22" name="task drugi" priority="TaskPriority.asap">none</task></tasks>')
 
         t = TaskLoader(test_file)
         returned_list = t.get_tasks()
         self.assertEquals(len(returned_list), 2)
         self.assertEquals(returned_list[0].text, 'task1')
+        self.assertEquals(returned_list[0].priority, str(TaskPriority.ez))
+        self.assertEquals(returned_list[0].date, '2018-10-22')
         self.assertEquals(returned_list[1].text, 'task drugi')
+        self.assertEquals(returned_list[1].priority, str(TaskPriority.asap))
+        self.assertEquals(returned_list[1].date, '2018-10-22')
 
         try:
             os.remove(test_file)
@@ -66,7 +74,7 @@ class TestTaskLoaderXml(TestCase):
 
     def test_save_two_tasks(self):
         test_file = "test_tasks.xml"
-        expected_string = '<tasks><task name="task1">none</task><task name="task drugi">none</task></tasks>'
+        expected_string = '<tasks><task date="2018-10-22" name="task1" priority="TaskPriority.ez">none</task><task date="2018-10-22" name="task drugi" priority="TaskPriority.asap">none</task></tasks>'
         t = TaskLoader(test_file)
 
         if os.path.isfile(test_file):
@@ -75,7 +83,7 @@ class TestTaskLoaderXml(TestCase):
             except OSError as e:
                 print("Error: %s - %s." % (e.filename, e.strerror))
 
-        t.save_tasks([TaskFactory.get_task('task1'), TaskFactory.get_task('task drugi')])
+        t.save_tasks([TaskFactory.get_task('task1', TaskPriority.ez), TaskFactory.get_task('task drugi', TaskPriority.asap)])
         with open(test_file, 'r') as file:
             data = file.read()
             self.assertEquals(expected_string, data)

@@ -3,6 +3,7 @@ import logging
 from src.modules.tasks.task_factory import TaskFactory
 from src.modules.tasks.task_file_broken_exception import TaskFileBrokenException
 from src.modules.tasks.task_loader_xml import TaskLoader
+from src.modules.tasks.task_priority import TaskPriority
 
 
 class TaskSupervisor:
@@ -27,10 +28,10 @@ class TaskSupervisor:
     def print(self):
         print(len(self.tasks), 'items:')
         for t in self.tasks:
-            print(t.text)
+            print(t.text, t.date, t.priority)
 
     def add_task(self, name):
-        self.tasks.append(TaskFactory.get_task(name))
+        self.tasks.append(TaskFactory.get_task(name, TaskPriority.ez))
         return 0
 
     def execute(self, command):
