@@ -1,3 +1,5 @@
+import logging
+
 from src.modules.tasks.task_factory import TaskFactory
 from src.modules.tasks.task_file_broken_exception import TaskFileBrokenException
 from src.modules.tasks.task_loader_xml import TaskLoader
@@ -5,15 +7,16 @@ from src.modules.tasks.task_loader_xml import TaskLoader
 
 class TaskSupervisor:
     def __init__(self):
-        self.allowedToSaveTasks = True                      # if loaded tasks are broken they wont be overwritten to not loose them
+        self.allowedToSaveTasks = True           # if loaded tasks are broken they wont be overwritten to not loose them
         self.task_loader = TaskLoader("tasks.xml")
         try:
             self.tasks = self.task_loader.get_tasks()
         except FileNotFoundError:
-            print('TaskSupervisor::constructor - file doesnt exist')
+            logging.info('TaskSupervisor::constructor - file doesnt exist')
             self.tasks = []
         except TaskFileBrokenException as e:
-            print('TaskSupervisor::constructor - file broken. Not saving changes!')
+            print('Task file broken. Not saving changes!')
+            logging.error('TaskSupervisor::constructor - file broken. Not saving changes!')
             self.tasks = e.args[0]
             self.allowedToSaveTasks = False
 
