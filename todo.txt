@@ -1,7 +1,13 @@
+-cli should have state machine (?) to add tasks without 1 command
+-set mode to skip first part of command
+-category 'i should do :(' or 'normal task'
+-supervisor should take care of all ran processes and sync communication between them
 -logging - add log prints to entire program
 -task priority - add user friendly name conversions (and constructor from user friendly name?)
 -task date
     -everything is saved as string. does it work correctly when restored?
+-add statuses to tasks and options to print done/in progress, allow to edit them via console
+-change encoding in xml files to get rif of '&#263' chars
 -adding meals quickly:
     -all enums corresponding to db types
     -function to add items by name (enums)
@@ -9,3 +15,5 @@
 -check if sql enums are correct with db (or add mechanism to create them based on db)
 -function to add games to db quickly
 -gui to based on funciton to add games, to add games even more quickly
+
+
