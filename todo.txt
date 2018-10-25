@@ -17,3 +17,6 @@
 -gui to based on funciton to add games, to add games even more quickly
 
 
+parowy/bugi:
+-cli exits when it spots a string - implement queue for cli that supervisor will put exit command in and then it will exit
+-tests use hardcoded month/day that is incorrect one day later OMEGALUL 

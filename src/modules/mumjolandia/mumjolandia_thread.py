@@ -18,8 +18,7 @@ class MumjolandiaThread(Thread):
     def run(self):
         logging.info('mumjolandia thread started')
         while True:
-            command_string = self.__get_next_command()
-            command = CommandFactory.get_command(command_string)
+            command = self.__get_next_command()
             if command.arguments[0] == 'task':
                 arg_placeholder = command.arguments.pop(0)
                 if self.taskSupervisor.execute(command):
