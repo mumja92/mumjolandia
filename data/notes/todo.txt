@@ -1,3 +1,5 @@
+-add options to fully config things (save to xml/pickle, gui/cli, etc) should it be xml? or sth else?
+-investigate enums to not allow values not included in them to be passed etc (some article in www)
 -make map for commands in
 -consider making mumjolandia supervisor a singleton
 -cli should have state machine (?) to add tasks without 1 command

@@ -4,7 +4,7 @@ from src.interface.tasks.task_file_broken_exception import TaskFileBrokenExcepti
 from src.modules.tasks.task_factory import TaskFactory
 
 
-class TaskLoader:
+class TaskLoaderXml:
     def __init__(self, task_file_name):
         self.task_file = task_file_name
         self.task_factory = TaskFactory()

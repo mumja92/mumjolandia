@@ -1,4 +1,5 @@
 import logging
+import os
 from queue import Queue
 
 from src.modules.command.command_factory import CommandFactory
@@ -9,10 +10,11 @@ from src.modules.mumjolandia.ui.mumjolandia_gui import MumjolandiaGui
 
 class MumjolandiaSupervisor:
     def __init__(self):
+        self.log_location = 'data/log.log'
         self.command_queue_input = Queue()
         self.command_queue_output = Queue()
         self.command_queue_ui = Queue()  # not used yet todo: send exit command to cli
-        logging.basicConfig(format='%(asctime)s [%(levelname).1s] %(module)s::%(funcName)s --- %(message)s', datefmt='%d/%m/%Y %H:%M:%S', filename='spam.log', level=logging.DEBUG)
+        self.__run_init()
 
     def run_gui(self):
         logging.info('Starting GUI')
@@ -45,3 +47,7 @@ class MumjolandiaSupervisor:
             if command.arguments[0] == 'exit':
                 logging.info('exiting')
                 break
+
+    def __run_init(self):
+        logging.basicConfig(format='%(asctime)s [%(levelname).1s] %(module)s::%(funcName)s --- %(message)s',
+                            datefmt='%d/%m/%Y %H:%M:%S', filename=self.log_location, level=logging.DEBUG)

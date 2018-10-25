@@ -3,6 +3,7 @@ import sys
 from threading import Thread
 
 from src.interface.mumjolandia.mumjolandia_mode import MumjolandiaMode
+from src.interface.tasks.task_storage_type import StorageType
 from src.modules.tasks.task_supervisor import TaskSupervisor
 
 
@@ -10,7 +11,7 @@ class MumjolandiaThread(Thread):
     def __init__(self, queue):
         Thread.__init__(self)
         self.queue = queue
-        self.taskSupervisor = TaskSupervisor()
+        self.taskSupervisor = TaskSupervisor(StorageType.xml)
         self.mode = MumjolandiaMode.none
 
     def run(self):
