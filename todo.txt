@@ -1,3 +1,5 @@
+-make map for commands in
+-consider making mumjolandia supervisor a singleton
 -cli should have state machine (?) to add tasks without 1 command
 -set mode to skip first part of command
 -category 'i should do :(' or 'normal task'
@@ -19,4 +21,4 @@
 
 parowy/bugi:
 -cli exits when it spots a string - implement queue for cli that supervisor will put exit command in and then it will exit
--tests use hardcoded month/day that is incorrect one day later OMEGALUL 
+-tests use hardcoded month/day that is incorrect one day later OMEGALUL

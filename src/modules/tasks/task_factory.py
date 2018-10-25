@@ -1,5 +1,6 @@
 import datetime
-from src.modules.tasks.task import Task
+
+from src.interface.tasks.task import Task
 
 
 class TaskFactory:

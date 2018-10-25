@@ -1,4 +1,5 @@
 from unittest import TestCase
+
 from src.modules.command.command_factory import CommandFactory
 
 

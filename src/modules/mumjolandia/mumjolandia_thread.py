@@ -1,10 +1,8 @@
-from threading import Thread
-import sys
-
 import logging
+import sys
+from threading import Thread
 
-from src.modules.command.command_factory import CommandFactory
-from src.modules.mumjolandia.mumjolandia_mode import MumjolandiaMode
+from src.interface.mumjolandia.mumjolandia_mode import MumjolandiaMode
 from src.modules.tasks.task_supervisor import TaskSupervisor
 
 

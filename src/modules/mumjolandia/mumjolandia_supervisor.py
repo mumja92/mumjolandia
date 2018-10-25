@@ -1,12 +1,10 @@
 import logging
-
-import sys
+from queue import Queue
 
 from src.modules.command.command_factory import CommandFactory
 from src.modules.mumjolandia.mumjolandia_thread import MumjolandiaThread
 from src.modules.mumjolandia.ui.mumjolandia_cli import MumjolandiaCli
 from src.modules.mumjolandia.ui.mumjolandia_gui import MumjolandiaGui
-from queue import Queue
 
 
 class MumjolandiaSupervisor:

@@ -1,13 +1,10 @@
+import os
 from unittest import TestCase
 
-import datetime
-
+from src.interface.tasks.task_file_broken_exception import TaskFileBrokenException
+from src.interface.tasks.task_priority import TaskPriority
 from src.modules.tasks.task_factory import TaskFactory
-from src.modules.tasks.task_file_broken_exception import TaskFileBrokenException
 from src.modules.tasks.task_loader_xml import TaskLoader
-import os
-
-from src.modules.tasks.task_priority import TaskPriority
 
 
 class TestTaskLoaderXml(TestCase):

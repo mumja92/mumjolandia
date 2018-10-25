@@ -1,6 +1,7 @@
 from unittest import TestCase
+
+from src.interface.tasks.task_priority import TaskPriority
 from src.modules.tasks.task_factory import TaskFactory
-from src.modules.tasks.task_priority import TaskPriority
 
 
 class TestTaskFactory(TestCase):

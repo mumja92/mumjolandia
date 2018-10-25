@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
+
+from src.interface.tasks.task_file_broken_exception import TaskFileBrokenException
 from src.modules.tasks.task_factory import TaskFactory
-from src.modules.tasks.task_file_broken_exception import TaskFileBrokenException
-from src.modules.tasks.task_priority import TaskPriority
 
 
 class TaskLoader:

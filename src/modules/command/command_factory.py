@@ -1,6 +1,6 @@
 from enum import Enum
 
-from src.modules.command.command import Command
+from src.interface.command.command import Command
 
 
 class WordType(Enum):  # if word starts with ' then WordType = 1
