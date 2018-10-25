@@ -1,3 +1,4 @@
+-add task generator to generate task occurrences by scheme (weekly/daily/etc)
 -change xml for tasks: <task name='xD'><description>des</description><date>26.09.2018</date></task>
 -add options to fully config things (save to xml/pickle, gui/cli, debug level, etc) should it be xml? or sth else?
 -investigate enums to not allow values not included in them to be passed etc (some article in www)
