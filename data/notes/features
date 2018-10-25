@@ -1,0 +1,5 @@
+MumjolandiaSupervisor:
+- starts threads for:
+    - mumjolandia main thread
+    - cli/gui
+- handles communication messages between ui and main thread (by queues)

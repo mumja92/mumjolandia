@@ -41,11 +41,11 @@ class TaskSupervisor:
     def print(self):
         print(len(self.tasks), 'items:')
         for t in self.tasks:
-            print(t.text, t.date, t.priority)
+            print(str(t))
 
     def add_task(self, name):
         logging.info("Adding task '" + name + "'")
-        self.tasks.append(TaskFactory.get_task(name, TaskPriority.ez))
+        self.tasks.append(TaskFactory.get_task(name))
         return 0
 
     def execute(self, command):
