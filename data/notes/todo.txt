@@ -1,18 +1,13 @@
+- to consider - mumjolandia_thread should catch exceptions like 'command not recognized' or 'task not added'
 -add task generator to generate task occurrences by scheme (weekly/daily/etc)
 -change xml for tasks: <task name='xD'><description>des</description><date>26.09.2018</date></task>
 -add options to fully config things (save to xml/pickle, gui/cli, debug level, etc) should it be xml? or sth else?
 -investigate enums to not allow values not included in them to be passed etc (some article in www)
--make map for commands in
+-make map for commands (every command as a separate class?)
 -consider making mumjolandia supervisor a singleton
 -cli should have state machine (?) to add tasks without 1 command
 -set mode to skip first part of command
--category 'i should do :(' or 'normal task'
--supervisor should take care of all ran processes and sync communication between them
--logging - add log prints to entire program
--task priority - add user friendly name conversions (and constructor from user friendly name?)
--task date
-    -everything is saved as string. does it work correctly when restored?
--add statuses to tasks and options to print done/in progress, allow to edit them via console
+-task - better print and adding/editing via cli
 -change encoding in xml files to get rif of '&#263' chars
 -adding meals quickly:
     -all enums corresponding to db types

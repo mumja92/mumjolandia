@@ -1,7 +1,6 @@
 import logging
-
 from src.interface.tasks.task_file_broken_exception import TaskFileBrokenException
-from src.interface.tasks.task_priority import TaskPriority
+from src.interface.tasks.task_incorrect_date_format_exception import TaskIncorrectDateFormatException
 from src.interface.tasks.task_storage_type import StorageType
 from src.modules.tasks.task_factory import TaskFactory
 from src.modules.tasks.task_loader_pickle import TaskLoaderPickle
@@ -19,7 +18,7 @@ class TaskSupervisor:
         elif storage_type == StorageType.pickle:
             self.task_loader = TaskLoaderPickle(self.task_file_location)
         else:
-            logging.error("Unrecognized storage type: '" + self.storage_type + "' - using xml instead")
+            logging.error("Unrecognized storage type: '" + str(self.storage_type.name) + "' - using xml instead")
         try:
             self.tasks = self.task_loader.get_tasks()
         except FileNotFoundError:
@@ -44,8 +43,13 @@ class TaskSupervisor:
             print(str(t))
 
     def add_task(self, name):
-        logging.info("Adding task '" + name + "'")
-        self.tasks.append(TaskFactory.get_task(name))
+        try:
+            self.tasks.append(TaskFactory.get_task(name))
+        except TaskIncorrectDateFormatException:
+            print('Date format incorrect - task not added')
+            logging.info("Task '" + name + "' not added - incorrect date format")
+            return 1
+        logging.info("Added task '" + name + "'")
         return 0
 
     def execute(self, command):
@@ -64,7 +68,7 @@ class TaskSupervisor:
             else:
                 task_name = ' '.join(command.arguments[1:])  #concat every arg but first into one
                 if not self.add_task(task_name):
-                    print('ok')
+                    print("Task '" + task_name + "' added")
                     return 0
                 return 1
         else:

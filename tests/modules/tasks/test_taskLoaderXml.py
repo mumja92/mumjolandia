@@ -37,7 +37,7 @@ class TestTaskLoaderXml(TestCase):
             file.write('<tasks />')
 
         t = TaskLoaderXml(test_file)
-        self.assertEquals(t.get_tasks(), [])
+        self.assertEqual(t.get_tasks(), [])
 
         try:
             os.remove(test_file)
@@ -52,18 +52,24 @@ class TestTaskLoaderXml(TestCase):
             except OSError as e:
                 print("Error: %s - %s." % (e.filename, e.strerror))
         with open(test_file, 'w') as file:
-            file.write('<tasks><task date="2018-10-22" name="task1" priority="TaskPriority.ez">none</task><task date="2018-10-22" name="task drugi" priority="TaskPriority.asap">none</task></tasks>')
+            file.write('<tasks><task date_added="2018-10-25 00:00:00" date_to_finish="2018-10-25 00:00:00" '
+                       'description="unknown" name="task1" priority="unknown" status="unknown" type="unknown">'
+                       'none</task><task date_added="2018-10-26 00:00:00" date_to_finish="2018-10-26 00:00:00" '
+                       'description="unknown" name="task drugi" priority="unknown" status="unknown" type="unknown">'
+                       'none</task></tasks>')
 
         t = TaskLoaderXml(test_file)
         returned_list = t.get_tasks()
-        self.assertEquals(len(returned_list), 2)
-        self.assertEquals(returned_list[0].text, 'task1')
-        self.assertEquals(returned_list[0].priority, str(TaskPriority.ez))
-        self.assertEquals(returned_list[0].date, '2018-10-22')
-        self.assertEquals(returned_list[1].text, 'task drugi')
-        self.assertEquals(returned_list[1].priority, str(TaskPriority.asap))
-        self.assertEquals(returned_list[1].date, '2018-10-22')
-
+        t1 = TaskFactory.get_task(name='task1',
+                                  date_added="2018-10-25 00:00:00",
+                                  date_to_finish="2018-10-25 00:00:00")
+        t2 = TaskFactory.get_task(name='task drugi',
+                                  date_added="2018-10-26 00:00:00",
+                                  date_to_finish="2018-10-26 00:00:00")
+        self.assertEqual(len(returned_list), 2)
+        self.assertTrue(t1 == returned_list[0])
+        self.assertTrue(t2 == returned_list[1])
+        
         try:
             os.remove(test_file)
         except OSError as e:
@@ -71,7 +77,11 @@ class TestTaskLoaderXml(TestCase):
 
     def test_save_two_tasks(self):
         test_file = "test_tasks.xml"
-        expected_string = '<tasks><task date="2018-10-22" name="task1" priority="TaskPriority.ez">none</task><task date="2018-10-22" name="task drugi" priority="TaskPriority.asap">none</task></tasks>'
+        expected_string = '<tasks><task date_added="2018-10-25 00:00:00" date_to_finish="2018-10-25 00:00:00" ' \
+                          'description="unknown" name="task1" priority="unknown" status="unknown" type="unknown">' \
+                          'none</task><task date_added="2018-10-25 00:00:00" date_to_finish="2018-10-25 00:00:00" ' \
+                          'description="unknown" name="task drugi" priority="unknown" status="unknown" ' \
+                          'type="unknown">none</task></tasks>'
         t = TaskLoaderXml(test_file)
 
         if os.path.isfile(test_file):
@@ -80,10 +90,15 @@ class TestTaskLoaderXml(TestCase):
             except OSError as e:
                 print("Error: %s - %s." % (e.filename, e.strerror))
 
-        t.save_tasks([TaskFactory.get_task('task1', TaskPriority.ez), TaskFactory.get_task('task drugi', TaskPriority.asap)])
+        t.save_tasks([TaskFactory.get_task(name='task1',
+                                           date_added="2018-10-25 00:00:00",
+                                           date_to_finish="2018-10-25 00:00:00"),
+                      TaskFactory.get_task(name='task drugi',
+                                           date_added="2018-10-25 00:00:00",
+                                           date_to_finish="2018-10-25 00:00:00")])
         with open(test_file, 'r') as file:
             data = file.read()
-            self.assertEquals(expected_string, data)
+            self.assertEqual(expected_string, data)
 
         try:
             os.remove(test_file)

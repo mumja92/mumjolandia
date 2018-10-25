@@ -22,7 +22,8 @@ class MumjolandiaThread(Thread):
                 arg_placeholder = command.arguments.pop(0)
                 if self.taskSupervisor.execute(command):
                     command.arguments.insert(0, arg_placeholder)
-                    print(command.arguments, '- Command not recognized :(')
+                    # todo: catching exceptions like task not added/command not recognized?
+                    print(command.arguments, '- Command not executed')
                     continue
             elif command.arguments[0] == 'exit':
                 logging.info('mumjolandia thread exiting')
