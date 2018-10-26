@@ -42,6 +42,9 @@ class TaskSupervisor:
         for t in self.tasks:
             print(str(t))
 
+    def get_tasks(self):
+        return self.tasks
+
     def add_task(self, name):
         try:
             self.tasks.append(TaskFactory.get_task(name))

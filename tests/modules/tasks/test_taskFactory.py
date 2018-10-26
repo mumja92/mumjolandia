@@ -1,6 +1,5 @@
-from unittest import TestCase
 import datetime
-
+from unittest import TestCase
 from src.interface.tasks.task_incorrect_date_format_exception import TaskIncorrectDateFormatException
 from src.interface.tasks.task_priority import TaskPriority
 from src.interface.tasks.task_status import TaskStatus

@@ -1,16 +1,13 @@
-from threading import Thread
-
 import logging
-
+from threading import Thread
 from src.modules.console.console import Console
 
 
 class MumjolandiaCli(Thread):
-    def __init__(self, queue_to_pass, queue_for_me):
+    def __init__(self, data_passer):
         Thread.__init__(self)
-        self.passable_queue = queue_to_pass
-        self.my_queue = queue_for_me    # not used yet
         self.console = Console()
+        self.data_passer = data_passer
 
     def run(self):
         logging.info('mumjolandia cli started')
@@ -22,7 +19,7 @@ class MumjolandiaCli(Thread):
         logging.info('mumjolandia cli exiting')
 
     def __pass_command(self, command):
-        self.passable_queue.put(command)
+        self.data_passer.pass_command(command)
 
     def __command_exit(self, command):
         if command.startswith("exit"):

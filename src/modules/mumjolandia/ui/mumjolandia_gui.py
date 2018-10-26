@@ -2,8 +2,8 @@
 
 
 class MumjolandiaGui:
-    def __init__(self, queue):
-        self.queue = queue
+    def __init__(self, data_passer):
+        self.data_passer = data_passer
 
     def run(self):
         pass
