@@ -11,7 +11,7 @@ class MumjolandiaThread(Thread):
     def __init__(self, queue):
         Thread.__init__(self)
         self.queue = queue
-        self.taskSupervisor = TaskSupervisor(StorageType.xml)
+        self.taskSupervisor = TaskSupervisor(storage_type=StorageType.xml)
         self.mode = MumjolandiaMode.none
 
     def run(self):

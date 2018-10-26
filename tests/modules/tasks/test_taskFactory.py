@@ -13,8 +13,8 @@ class TestTaskFactory(TestCase):
         t = TaskFactory.get_task()
         self.assertEqual(t.name, 'unknown')
         self.assertEqual(t.description, 'unknown')
-        # self.assertEqual(t.date_added, '')             # tricky to check
-        # self.assertEqual(t.date_to_finish, '')         # tricky to check
+        self.assertEqual(t.date_added, datetime.date.today())
+        self.assertEqual(t.date_to_finish, datetime.date.today())
         self.assertEqual(t.priority, TaskPriority['unknown'])
         self.assertEqual(t.type, TaskType['unknown'])
         self.assertEqual(t.status, TaskStatus['unknown'])
@@ -39,4 +39,4 @@ class TestTaskFactory(TestCase):
 
     def test_incorrect_date_format_exception_raised(self):
         with self.assertRaises(TaskIncorrectDateFormatException):
-            TaskFactory.get_task(date_added="")
+            TaskFactory.get_task(date_added="12.11.2018")
