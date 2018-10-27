@@ -14,6 +14,7 @@ class TaskSupervisor:
         self.allowedToSaveTasks = True           # if loaded tasks are broken they wont be overwritten to not loose them
         self.task_loader = None
         self.tasks = None
+        self.command_parsers = {}
         self.__init()
 
     def __del__(self):
@@ -36,34 +37,23 @@ class TaskSupervisor:
             self.tasks.append(TaskFactory.get_task(name))
         except TaskIncorrectDateFormatException:
             print('Date format incorrect - task not added')
-            logging.info("Task '" + name + "' not added - incorrect date format")
+            logging.warning("Task '" + name + "' not added - incorrect date format")
             return 1
         logging.info("Added task '" + name + "'")
         return 0
 
     def execute(self, command):
-        command_length = len(command.arguments)
-        if command_length == 0:
-            print('Commands:')
-            print('print, add x')
-            return 0
-        if command.arguments[0] == 'print':
-            self.print()
-            return 0
-        elif command.arguments[0] == 'add':
-            if command_length < 2:
-                print('Task name not given')
-                return 0
-            else:
-                task_name = ' '.join(command.arguments[1:])  #concat every arg but first into one
-                if not self.add_task(task_name):
-                    print("Task '" + task_name + "' added")
-                    return 0
-                return 1
-        else:
-            return 1
+
+        try:
+            self.command_parsers[command.arguments[0]](command.arguments[1:])
+        except KeyError:
+            logging.warning('Unrecognized command: ' + str(command.arguments))
+        except IndexError:
+            self.command_parsers['null'](command.arguments)
 
     def __init(self):
+        self.__add_command_parsers()
+
         if self.storage_type == StorageType.xml:
             self.task_loader = TaskLoaderXml(self.task_file_location)
         elif self.storage_type == StorageType.pickle:
@@ -82,3 +72,23 @@ class TaskSupervisor:
             logging.error(self.task_file_location + ' - file broken. Not saving changes!')
             self.tasks = e.args[0]
             self.allowedToSaveTasks = False
+
+    def __add_command_parsers(self):
+        self.command_parsers['add'] = self.__command_add
+        self.command_parsers['null'] = self.__command_null
+        self.command_parsers['print'] = self.__command_print
+
+    def __command_add(self, args):
+        if len(args) < 1:
+            print('Task name not given')
+            return
+        else:
+            if not self.add_task(args[0]):
+                print("Task '" + args[0] + "' added")
+
+    def __command_null(self, args):
+        print('Commands:')
+        print('print, add x')
+
+    def __command_print(self, args):
+        self.print()

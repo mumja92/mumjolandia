@@ -21,3 +21,4 @@
 parowy/bugi:
 -cli exits when it spots a string - implement queue for cli that supervisor will put exit command in and then it will exit
 -tests use hardcoded month/day that is incorrect one day later OMEGALUL
+-"task add 'xD 'hombre'" - no space between words
