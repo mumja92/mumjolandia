@@ -12,23 +12,9 @@ class TaskSupervisor:
         self.storage_type = storage_type
         self.task_file_location = "data/tasks." + self.storage_type.name
         self.allowedToSaveTasks = True           # if loaded tasks are broken they wont be overwritten to not loose them
-        self.task_loader = TaskLoaderXml(self.task_file_location)
-        if storage_type == StorageType.xml:
-            self.task_loader = TaskLoaderXml(self.task_file_location)
-        elif storage_type == StorageType.pickle:
-            self.task_loader = TaskLoaderPickle(self.task_file_location)
-        else:
-            logging.error("Unrecognized storage type: '" + str(self.storage_type.name) + "' - using xml instead")
-        try:
-            self.tasks = self.task_loader.get_tasks()
-        except FileNotFoundError:
-            logging.info(self.task_file_location + " - file doesn't exist")
-            self.tasks = []
-        except TaskFileBrokenException as e:
-            print('Task file broken. Not saving changes!')
-            logging.error(self.task_file_location + ' - file broken. Not saving changes!')
-            self.tasks = e.args[0]
-            self.allowedToSaveTasks = False
+        self.task_loader = None
+        self.tasks = None
+        self.__init()
 
     def __del__(self):
         if self.allowedToSaveTasks:
@@ -76,3 +62,23 @@ class TaskSupervisor:
                 return 1
         else:
             return 1
+
+    def __init(self):
+        if self.storage_type == StorageType.xml:
+            self.task_loader = TaskLoaderXml(self.task_file_location)
+        elif self.storage_type == StorageType.pickle:
+            self.task_loader = TaskLoaderPickle(self.task_file_location)
+        else:
+            logging.error("Unrecognized storage type: '" + str(self.storage_type.name) + "' - using xml instead")
+            self.task_loader = TaskLoaderXml(self.task_file_location)
+
+        try:
+            self.tasks = self.task_loader.get_tasks()
+        except FileNotFoundError:
+            logging.info(self.task_file_location + " - file doesn't exist")
+            self.tasks = []
+        except TaskFileBrokenException as e:
+            print('Task file broken. Not saving changes!')
+            logging.error(self.task_file_location + ' - file broken. Not saving changes!')
+            self.tasks = e.args[0]
+            self.allowedToSaveTasks = False

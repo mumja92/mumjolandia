@@ -41,9 +41,8 @@ class MumjolandiaSupervisor:
 
     def __main_loop(self):
         while True:
-            command_string = self.command_queue_input.get()
+            command = self.command_queue_input.get()
             self.command_queue_input.task_done()
-            command = CommandFactory.get_command(command_string)
             logging.info('Parsing command: ' + str(command))
             self.command_queue_output.put(command)
             if command.arguments[0] == 'exit':

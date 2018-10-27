@@ -12,7 +12,7 @@ class MumjolandiaCli(Thread):
     def run(self):
         logging.info('mumjolandia cli started')
         while True:
-            command = self.console.get_next_text()
+            command = self.console.get_next_command()
             self.__pass_command(command)
             if self.__command_exit(command):
                 break
@@ -22,6 +22,6 @@ class MumjolandiaCli(Thread):
         self.data_passer.pass_command(command)
 
     def __command_exit(self, command):
-        if command.startswith("exit"):
+        if command.arguments[0] == "exit":
             return True
         return False
