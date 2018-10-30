@@ -1,24 +1,33 @@
-- to consider - mumjolandia_thread should catch exceptions like 'command not recognized' or 'task not added'
--add task generator to generate task occurrences by scheme (weekly/daily/etc)
--change xml for tasks: <task name='xD'><description>des</description><date>26.09.2018</date></task>
--add options to fully config things (save to xml/pickle, gui/cli, debug level, etc) should it be xml? or sth else?
--investigate enums to not allow values not included in them to be passed etc (some article in www)
--make map for commands (every command as a separate class?)
--consider making mumjolandia supervisor a singleton
--cli should have state machine (?) to add tasks without 1 command
--set mode to skip first part of command
--task - better print and adding/editing via cli
--change encoding in xml files to get rif of '&#263' chars
--adding meals quickly:
-    -all enums corresponding to db types
-    -function to add items by name (enums)
--check if conenction to database is successfull
--check if sql enums are correct with db (or add mechanism to create them based on db)
--function to add games to db quickly
--gui to based on funciton to add games, to add games even more quickly
+- current
+    -add real return value from mumjo_thread and parse it on cli side
+
+
+
+- mumjolandia
+    - what happens when I run the application twice at the same time?
+    - every mumjolandia operation should return exit status up to dataPasser - should return to cli/gui
+    - add task generator to generate task occurrences by scheme (weekly/daily/etc)
+    - change xml for tasks: <task name='xD'><description>des</description><date>26.09.2018</date></task>
+    - add options to fully config things (save to xml/pickle, gui/cli, debug level, etc) should it be xml? or sth else?
+    - consider making mumjolandia supervisor a singleton
+    - set mode to skip first part of command
+    - open port to allow communication from different applications
+
+- random
+    - investigate enums to not allow values not included in them to be passed etc (some article in www)
+    - change encoding in xml files to get rif of '&#263' chars
+- food
+    - adding meals quickly:
+        - all enums corresponding to db types
+        - function to add items by name (enums)
+- sql
+    - check if connection to database is successful
+    - check if sql enums are correct with db (or add mechanism to create them based on db)
+- games
+    - function to add games to db quickly
+    - gui to based on function to add games, to add games even more quickly
 
 
 parowy/bugi:
--cli exits when it spots a string - implement queue for cli that supervisor will put exit command in and then it will exit
--tests use hardcoded month/day that is incorrect one day later OMEGALUL
--"task add 'xD 'hombre'" - no space between words
+    - cli exits when it spots a string - implement queue for cli that supervisor will put exit command in and then it will exit
+    -"task add 'xD 'hombre'" - no space between words

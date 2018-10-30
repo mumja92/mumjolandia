@@ -1,4 +1,7 @@
 import logging
+
+from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
+from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.interface.tasks.task_file_broken_exception import TaskFileBrokenException
 from src.interface.tasks.task_incorrect_date_format_exception import TaskIncorrectDateFormatException
 from src.interface.tasks.task_storage_type import StorageType
@@ -24,11 +27,6 @@ class TaskSupervisor:
         else:
             logging.debug("Not saving tasks")
 
-    def print(self):
-        print(len(self.tasks), 'items:')
-        for t in self.tasks:
-            print(str(t))
-
     def get_tasks(self):
         return self.tasks
 
@@ -36,20 +34,20 @@ class TaskSupervisor:
         try:
             self.tasks.append(TaskFactory.get_task(name))
         except TaskIncorrectDateFormatException:
-            print('Date format incorrect - task not added')
             logging.warning("Task '" + name + "' not added - incorrect date format")
-            return 1
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_incorrect_date_format)
         logging.info("Added task '" + name + "'")
-        return 0
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_added, arguments=[name])
 
     def execute(self, command):
 
         try:
-            self.command_parsers[command.arguments[0]](command.arguments[1:])
+            return self.command_parsers[command.arguments[0]](command.arguments[1:])
         except KeyError:
             logging.warning('Unrecognized command: ' + str(command.arguments))
+            return self.command_parsers['unrecognized_command'](command.arguments)
         except IndexError:
-            self.command_parsers['null'](command.arguments)
+            return self.command_parsers['null'](command.arguments)
 
     def __init(self):
         self.__add_command_parsers()
@@ -77,18 +75,22 @@ class TaskSupervisor:
         self.command_parsers['add'] = self.__command_add
         self.command_parsers['null'] = self.__command_null
         self.command_parsers['print'] = self.__command_print
+        self.command_parsers['unrecognized_command'] = self.__unrecognized_command
 
     def __command_add(self, args):
         if len(args) < 1:
-            print('Task name not given')
-            return
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_name_not_given)
         else:
-            if not self.add_task(args[0]):
-                print("Task '" + args[0] + "' added")
+            return self.add_task(args[0])
 
     def __command_null(self, args):
-        print('Commands:')
-        print('print, add x')
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_null)
 
     def __command_print(self, args):
-        self.print()
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_print, arguments=self.tasks)
+
+    def __command_help(self, args):
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help, arguments=['print, add x'])
+
+    def __unrecognized_command(self, args):
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.unrecognized_command)

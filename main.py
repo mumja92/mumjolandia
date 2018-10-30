@@ -1,4 +1,4 @@
-from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
+from src.modules.mumjolandia.mumjolandia_starter import MumjolandiaStarter
 
 
-MumjolandiaSupervisor().run_cli()
+MumjolandiaStarter().run_cli()

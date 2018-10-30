@@ -1,19 +1,21 @@
 import copy
 import logging
-import sys
 from threading import Thread
 from src.interface.mumjolandia.mumjolandia_mode import MumjolandiaMode
+from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
+from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 
 
 class MumjolandiaThread(Thread):
-    def __init__(self, queue, supervisors):
+    def __init__(self, queue_in, queue_response, supervisors, event):
         Thread.__init__(self)
-        self.queue = queue
+        self.queue_in = queue_in
+        self.queue_response = queue_response
         self.supervisors = supervisors
-        self.taskSupervisor = self.supervisors['task']
         self.mode = MumjolandiaMode.none
         self.command_parsers = {}
         self.exit_flag = False
+        self.command_done_event = event
         self.__init()
 
     def run(self):
@@ -26,9 +28,12 @@ class MumjolandiaThread(Thread):
             except IndexError:
                 command_to_pass.arguments = []
             try:
-                self.command_parsers[command.arguments[0]](command_to_pass)
+                return_value = self.command_parsers[command.arguments[0]](command_to_pass)
             except KeyError:
-                print('Unrecognized command: ', command.arguments, sep=' ', end='\n', file=sys.stdout, flush=False)
+                logging.debug("Unrecognized command: '" + str(command) + "'")
+                return_value = MumjolandiaResponseObject(status=MumjolandiaReturnValue.unrecognized_command)
+            self.queue_response.put(return_value)
+            self.command_done_event.set()
             if self.exit_flag:
                 break
 
@@ -37,13 +42,15 @@ class MumjolandiaThread(Thread):
         self.command_parsers['task'] = self.__command_task
 
     def __get_next_command(self):
-        command = self.queue.get()
-        self.queue.task_done()
+        command = self.queue_in.get()
+        self.queue_in.task_done()
+        logging.debug("Parsing command: '" + str(command) + "'")
         return command
 
     def __command_exit(self, command):
         self.exit_flag = True
         logging.info('mumjolandia thread exiting')
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.ok)
 
     def __command_task(self, command):
-        self.supervisors['task'].execute(command)
+        return self.supervisors['task'].execute(command)
