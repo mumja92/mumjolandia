@@ -1,13 +1,9 @@
 class MumjolandiaDataPasser:
-    def __init__(self, supervisors, queue_in, queue_response, mutex, event):
-        self.supervisors = supervisors
+    def __init__(self, queue_in, queue_response, mutex, event):
         self.queue_in = queue_in
         self.queue_response = queue_response
         self.mutex = mutex
         self.event = event
-
-    def get_tasks(self):
-        return self.supervisors['task'].get_tasks()
 
     def pass_command(self, command):
         self.mutex.acquire()

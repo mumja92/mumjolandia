@@ -50,7 +50,7 @@ class MumjolandiaThread(Thread):
     def __command_exit(self, command):
         self.exit_flag = True
         logging.info('mumjolandia thread exiting')
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.ok)
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.exit)
 
     def __command_task(self, command):
         return self.supervisors['task'].execute(command)

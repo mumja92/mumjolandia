@@ -1,7 +1,6 @@
 import logging
 import threading
 from queue import Queue
-
 from src.interface.tasks.task_storage_type import StorageType
 from src.modules.mumjolandia.mumjolandia_data_passer import MumjolandiaDataPasser
 from src.modules.mumjolandia.mumjolandia_thread import MumjolandiaThread
@@ -36,7 +35,6 @@ class MumjolandiaStarter:
         cli.start()
         self.__main_loop()
 
-
     def __run_mumjolandia(self):
         logging.info('Starting mumjolandia')
         mumjolandia_thread = MumjolandiaThread(self.command_queue_request,
@@ -55,8 +53,7 @@ class MumjolandiaStarter:
 
         self.supervisors['task'] = TaskSupervisor(storage_type=StorageType.xml)
 
-        self.data_passer = MumjolandiaDataPasser(self.supervisors,
-                                                 self.command_queue_request,
+        self.data_passer = MumjolandiaDataPasser(self.command_queue_request,
                                                  self.command_queue_response,
                                                  self.command_mutex,
                                                  self.command_responded_event)

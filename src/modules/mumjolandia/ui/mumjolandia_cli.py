@@ -1,8 +1,6 @@
 import logging
 from threading import Thread
-
 import sys
-
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.modules.console.console import Console
 
@@ -12,13 +10,14 @@ class MumjolandiaCli(Thread):
         Thread.__init__(self)
         self.console = Console()
         self.data_passer = data_passer
+        self.exit_flag = False
 
     def run(self):
         logging.info('mumjolandia cli started')
         while True:
             command = self.console.get_next_command()
             self.__execute_command(command)
-            if self.__command_exit(command):
+            if self.exit_flag:
                 break
         logging.info('mumjolandia cli exiting')
 
@@ -34,6 +33,9 @@ class MumjolandiaCli(Thread):
             print('Added: ' + str(return_value.arguments[0]))
         elif return_value.status == MumjolandiaReturnValue.task_incorrect_date_format:
             print('Incorrect date format')
+        elif return_value.status == MumjolandiaReturnValue.exit:
+            print('exiting')
+            self.exit_flag = True
         else:
             print('Unrecognized status response: ' + return_value.status.name)
             logging.error("Unrecognized status response: '" + return_value.status.name + "'")
@@ -42,3 +44,6 @@ class MumjolandiaCli(Thread):
         if command.arguments[0] == "exit":
             return True
         return False
+
+    def __main_view(self):
+        pass
