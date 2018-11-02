@@ -20,6 +20,9 @@ class MumjolandiaThread(Thread):
         self.command_done_event = event
         self.__init()
 
+    def __del__(self):
+        logging.info('mumjolandia thread exiting')
+
     def run(self):
         logging.info('mumjolandia thread started')
         while True:
@@ -54,7 +57,6 @@ class MumjolandiaThread(Thread):
 
     def __command_exit(self, command):
         self.exit_flag = True
-        logging.info('mumjolandia thread exiting')
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.mumjolandia_exit)
 
     def __command_task(self, command):

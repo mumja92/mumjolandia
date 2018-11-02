@@ -5,10 +5,10 @@
 # print(f.insert_ingradient('xDD'))
 # print(f.insert_meal(1, 'xD', 'xDD'))
 # print(f.insert_meal_ingradient(1, 2, 2, 10))
+import os
 
-
-lista = [1,2,3,4,5,6]
-lista.remove(1)
-print(str(lista))
-
-print(int('sd'))
+print(os.path.isdir("data2"))
+try:
+    os.mkdir("data")
+except OSError as e:
+    print(str(e))

@@ -15,6 +15,9 @@ class MumjolandiaCli(Thread):
         self.views = {}
         self.__init()
 
+    def __del__(self):
+        logging.info('mumjolandia cli exiting')
+
     def run(self):
         logging.info('mumjolandia cli started')
         while True:
@@ -26,7 +29,6 @@ class MumjolandiaCli(Thread):
             self.__parse_response(return_value)
             if self.exit_flag:
                 break
-        logging.info('mumjolandia cli exiting')
 
     def __parse_response(self, return_value):
         try:
