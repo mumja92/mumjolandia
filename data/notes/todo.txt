@@ -1,6 +1,5 @@
 - current
     - create data directory if doesnt exist
-    - move supervisors from starter to main thread
 
 
 - mumjolandia

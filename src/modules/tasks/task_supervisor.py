@@ -98,7 +98,7 @@ class TaskSupervisor:
     def __add_command_parsers(self):
         self.command_parsers['add'] = self.__command_add
         self.command_parsers['null'] = self.__command_null
-        self.command_parsers['print'] = self.__command_print
+        self.command_parsers['get'] = self.__command_get
         self.command_parsers['unrecognized_command'] = self.__unrecognized_command
         self.command_parsers['delete'] = self.__command_delete
 
@@ -111,8 +111,8 @@ class TaskSupervisor:
     def __command_null(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_null)
 
-    def __command_print(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_print, arguments=self.tasks)
+    def __command_get(self, args):
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get, arguments=self.tasks)
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help, arguments=['print, add x'])

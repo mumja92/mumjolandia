@@ -4,14 +4,16 @@ from threading import Thread
 from src.interface.mumjolandia.mumjolandia_mode import MumjolandiaMode
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
+from src.interface.tasks.task_storage_type import StorageType
+from src.modules.tasks.task_supervisor import TaskSupervisor
 
 
 class MumjolandiaThread(Thread):
-    def __init__(self, queue_in, queue_response, supervisors, event):
+    def __init__(self, queue_in, queue_response, event):
         Thread.__init__(self)
         self.queue_in = queue_in
         self.queue_response = queue_response
-        self.supervisors = supervisors
+        self.supervisors = {}
         self.mode = MumjolandiaMode.none
         self.command_parsers = {}
         self.exit_flag = False
@@ -31,7 +33,7 @@ class MumjolandiaThread(Thread):
                 return_value = self.command_parsers[command.arguments[0]](command_to_pass)
             except KeyError:
                 logging.debug("Unrecognized command: '" + str(command) + "'")
-                return_value = MumjolandiaResponseObject(status=MumjolandiaReturnValue.unrecognized_command,
+                return_value = MumjolandiaResponseObject(status=MumjolandiaReturnValue.mumjolandia_unrecognized_command,
                                                          arguments=command)
             self.queue_response.put(return_value)
             self.command_done_event.set()
@@ -39,6 +41,8 @@ class MumjolandiaThread(Thread):
                 break
 
     def __init(self):
+        self.supervisors['task'] = TaskSupervisor(storage_type=StorageType.xml)
+
         self.command_parsers['exit'] = self.__command_exit
         self.command_parsers['task'] = self.__command_task
 
@@ -51,7 +55,7 @@ class MumjolandiaThread(Thread):
     def __command_exit(self, command):
         self.exit_flag = True
         logging.info('mumjolandia thread exiting')
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.exit)
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.mumjolandia_exit)
 
     def __command_task(self, command):
         return self.supervisors['task'].execute(command)

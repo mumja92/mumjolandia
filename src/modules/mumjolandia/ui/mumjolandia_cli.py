@@ -20,6 +20,7 @@ class MumjolandiaCli(Thread):
         while True:
             print(self.prompt, end='')
             command = self.console.get_next_command()
+
             self.__prepare_command(command)
             return_value = self.data_passer.pass_command(command)
             self.__parse_response(return_value)
@@ -34,7 +35,8 @@ class MumjolandiaCli(Thread):
             self.views['unrecognized_status_response'](return_value)
 
     def __prepare_command(self, command):
-        pass
+        if command.arguments[0:2] == ['task', 'print']:
+            command.arguments[1] = 'get'
 
     def __command_exit(self, command):
         if command.arguments[0] == "exit":
@@ -43,10 +45,10 @@ class MumjolandiaCli(Thread):
 
     def __init(self):
         self.views['unrecognized_status_response'] = self.view_unrecognized_status_response
-        self.views[MumjolandiaReturnValue.task_print.name] = self.view_print
+        self.views[MumjolandiaReturnValue.task_get.name] = self.view_print
         self.views[MumjolandiaReturnValue.task_added.name] = self.view_task_added
-        self.views[MumjolandiaReturnValue.unrecognized_command.name] = self.view_unrecognized_command
-        self.views[MumjolandiaReturnValue.exit.name] = self.view_exit
+        self.views[MumjolandiaReturnValue.mumjolandia_unrecognized_command.name] = self.view_unrecognized_command
+        self.views[MumjolandiaReturnValue.mumjolandia_exit.name] = self.view_exit
         self.views[MumjolandiaReturnValue.task_unrecognized_parameters.name] = self.view_task_unrecognized_parameters
         self.views[MumjolandiaReturnValue.task_delete_success.name] = self.view_task_delete_success
         self.views[MumjolandiaReturnValue.task_delete_incorrect_index.name] = self.view_task_delete_incorrect_index
