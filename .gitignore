@@ -5,3 +5,4 @@ data/tasks.*
 tests/test_tasks.xml
 *.db
 venv/
+*.pyc

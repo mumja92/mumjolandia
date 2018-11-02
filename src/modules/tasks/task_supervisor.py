@@ -39,6 +39,30 @@ class TaskSupervisor:
         logging.info("Added task '" + name + "'")
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_added, arguments=[name])
 
+    def delete_task(self, task_id):
+        # parameter comes as string. If we can parse it to int then we remove by id. If not, then by name
+        try:
+            tid = int(task_id)
+            try:
+                self.tasks.pop(tid)
+                return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_delete_success,
+                                                 arguments=[task_id, str(1)])
+            except IndexError:  # wrong index
+                return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_delete_incorrect_index,
+                                                 arguments=[task_id])
+        except ValueError:  # parameter type is not int
+            deleted_counter = 0
+            for t in reversed(self.tasks):  # reversing allows to remove elements on fly without breaking ids
+                if t.name == task_id:
+                    self.tasks.remove(t)
+                    deleted_counter += 1
+            if deleted_counter == 0:
+                return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_delete_incorrect_name,
+                                                 arguments=[task_id])
+            else:
+                return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_delete_success,
+                                                 arguments=[task_id, str(deleted_counter)])
+
     def execute(self, command):
 
         try:
@@ -76,6 +100,7 @@ class TaskSupervisor:
         self.command_parsers['null'] = self.__command_null
         self.command_parsers['print'] = self.__command_print
         self.command_parsers['unrecognized_command'] = self.__unrecognized_command
+        self.command_parsers['delete'] = self.__command_delete
 
     def __command_add(self, args):
         if len(args) < 1:
@@ -93,4 +118,7 @@ class TaskSupervisor:
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help, arguments=['print, add x'])
 
     def __unrecognized_command(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.unrecognized_command)
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_unrecognized_parameters, arguments=args)
+
+    def __command_delete(self, args):
+        return self.delete_task(args[0])

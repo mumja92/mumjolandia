@@ -1,6 +1,6 @@
 - current
-    -add real return value from mumjo_thread and parse it on cli side
-
+    - create data directory if doesnt exist
+    - move supervisors from starter to main thread
 
 
 - mumjolandia

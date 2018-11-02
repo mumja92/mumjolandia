@@ -15,3 +15,7 @@ class MumjolandiaReturnValue(Enum):
     task_print = 7
     task_incorrect_date_format = 8
     task_file_broken = 10
+    task_unrecognized_parameters = 11
+    task_delete_success = 12
+    task_delete_incorrect_index = 13
+    task_delete_incorrect_name = 14

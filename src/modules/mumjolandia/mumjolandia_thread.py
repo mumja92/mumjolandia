@@ -31,7 +31,8 @@ class MumjolandiaThread(Thread):
                 return_value = self.command_parsers[command.arguments[0]](command_to_pass)
             except KeyError:
                 logging.debug("Unrecognized command: '" + str(command) + "'")
-                return_value = MumjolandiaResponseObject(status=MumjolandiaReturnValue.unrecognized_command)
+                return_value = MumjolandiaResponseObject(status=MumjolandiaReturnValue.unrecognized_command,
+                                                         arguments=command)
             self.queue_response.put(return_value)
             self.command_done_event.set()
             if self.exit_flag:
