@@ -20,13 +20,6 @@ class TaskSupervisor:
         self.command_parsers = {}
         self.__init()
 
-    def __del__(self):
-        if self.allowedToSaveTasks:
-            logging.debug("saving tasks to: '" + self.task_file_location + "'")
-            self.task_loader.save_tasks(self.tasks)
-        else:
-            logging.debug("Not saving tasks")
-
     def get_tasks(self):
         return self.tasks
 
