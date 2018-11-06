@@ -45,11 +45,16 @@ class MumjolandiaStarter:
         logging.info('All tasks started. Exiting. ')
 
     def __run_init(self):
+        if not os.path.isdir("data"):
+            try:
+                os.mkdir("data")
+            except OSError as e:
+                pass
         try:
             if os.path.isfile(self.log_location):
                 os.remove(self.log_location)
         except OSError as e:
-            print(str(e))
+            pass
 
         logging.basicConfig(format='%(asctime)s [%(levelname).1s] %(module)s::%(funcName)s --- %(message)s',
                             datefmt='%d/%m/%Y %H:%M:%S', filename=self.log_location, level=logging.DEBUG)
@@ -59,10 +64,5 @@ class MumjolandiaStarter:
                                                  self.command_mutex,
                                                  self.command_responded_event)
 
-        if not os.path.isdir("data"):
-            try:
-                os.mkdir("data")
-                logging.info('Creating data folder')
-            except OSError as e:
-                logging.error(str(e))
+
 

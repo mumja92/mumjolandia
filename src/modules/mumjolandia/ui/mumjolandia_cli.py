@@ -1,4 +1,6 @@
 import logging
+import os
+import platform
 from threading import Thread
 from src.interface.mumjolandia.mumjolandia_immutable_type_wrapper import MumjolandiaImmutableTypeWrapper
 from src.modules.console.console import Console
@@ -32,7 +34,12 @@ class MumjolandiaCli(Thread):
 
     def __prepare_command(self, command):
         if command.arguments[0] == 'cls':
-            Console.clear()
+            self.clear()
+            return False
+
+        if command.arguments[0] == 'path':
+            print('Script location: ' + os.path.dirname(os.path.realpath(__file__)))
+            print('Working directory: ' + os.getcwd())
             return False
 
         if command.arguments[0:2] == ['task', 'print']:
@@ -56,3 +63,9 @@ class MumjolandiaCli(Thread):
                 return False
             command.arguments[3] = TaskFactory.get_task(name=command.arguments[3])
         return True
+
+    def clear(self):
+        if platform.system() == 'Windows':
+            os.system('cls')
+        else:
+            os.system('clear')

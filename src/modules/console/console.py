@@ -1,6 +1,3 @@
-import os
-import platform
-
 from src.modules.command.command_factory import CommandFactory
 
 
@@ -13,10 +10,3 @@ class Console:
 
     def get_next_text(self):
         return input()
-
-    @staticmethod
-    def clear():
-        if platform.system() == 'Windows':
-            os.system('cls')
-        else:
-            os.system('clear')

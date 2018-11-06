@@ -37,6 +37,9 @@ class TaskSupervisor:
             logging.warning("Task '" + name + "' not added - incorrect date format")
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_incorrect_date_format)
         logging.info("Added task '" + name + "'")
+        if self.allowedToSaveTasks:
+            logging.debug("saving tasks to: '" + self.task_file_location + "'")
+            self.task_loader.save_tasks(self.tasks)
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_added, arguments=[name])
 
     def edit_task(self, task_id, new_task):
