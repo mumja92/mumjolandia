@@ -4,19 +4,22 @@ import sqlite3
 class FoodDatabaseSupervisor:
     def __init__(self, db_location):
         self.db_location = db_location
-        con = sqlite3.connect('file:data/jedzonko22.db?mode=rw', uri=True)
-        con.close()
 
-    def select_meal_ingradients(self):
+    def select_meal_ingredients(self, id_meal):
         conn = sqlite3.connect(self.db_location)
         c = conn.cursor()
-        c.execute("select * from meal_ingradients")
+        c.execute("SELECT meal.name as name, ingradient.name as 'ingradient', amount_type.name as 'amount type', "
+                  "amount as 'amount' "
+                  "FROM meal_ingradients "
+                  "INNER JOIN meal ON meal.id_meal = meal_ingradients.fk_meal_id "
+                  "INNER JOIN ingradient ON ingradient.id_ingradient = meal_ingradients.fk_ingradient_id "
+                  "INNER JOIN amount_type ON amount_type.id_amount_type = meal_ingradients.fk_amount_type "
+                  "WHERE meal.id_meal = " + str(id_meal))
         return_values = c.fetchall()
         conn.close()
         return return_values
 
-
-    def insert_ingradient(self, name):
+    def insert_ingredient(self, name):
         return_value = 0
         conn = sqlite3.connect(self.db_location)
         c = conn.cursor()
@@ -28,7 +31,7 @@ class FoodDatabaseSupervisor:
         conn.close()
         return return_value
 
-    def insert_meal_ingradient(self, meal_id, ingradient_id, amount_type, amount):
+    def insert_meal_ingredient(self, meal_id, ingradient_id, amount_type, amount):
         return_value = 0
         conn = sqlite3.connect(self.db_location)
         c = conn.cursor()

@@ -6,3 +6,5 @@ tests/test_tasks.xml
 *.db
 venv/
 *.pyc
+
+!data/jedzonko2.db
