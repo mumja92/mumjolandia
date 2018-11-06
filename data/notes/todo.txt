@@ -1,6 +1,3 @@
-- current
-    - create data directory if doesnt exist
-
 
 - mumjolandia
     - what happens when I run the application twice at the same time?

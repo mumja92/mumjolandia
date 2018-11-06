@@ -18,3 +18,5 @@ class MumjolandiaReturnValue(Enum):
     task_delete_success = 12
     task_delete_incorrect_index = 1
     task_delete_incorrect_name = 13
+    task_edit_ok = 14
+    task_edit_wrong_index = 15

@@ -39,6 +39,15 @@ class TaskSupervisor:
         logging.info("Added task '" + name + "'")
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_added, arguments=[name])
 
+    def edit_task(self, task_id, new_task):
+        try:
+            self.tasks[task_id] = new_task
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_edit_ok,
+                                             arguments=[str(task_id)])
+        except IndexError:
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_edit_wrong_index,
+                                             arguments=[str(task_id)])
+
     def delete_task(self, task_id):
         # parameter comes as string. If we can parse it to int then we remove by id. If not, then by name
         try:
@@ -101,6 +110,7 @@ class TaskSupervisor:
         self.command_parsers['get'] = self.__command_get
         self.command_parsers['unrecognized_command'] = self.__unrecognized_command
         self.command_parsers['delete'] = self.__command_delete
+        self.command_parsers['edit'] = self.__command_edit
 
     def __command_add(self, args):
         if len(args) < 1:
@@ -122,3 +132,6 @@ class TaskSupervisor:
 
     def __command_delete(self, args):
         return self.delete_task(args[0])
+
+    def __command_edit(self, args):
+        return self.edit_task(int(args[0]), args[1])

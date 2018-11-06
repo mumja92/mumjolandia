@@ -25,6 +25,8 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.task_delete_success.name] = self.view_task_delete_success
         self.views[MumjolandiaReturnValue.task_delete_incorrect_index.name] = self.view_task_delete_incorrect_index
         self.views[MumjolandiaReturnValue.task_delete_incorrect_name.name] = self.view_task_delete_incorrect_name
+        self.views[MumjolandiaReturnValue.task_edit_ok.name] = self.view_task_edit_ok
+        self.views[MumjolandiaReturnValue.task_edit_wrong_index.name] = self.view_task_edit_wrong_index
 
     def view_print(self, return_value):
         print(len(return_value.arguments), 'items:')
@@ -61,3 +63,9 @@ class MumjolandiaCliPrinter:
 
     def view_task_delete_incorrect_name(self, return_value):
         print("Can't delete - incorrect task name: " + return_value.arguments[0])
+
+    def view_task_edit_ok(self, return_value):
+        print("Task edited: " + return_value.arguments[0])
+
+    def view_task_edit_wrong_index(self, return_value):
+        print("Edit aborted - wrong index: " + return_value.arguments[0])
