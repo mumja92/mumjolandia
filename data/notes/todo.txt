@@ -1,3 +1,4 @@
+- should supervisor get via command task object, or everything to create it by itself?
 
 - mumjolandia
     - what happens when I run the application twice at the same time?

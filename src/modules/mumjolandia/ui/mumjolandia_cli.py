@@ -61,7 +61,6 @@ class MumjolandiaCli(Thread):
                 print('Name should have at least 1 character')
                 print('usage: "task edit [id] [name]')
                 return False
-            command.arguments[3] = TaskFactory.get_task(name=command.arguments[3])
         return True
 
     def clear(self):

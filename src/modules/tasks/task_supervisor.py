@@ -30,14 +30,13 @@ class TaskSupervisor:
             logging.warning("Task '" + name + "' not added - incorrect date format")
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_incorrect_date_format)
         logging.info("Added task '" + name + "'")
-        if self.allowedToSaveTasks:
-            logging.debug("saving tasks to: '" + self.task_file_location + "'")
-            self.task_loader.save_tasks(self.tasks)
+        self.__save_if_allowed()
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_added, arguments=[name])
 
     def edit_task(self, task_id, new_task):
         try:
             self.tasks[task_id] = new_task
+            self.__save_if_allowed()
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_edit_ok,
                                              arguments=[str(task_id)])
         except IndexError:
@@ -50,6 +49,7 @@ class TaskSupervisor:
             tid = int(task_id)
             try:
                 self.tasks.pop(tid)
+                self.__save_if_allowed()
                 return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_delete_success,
                                                  arguments=[task_id, str(1)])
             except IndexError:  # wrong index
@@ -65,6 +65,7 @@ class TaskSupervisor:
                 return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_delete_incorrect_name,
                                                  arguments=[task_id])
             else:
+                self.__save_if_allowed()
                 return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_delete_success,
                                                  arguments=[task_id, str(deleted_counter)])
 
@@ -100,6 +101,11 @@ class TaskSupervisor:
             self.tasks = e.args[0]
             self.allowedToSaveTasks = False
 
+    def __save_if_allowed(self):
+        if self.allowedToSaveTasks:
+            logging.debug("saving tasks to: '" + self.task_file_location + "'")
+            self.task_loader.save_tasks(self.tasks)
+
     def __add_command_parsers(self):
         self.command_parsers['add'] = self.__command_add
         self.command_parsers['null'] = self.__command_null
@@ -107,6 +113,7 @@ class TaskSupervisor:
         self.command_parsers['unrecognized_command'] = self.__unrecognized_command
         self.command_parsers['delete'] = self.__command_delete
         self.command_parsers['edit'] = self.__command_edit
+        self.command_parsers['help'] = self.__command_help
 
     def __command_add(self, args):
         if len(args) < 1:
@@ -121,7 +128,7 @@ class TaskSupervisor:
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get, arguments=self.tasks)
 
     def __command_help(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help, arguments=['print, add x'])
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help, arguments=['print, add [name], delete [name || id], edit [id] [name]'])
 
     def __unrecognized_command(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_unrecognized_parameters, arguments=args)
@@ -130,4 +137,4 @@ class TaskSupervisor:
         return self.delete_task(args[0])
 
     def __command_edit(self, args):
-        return self.edit_task(int(args[0]), args[1])
+        return self.edit_task(int(args[0]), TaskFactory.get_task(name=args[1]))
