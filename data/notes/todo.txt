@@ -1,4 +1,9 @@
-- should supervisor get via command task object, or everything to create it by itself?
+- now
+    - make supervisor interface
+    - make food printable in cli
+    - should supervisor get via command task object, or everything to create it by itself?
+    - check if enums ids in factories are correct in db
+    - refactor messages to ['task add', 'success']
 
 - mumjolandia
     - what happens when I run the application twice at the same time?
@@ -13,6 +18,7 @@
 - random
     - investigate enums to not allow values not included in them to be passed etc (some article in www)
     - change encoding in xml files to get rif of '&#263' chars
+
 - food
     - adding meals quickly:
         - all enums corresponding to db types

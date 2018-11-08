@@ -17,18 +17,25 @@ class MumjolandiaCliPrinter:
 
     def __init(self):
         self.views['unrecognized_status_response'] = self.view_unrecognized_status_response
-        self.views[MumjolandiaReturnValue.task_get.name] = self.view_print
-        self.views[MumjolandiaReturnValue.task_added.name] = self.view_task_added
         self.views[MumjolandiaReturnValue.mumjolandia_unrecognized_command.name] = self.view_unrecognized_command
         self.views[MumjolandiaReturnValue.mumjolandia_exit.name] = self.view_exit
-        self.views[MumjolandiaReturnValue.task_unrecognized_parameters.name] = self.view_task_unrecognized_parameters
+        self.views[MumjolandiaReturnValue.mumjolandia_unrecognized_parameters.name] = \
+            self.view_unrecognized_parameters
+
+        self.views[MumjolandiaReturnValue.task_get.name] = self.view_task_print
+        self.views[MumjolandiaReturnValue.task_added.name] = self.view_task_added
         self.views[MumjolandiaReturnValue.task_delete_success.name] = self.view_task_delete_success
         self.views[MumjolandiaReturnValue.task_delete_incorrect_index.name] = self.view_task_delete_incorrect_index
         self.views[MumjolandiaReturnValue.task_delete_incorrect_name.name] = self.view_task_delete_incorrect_name
         self.views[MumjolandiaReturnValue.task_edit_ok.name] = self.view_task_edit_ok
         self.views[MumjolandiaReturnValue.task_edit_wrong_index.name] = self.view_task_edit_wrong_index
+        self.views[MumjolandiaReturnValue.task_help.name] = self.view_task_help
 
-    def view_print(self, return_value):
+        self.views[MumjolandiaReturnValue.food_get_ok.name] = self.view_food_get_ok
+        self.views[MumjolandiaReturnValue.food_get_wrong_index.name] = self.view_food_get_wrong_index
+        self.views[MumjolandiaReturnValue.food_help.name] = self.view_food_help
+
+    def view_task_print(self, return_value):
         print(len(return_value.arguments), 'items:')
         for t in return_value.arguments:
             print(str(t))
@@ -47,8 +54,8 @@ class MumjolandiaCliPrinter:
         print('Unrecognized status response: ' + return_value.status.name)
         logging.error("Unrecognized status response: '" + return_value.status.name + "'")
 
-    def view_task_unrecognized_parameters(self, return_value):
-        print("Unrecognized parameters for command 'task': ",
+    def view_unrecognized_parameters(self, return_value):
+        print("Unrecognized parameters: ",
               return_value.arguments,
               sep=' ',
               end='\n',
@@ -69,3 +76,15 @@ class MumjolandiaCliPrinter:
 
     def view_task_edit_wrong_index(self, return_value):
         print("Edit aborted - wrong index: " + return_value.arguments[0])
+
+    def view_task_help(self, return_value):
+        print(return_value.arguments[0])
+
+    def view_food_get_ok(self, return_value):
+        print(return_value.arguments[0])
+
+    def view_food_help(self, return_value):
+        print(return_value.arguments[0])
+
+    def view_food_get_wrong_index(self, return_value):
+        print('Wrong recipe index: '+return_value.arguments[0])

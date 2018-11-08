@@ -2,6 +2,7 @@ import logging
 
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
+from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.interface.tasks.task_file_broken_exception import TaskFileBrokenException
 from src.interface.tasks.task_incorrect_date_format_exception import TaskIncorrectDateFormatException
 from src.interface.tasks.task_storage_type import StorageType
@@ -10,14 +11,14 @@ from src.modules.tasks.task_loader_pickle import TaskLoaderPickle
 from src.modules.tasks.task_loader_xml import TaskLoaderXml
 
 
-class TaskSupervisor:
+class TaskSupervisor(MumjolandiaSupervisor):
     def __init__(self, storage_type=StorageType.xml):
+        super().__init__()
         self.storage_type = storage_type
         self.task_file_location = "data/tasks." + self.storage_type.name
         self.allowedToSaveTasks = True           # if loaded tasks are broken they wont be overwritten to not loose them
         self.task_loader = None
         self.tasks = None
-        self.command_parsers = {}
         self.__init()
 
     def get_tasks(self):
@@ -69,16 +70,6 @@ class TaskSupervisor:
                 return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_delete_success,
                                                  arguments=[task_id, str(deleted_counter)])
 
-    def execute(self, command):
-
-        try:
-            return self.command_parsers[command.arguments[0]](command.arguments[1:])
-        except KeyError:
-            logging.warning('Unrecognized command: ' + str(command.arguments))
-            return self.command_parsers['unrecognized_command'](command.arguments)
-        except IndexError:
-            return self.command_parsers['null'](command.arguments)
-
     def __init(self):
         self.__add_command_parsers()
 
@@ -108,9 +99,7 @@ class TaskSupervisor:
 
     def __add_command_parsers(self):
         self.command_parsers['add'] = self.__command_add
-        self.command_parsers['null'] = self.__command_null
         self.command_parsers['get'] = self.__command_get
-        self.command_parsers['unrecognized_command'] = self.__unrecognized_command
         self.command_parsers['delete'] = self.__command_delete
         self.command_parsers['edit'] = self.__command_edit
         self.command_parsers['help'] = self.__command_help
@@ -121,17 +110,11 @@ class TaskSupervisor:
         else:
             return self.add_task(args[0])
 
-    def __command_null(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_null)
-
     def __command_get(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get, arguments=self.tasks)
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help, arguments=['print, add [name], delete [name || id], edit [id] [name]'])
-
-    def __unrecognized_command(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_unrecognized_parameters, arguments=args)
 
     def __command_delete(self, args):
         return self.delete_task(args[0])

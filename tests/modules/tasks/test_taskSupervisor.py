@@ -92,11 +92,11 @@ class TestTaskSupervisor(TestCase):
         ts = TaskSupervisor()
 
         response = ts.execute(CommandFactory.get_command(''))
-        self.assertEqual(response.status, MumjolandiaReturnValue.task_unrecognized_parameters)
+        self.assertEqual(response.status, MumjolandiaReturnValue.mumjolandia_unrecognized_parameters)
         self.assertEqual(mock_logging.call_count, 1)
 
         response = ts.execute(CommandFactory.get_command('xD'))
-        self.assertEqual(response.status, MumjolandiaReturnValue.task_unrecognized_parameters)
+        self.assertEqual(response.status, MumjolandiaReturnValue.mumjolandia_unrecognized_parameters)
         self.assertEqual(mock_logging.call_count, 2)
 
         response = ts.execute(CommandFactory.get_command("add 'new task'"))
