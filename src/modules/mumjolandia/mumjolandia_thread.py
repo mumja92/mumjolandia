@@ -1,7 +1,7 @@
 import copy
 import logging
 from threading import Thread
-from src.interface.mumjolandia.mumjolandia_mode import MumjolandiaMode
+from src.interface.mumjolandia.mumjolandia_cli_mode import MumjolandiaCliMode
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.interface.tasks.task_storage_type import StorageType
@@ -15,7 +15,7 @@ class MumjolandiaThread(Thread):
         self.queue_in = queue_in
         self.queue_response = queue_response
         self.supervisors = {}
-        self.mode = MumjolandiaMode.none
+        self.mode = MumjolandiaCliMode.none
         self.command_parsers = {}
         self.exit_flag = False
         self.command_done_event = event
