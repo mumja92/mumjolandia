@@ -1,4 +1,7 @@
-class Task:
+from src.interface.mumjolandia.pod_template import PODTemplate
+
+
+class Task(PODTemplate):
     def __init__(self, name, description, date_added, date_to_finish, priority, task_type, status):
         self.name = name
         self.description = description
@@ -10,9 +13,3 @@ class Task:
 
     def __str__(self):
         return self.name
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        else:
-            return False
