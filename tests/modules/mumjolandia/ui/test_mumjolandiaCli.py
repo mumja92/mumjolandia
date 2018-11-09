@@ -146,3 +146,32 @@ class TestMumjolandiaCli(TestCase):
             self.cli.run()
             self.assertEqual(mock_command.call_count, 9)
             self.assertEqual(mock_passer.call_count, 5)
+
+    @patch('src.modules.mumjolandia.mumjolandia_data_passer.MumjolandiaDataPasser.pass_command', return_value=None)
+    @patch('src.modules.console.console.Console.get_next_command',
+           side_effect=[CommandFactory.get_command('cls'),
+                        CommandFactory.get_command('needed_to_exit_loop'),
+                        CommandFactory.get_command('path'),
+                        CommandFactory.get_command('needed_to_exit_loop')])
+    def test_calling_not_passable_commands_with_mode(self, mock_command, mock_passer):
+        with HiddenPrints():
+            self.cli.mode = MumjolandiaCliMode.task
+
+            self.cli.run()
+            self.assertEqual(mock_command.call_count, 2)
+            self.assertEqual(mock_passer.call_count, 1)
+
+            self.cli.run()
+            self.assertEqual(mock_command.call_count, 4)
+            self.assertEqual(mock_passer.call_count, 2)
+
+    @patch('src.modules.mumjolandia.mumjolandia_data_passer.MumjolandiaDataPasser.pass_command', return_value=None)
+    @patch('src.modules.console.console.Console.get_next_command',
+           side_effect=[CommandFactory.get_command('exit')])
+    def test_calling_exit_with_mode(self, mock_command, mock_passer):
+        with HiddenPrints():
+            self.cli.mode = MumjolandiaCliMode.task
+            self.cli.run()
+            self.assertEqual(mock_passer.call_args[0][0], CommandFactory.get_command('exit'))
+            self.assertEqual(mock_command.call_count, 1)
+            self.assertEqual(mock_passer.call_count, 1)

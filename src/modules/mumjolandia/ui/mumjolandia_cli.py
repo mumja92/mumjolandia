@@ -34,6 +34,18 @@ class MumjolandiaCli(Thread):
                 break
 
     def __prepare_command(self, command):
+        if command.arguments[0] == 'cls':
+            self.__clear_screen()
+            return False
+
+        if command.arguments[0] == 'path':
+            print('Script location: ' + os.path.dirname(os.path.realpath(__file__)))
+            print('Working directory: ' + os.getcwd())
+            return False
+
+        if command.arguments[0] == 'exit':
+            return True
+
         if command.arguments[0] == 'mode':
             if len(command.arguments) == 1:
                 self.mode = MumjolandiaCliMode.none
@@ -46,15 +58,6 @@ class MumjolandiaCli(Thread):
 
         if self.mode != MumjolandiaCliMode.none:
             command.arguments.insert(0, self.mode.name)
-
-        if command.arguments[0] == 'cls':
-            self.__clear_screen()
-            return False
-
-        if command.arguments[0] == 'path':
-            print('Script location: ' + os.path.dirname(os.path.realpath(__file__)))
-            print('Working directory: ' + os.getcwd())
-            return False
 
         if command.arguments[0:2] == ['task', 'print']:
             command.arguments[1] = 'get'
