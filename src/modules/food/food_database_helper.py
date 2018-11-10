@@ -1,7 +1,5 @@
 import sqlite3
-import unicodedata
-
-from urllib.request import pathname2url
+from pathlib import Path
 
 
 class FoodDatabaseHelper:
@@ -10,11 +8,8 @@ class FoodDatabaseHelper:
         self.database_ok = self.is_database_ok()
 
     def is_database_ok(self):
-        try:
-            uri = 'file:{}?mode=rw'.format(pathname2url(self.db_location))
-            conn = sqlite3.connect(uri, uri=True)
-            conn.close()
-        except sqlite3.OperationalError:
+        file = Path(self.db_location)
+        if not file.is_file():
             return False
 
         conn = sqlite3.connect(self.db_location)

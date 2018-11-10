@@ -7,4 +7,4 @@ class Fat(PODTemplate):
         self.date_added = date_added
 
     def __str__(self):
-        return str(self.value) + ' - ' + str(self.date_added)
+        return '{0:.2f}'.format(self.value) + ' - ' + str(self.date_added)

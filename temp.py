@@ -38,3 +38,5 @@ def add_recipe():
 # get_recipe(x[-2])
 #
 # print(x)
+
+print('{0:.2f}'.format(350.245))
