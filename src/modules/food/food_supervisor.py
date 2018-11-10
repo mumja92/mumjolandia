@@ -1,3 +1,4 @@
+from src.interface.food.food_file_broken_exception import FoodFileBrokenException
 from src.interface.food.ingredient import Ingredient
 from src.interface.food.meal import Meal
 from src.interface.food.recipe_day import RecipeDay
@@ -13,9 +14,18 @@ class FoodSupervisor(MumjolandiaSupervisor):
         super().__init__()
         self.db_location = db_location
         self.db_helper = FoodDatabaseHelper(self.db_location)
+        self.is_db_ok = self.db_helper.is_database_ok()
         self.__init()
 
+    def execute(self, command):
+        try:
+            return super(FoodSupervisor, self).execute(command)
+        except FoodFileBrokenException:
+            return MumjolandiaResponseObject(MumjolandiaReturnValue.food_file_broken, [self.db_location])
+
     def get_recipe_day(self, recipe_id):
+        if not self.is_db_ok:
+            raise FoodFileBrokenException
         meal_ids = self.db_helper.get_recipes_day(recipe_id)
         return_value = RecipeDay(self.__get_meal(meal_ids[0][1]),
                                  self.__get_meal(meal_ids[0][2]),
@@ -25,6 +35,8 @@ class FoodSupervisor(MumjolandiaSupervisor):
         return return_value
 
     def add_recipe_day(self, recipe):
+        if not self.is_db_ok:
+            raise FoodFileBrokenException
         ids = [self.__insert_meal(recipe.breakfast), self.__insert_meal(recipe.second_breakfast),
                self.__insert_meal(recipe.dinner), self.__insert_meal(recipe.tea), self.__insert_meal(recipe.supper)]
         self.db_helper.insert_recipe_day(ids[0], ids[1], ids[2], ids[3], ids[4])

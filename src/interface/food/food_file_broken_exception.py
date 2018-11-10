@@ -1,0 +1,2 @@
+class FoodFileBrokenException(Exception):
+    pass

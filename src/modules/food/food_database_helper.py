@@ -1,21 +1,41 @@
 import sqlite3
 import unicodedata
 
+from urllib.request import pathname2url
+
 
 class FoodDatabaseHelper:
     def __init__(self, db_location):
         self.db_location = db_location
+        self.database_ok = self.is_database_ok()
+
+    def is_database_ok(self):
+        try:
+            uri = 'file:{}?mode=rw'.format(pathname2url(self.db_location))
+            conn = sqlite3.connect(uri, uri=True)
+            conn.close()
+        except sqlite3.OperationalError:
+            return False
+
+        conn = sqlite3.connect(self.db_location)
+        c = conn.cursor()
+        try:
+            c.execute('''SELECT * FROM recipe_day''')
+            return_value = True
+        except sqlite3.DatabaseError as e:
+            return_value = False
+        conn.close()
+        return return_value
 
     def get_recipes_day(self, recipe_id):
         return_value = 0
         conn = sqlite3.connect(self.db_location)
         c = conn.cursor()
         try:
-            # c.execute('''SELECT * FROM recipe_day WHERE id_recipe_day = (?)''', str(recipe_id))
             c.execute('''SELECT * FROM recipe_day WHERE id_recipe_day = ''' + str(recipe_id))
             return_value = c.fetchall()
         except sqlite3.IntegrityError as e:
-            return_value = 'sqlite error: ' + e.args[0]  # column name is not unique
+            return_value = 'sqlite error: ' + e.args[0]
         conn.close()
         return return_value
 
@@ -52,7 +72,7 @@ class FoodDatabaseHelper:
         try:
             c.execute('''INSERT INTO ingradient (name) VALUES (?)''', (name,))
         except sqlite3.IntegrityError as e:
-            return_value = 'sqlite error: ' + e.args[0]  # column name is not unique
+            return_value = 'sqlite error: ' + e.args[0]
         conn.commit()
         conn.close()
         return return_value
@@ -64,7 +84,7 @@ class FoodDatabaseHelper:
         try:
             c.execute('''INSERT INTO meal_ingradients (fk_meal_id, fk_ingradient_id, fk_amount_type, amount) VALUES (?, ?, ?, ?)''', (meal_id, ingradient_id, amount_type, amount,))
         except sqlite3.IntegrityError as e:
-            return_value = 'sqlite error: ' + e.args[0]  # column name is not unique
+            return_value = 'sqlite error: ' + e.args[0]
         conn.commit()
         conn.close()
         return return_value

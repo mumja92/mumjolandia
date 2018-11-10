@@ -1,4 +1,5 @@
 # db browser for sqlite
+from src.interface.food.food_file_broken_exception import FoodFileBrokenException
 from src.interface.food.ingredient import Ingredient
 from src.interface.food.meal import Meal
 from src.interface.food.recipe_day import RecipeDay
@@ -33,8 +34,7 @@ def add_recipe():
     s.add_recipe_day(r)
 
 # add_recipe()
-x = get_recipes_ids()
-get_recipe(x[-2])
-
-print(x)
-
+# x = get_recipes_ids()
+# get_recipe(x[-2])
+#
+# print(x)

@@ -46,7 +46,7 @@ class MumjolandiaThread(Thread):
 
     def __init(self):
         self.supervisors['task'] = TaskSupervisor(storage_type=StorageType.xml)
-        self.supervisors['food'] = FoodSupervisor('data/jedzonko2.db')
+        self.supervisors['food'] = FoodSupervisor('data/jedzonko3.db')
 
         self.command_parsers['exit'] = self.__command_exit
         self.command_parsers['task'] = self.__command_task

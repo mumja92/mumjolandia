@@ -24,3 +24,4 @@ class MumjolandiaReturnValue(Enum):
     food_get_wrong_index = 16
     food_get_ok = 17
     food_help = 18
+    food_file_broken = 19
