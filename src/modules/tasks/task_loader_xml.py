@@ -14,7 +14,7 @@ class TaskLoaderXml:
         self.task_file = task_file_name
         self.task_factory = TaskFactory()
 
-    def get_tasks(self):
+    def get(self):
         tasks = []
         broken_file_flag = False
         try:
@@ -59,7 +59,7 @@ class TaskLoaderXml:
             raise TaskFileBrokenException(tasks)
         return tasks
 
-    def save_tasks(self, tasks):
+    def save(self, tasks):
         root_element = ET.Element("tasks")
         for t in tasks:
             ET.SubElement(root_element,

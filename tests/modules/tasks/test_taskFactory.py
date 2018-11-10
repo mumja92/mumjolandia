@@ -1,6 +1,6 @@
 import datetime
 from unittest import TestCase
-from src.interface.tasks.task_incorrect_date_format_exception import TaskIncorrectDateFormatException
+from src.interface.mumjolandia.incorrect_date_format_exception import IncorrectDateFormatException
 from src.interface.tasks.task_priority import TaskPriority
 from src.interface.tasks.task_status import TaskStatus
 from src.interface.tasks.task_type import TaskType
@@ -37,5 +37,5 @@ class TestTaskFactory(TestCase):
         self.assertEqual(t.status, TaskStatus.not_done)
 
     def test_incorrect_date_format_exception_raised(self):
-        with self.assertRaises(TaskIncorrectDateFormatException):
+        with self.assertRaises(IncorrectDateFormatException):
             TaskFactory.get_task(date_added="12.11.2018")

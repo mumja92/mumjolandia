@@ -4,10 +4,10 @@ from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaRes
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.interface.tasks.task_file_broken_exception import TaskFileBrokenException
-from src.interface.tasks.task_incorrect_date_format_exception import TaskIncorrectDateFormatException
+from src.interface.mumjolandia.incorrect_date_format_exception import IncorrectDateFormatException
 from src.interface.tasks.task_storage_type import StorageType
 from src.modules.tasks.task_factory import TaskFactory
-from src.modules.tasks.task_loader_pickle import TaskLoaderPickle
+from src.utils.object_loader_pickle import ObjectLoaderPickle
 from src.modules.tasks.task_loader_xml import TaskLoaderXml
 
 
@@ -27,7 +27,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
     def add_task(self, name):
         try:
             self.tasks.append(TaskFactory.get_task(name))
-        except TaskIncorrectDateFormatException:
+        except IncorrectDateFormatException:
             logging.warning("Task '" + name + "' not added - incorrect date format")
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_incorrect_date_format)
         logging.info("Added task '" + name + "'")
@@ -76,13 +76,13 @@ class TaskSupervisor(MumjolandiaSupervisor):
         if self.storage_type == StorageType.xml:
             self.task_loader = TaskLoaderXml(self.task_file_location)
         elif self.storage_type == StorageType.pickle:
-            self.task_loader = TaskLoaderPickle(self.task_file_location)
+            self.task_loader = ObjectLoaderPickle(self.task_file_location)
         else:
             logging.error("Unrecognized storage type: '" + str(self.storage_type.name) + "' - using xml instead")
             self.task_loader = TaskLoaderXml(self.task_file_location)
 
         try:
-            self.tasks = self.task_loader.get_tasks()
+            self.tasks = self.task_loader.get()
         except FileNotFoundError:
             logging.info(self.task_file_location + " - file doesn't exist")
             self.tasks = []
@@ -95,7 +95,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
     def __save_if_allowed(self):
         if self.allowedToSaveTasks:
             logging.debug("saving tasks to: '" + self.task_file_location + "'")
-            self.task_loader.save_tasks(self.tasks)
+            self.task_loader.save(self.tasks)
 
     def __add_command_parsers(self):
         self.command_parsers['add'] = self.__command_add
@@ -117,7 +117,11 @@ class TaskSupervisor(MumjolandiaSupervisor):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help, arguments=['print, add [name], delete [name || id], edit [id] [name]'])
 
     def __command_delete(self, args):
-        return self.delete_task(args[0])
+        try:
+            return self.delete_task(args[0])
+        except IndexError:
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_delete_incorrect_index,
+                                             arguments=['none'])
 
     def __command_edit(self, args):
         return self.edit_task(int(args[0]), TaskFactory.get_task(name=args[1]))

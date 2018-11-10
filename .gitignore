@@ -2,6 +2,7 @@
 *__pycache__*
 data/log.log
 data/tasks.*
+data/fat.*
 tests/test_tasks.xml
 *.db
 *db.bak

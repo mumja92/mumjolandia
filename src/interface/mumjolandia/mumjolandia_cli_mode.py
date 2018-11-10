@@ -6,3 +6,4 @@ class MumjolandiaCliMode(Enum):
     task = 1
     game = 2
     food = 3
+    fat = 4

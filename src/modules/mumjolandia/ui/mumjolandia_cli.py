@@ -59,6 +59,9 @@ class MumjolandiaCli(Thread):
         if self.mode != MumjolandiaCliMode.none:
             command.arguments.insert(0, self.mode.name)
 
+        if command.arguments[0:2] == ['fat', 'print']:
+            command.arguments[1] = 'get'
+
         if command.arguments[0:2] == ['task', 'print']:
             command.arguments[1] = 'get'
 

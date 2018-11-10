@@ -24,7 +24,9 @@ class MumjolandiaSupervisor:
         self.command_parsers['unrecognized_command'] = self.__unrecognized_command
 
     def __unrecognized_command(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.mumjolandia_unrecognized_parameters, arguments=args)
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.mumjolandia_unrecognized_parameters,
+                                         arguments=args)
 
     def __command_null(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.mumjolandia_unrecognized_parameters, arguments=args)
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.mumjolandia_unrecognized_parameters,
+                                         arguments=args)

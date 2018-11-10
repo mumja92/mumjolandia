@@ -25,3 +25,12 @@ class MumjolandiaReturnValue(Enum):
     food_get_ok = 17
     food_help = 18
     food_file_broken = 19
+    #fat
+    fat_incorrect_date_format = 20
+    fat_delete_success = 21
+    fat_delete_incorrect_index = 22
+    fat_get_ok = 23
+    fat_value_not_given = 24
+    fat_add_must_be_float = 25
+    fat_added = 26
+

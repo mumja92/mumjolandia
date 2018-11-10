@@ -1,5 +1,5 @@
 from src.interface.tasks.task import Task
-from src.interface.tasks.task_incorrect_date_format_exception import TaskIncorrectDateFormatException
+from src.interface.mumjolandia.incorrect_date_format_exception import IncorrectDateFormatException
 from src.interface.tasks.task_priority import TaskPriority
 from src.interface.tasks.task_status import TaskStatus
 from src.interface.tasks.task_type import TaskType
@@ -21,5 +21,5 @@ class TaskFactory:
             if isinstance(date_to_finish, str):
                 date_to_finish = datetime.datetime.strptime(date_to_finish, '%Y-%m-%d %H:%M:%S')
         except ValueError:
-            raise TaskIncorrectDateFormatException
+            raise IncorrectDateFormatException
         return Task(name, description, date_added, date_to_finish, priority, task_type, status)

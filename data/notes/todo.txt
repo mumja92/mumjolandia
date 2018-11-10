@@ -1,7 +1,9 @@
 - now
+    - tests for fat mode and classes
     - should supervisor get via command task object, or everything to create it by itself?
     - check if enums ids in factories are correct in db
     - should i refactor messages to ['task add', 'success']
+    - refactor loaders to have common interface
 
 - mumjolandia
     - what happens when I run the application twice at the same time?

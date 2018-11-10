@@ -1,0 +1,2 @@
+class IncorrectDateFormatException(Exception):
+    pass

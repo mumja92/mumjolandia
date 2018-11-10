@@ -30,16 +30,24 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.task_edit_ok.name] = self.view_task_edit_ok
         self.views[MumjolandiaReturnValue.task_edit_wrong_index.name] = self.view_task_edit_wrong_index
         self.views[MumjolandiaReturnValue.task_help.name] = self.view_task_help
+        self.views[MumjolandiaReturnValue.task_name_not_given.name] = self.view_task_name_not_given
 
         self.views[MumjolandiaReturnValue.food_get_ok.name] = self.view_food_get_ok
         self.views[MumjolandiaReturnValue.food_get_wrong_index.name] = self.view_food_get_wrong_index
         self.views[MumjolandiaReturnValue.food_help.name] = self.view_food_help
         self.views[MumjolandiaReturnValue.food_file_broken.name] = self.view_food_file_broken
 
+        self.views[MumjolandiaReturnValue.fat_get_ok.name] = self.view_fat_get_ok
+        self.views[MumjolandiaReturnValue.fat_delete_success.name] = self.view_fat_delete_ok
+        self.views[MumjolandiaReturnValue.fat_delete_incorrect_index.name] = self.view_fat_delete_incorrect_index
+        self.views[MumjolandiaReturnValue.fat_value_not_given.name] = self.view_fat_value_not_given
+        self.views[MumjolandiaReturnValue.fat_add_must_be_float.name] = self.view_fat_add_must_be_float
+        self.views[MumjolandiaReturnValue.fat_added.name] = self.view_fat_added
+
     def view_task_print(self, return_value):
         print(len(return_value.arguments), 'items:')
-        for t in return_value.arguments:
-            print(str(t))
+        for i, t in enumerate(return_value.arguments):
+            print('[' + str(i) + '] ' + str(t))
 
     def view_task_added(self, return_value):
         print('Added: ' + str(return_value.arguments[0]))
@@ -81,6 +89,9 @@ class MumjolandiaCliPrinter:
     def view_task_help(self, return_value):
         print(return_value.arguments[0])
 
+    def view_task_name_not_given(self, return_value):
+        print("Task name not given")
+
     def view_food_get_ok(self, return_value):
         print(return_value.arguments[0])
 
@@ -92,3 +103,22 @@ class MumjolandiaCliPrinter:
 
     def view_food_file_broken(self, return_value):
         print('Database file: "' + return_value.arguments[0] + '" is broken')
+
+    def view_fat_get_ok(self, return_value):
+        for i, t in enumerate(return_value.arguments):
+            print('[' + str(i) + '] ' + str(t))
+
+    def view_fat_delete_ok(self, return_value):
+        print("Deleted " + return_value.arguments[1] + " element(s) using parameter: " + return_value.arguments[0])
+
+    def view_fat_delete_incorrect_index(self, return_value):
+        print("Can't delete - incorrect index value: " + return_value.arguments[0])
+
+    def view_fat_value_not_given(self, return_value):
+        print("Value not given")
+
+    def view_fat_add_must_be_float(self, return_value):
+        print('Parameter must be a number')
+
+    def view_fat_added(self, return_value):
+        print('Added: ', return_value.arguments[0])

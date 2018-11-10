@@ -12,7 +12,7 @@ class TestTaskLoaderXml(TestCase):
     def test_task_file_not_exist(self):
         t = TaskLoaderXml('this_file_does_not_exist.xml')
         with self.assertRaises(FileNotFoundError):
-            t.get_tasks()
+            t.get()
 
     def test_task_file_bad(self):
         broken_file = "brokenFile.xml"
@@ -20,7 +20,7 @@ class TestTaskLoaderXml(TestCase):
         with open(broken_file, 'w') as file:
             file.write('xDD')
         with self.assertRaises(TaskFileBrokenException):
-            t.get_tasks()
+            t.get()
         try:
             os.remove(broken_file)
         except OSError as e:
@@ -37,7 +37,7 @@ class TestTaskLoaderXml(TestCase):
             file.write('<tasks />')
 
         t = TaskLoaderXml(test_file)
-        self.assertEqual(t.get_tasks(), [])
+        self.assertEqual(t.get(), [])
 
         try:
             os.remove(test_file)
@@ -59,7 +59,7 @@ class TestTaskLoaderXml(TestCase):
                        'none</task></tasks>')
 
         t = TaskLoaderXml(test_file)
-        returned_list = t.get_tasks()
+        returned_list = t.get()
         t1 = TaskFactory.get_task(name='task1',
                                   date_added="2018-10-25 00:00:00",
                                   date_to_finish="2018-10-25 00:00:00")
@@ -90,10 +90,10 @@ class TestTaskLoaderXml(TestCase):
             except OSError as e:
                 print("Error: %s - %s." % (e.filename, e.strerror))
 
-        t.save_tasks([TaskFactory.get_task(name='task1',
-                                           date_added="2018-10-25 00:00:00",
-                                           date_to_finish="2018-10-25 00:00:00"),
-                      TaskFactory.get_task(name='task drugi',
+        t.save([TaskFactory.get_task(name='task1',
+                                     date_added="2018-10-25 00:00:00",
+                                     date_to_finish="2018-10-25 00:00:00"),
+                TaskFactory.get_task(name='task drugi',
                                            date_added="2018-10-25 00:00:00",
                                            date_to_finish="2018-10-25 00:00:00")])
         with open(test_file, 'r') as file:

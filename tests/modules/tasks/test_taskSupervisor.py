@@ -8,7 +8,7 @@ from src.modules.tasks.task_supervisor import TaskSupervisor
 
 
 class TestTaskSupervisor(TestCase):
-    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get_tasks', side_effect=[[], [TaskFactory.get_task('simple task')]])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get', side_effect=[[], [TaskFactory.get_task('simple task')]])
     def test_get_tasks(self, mock):
         ts = TaskSupervisor()
         self.assertEqual(len(ts.get_tasks()), 0)
@@ -18,8 +18,8 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(ts.get_tasks(), [TaskFactory.get_task('simple task')])
         self.assertEqual(mock.call_count, 2)
 
-    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get_tasks', return_value=[])
-    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save_tasks', return_value=None)
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get', return_value=[])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     def test_add_task(self, mock_save, mock_load):
         ts = TaskSupervisor()
         self.assertEqual(len(ts.get_tasks()), 0)
@@ -33,11 +33,11 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(mock_save.call_count, 2)
         self.assertEqual(mock_load.call_count, 1)
 
-    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get_tasks',
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
            return_value=[TaskFactory.get_task('First task'),
                          TaskFactory.get_task('Second task'),
                          TaskFactory.get_task('Third task')])
-    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save_tasks', return_value=None)
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     def test_edit_task(self, mock_save, mock_load):
         ts = TaskSupervisor()
         self.assertEqual(len(ts.get_tasks()), 3)
@@ -57,12 +57,12 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(mock_save.call_count, 2)
         self.assertEqual(mock_load.call_count, 1)
 
-    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get_tasks',
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
            side_effect=[[], [TaskFactory.get_task('First task'),
                              TaskFactory.get_task('Second task'),
                              TaskFactory.get_task('Second task'),
                              TaskFactory.get_task('Third task')]])
-    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save_tasks', return_value=None)
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     def test_delete_task(self, mock_save, mock_load):
         ts = TaskSupervisor()
         ts.delete_task(0)
@@ -85,8 +85,8 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(len(ts.get_tasks()), 0)
         self.assertEqual(mock_load.call_count, 2)
 
-    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get_tasks', return_value=[TaskFactory.get_task('Task')])
-    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save_tasks', return_value=None)
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get', return_value=[TaskFactory.get_task('Task')])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     @patch('logging.warning', return_value=None)
     def test_execute(self, mock_logging, mock_save, mock_load):
         ts = TaskSupervisor()

@@ -10,8 +10,8 @@ from src.modules.mumjolandia.mumjolandia_thread import MumjolandiaThread
 
 
 class TestMumjolandiaThread(TestCase):
-    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get_tasks', return_value=[])
-    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save_tasks', return_value=None)
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get', return_value=[])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     def setUp(self, mock_task_save, mock_task_get):
         self.q1 = Queue()
         self.q1.task_done = MagicMock(return_value=None)
