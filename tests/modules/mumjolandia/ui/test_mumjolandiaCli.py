@@ -1,7 +1,5 @@
 from unittest import TestCase
-from unittest.mock import patch
-
-from mock import MagicMock
+from unittest.mock import patch, MagicMock
 
 from src.interface.mumjolandia.mumjolandia_cli_mode import MumjolandiaCliMode
 from src.interface.mumjolandia.mumjolandia_immutable_type_wrapper import MumjolandiaImmutableTypeWrapper
