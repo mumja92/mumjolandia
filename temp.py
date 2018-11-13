@@ -7,6 +7,7 @@ from src.modules.food.food_database_helper import FoodDatabaseHelper
 from src.modules.food.food_supervisor import FoodSupervisor
 from src.modules.food.ingredient_factory import IngredientFactory
 from src.modules.food.meal_factory import MealFactory
+from src.modules.food.utils.meal_loader_from_file import MealLoaderFromFile
 
 db_location = 'data/jedzonko2.db'
 
@@ -39,4 +40,6 @@ def add_recipe():
 #
 # print(x)
 
-print('{0:.2f}'.format(350.245))
+m = MealLoaderFromFile('data/meal_test.txt')
+x = m.load_meals()
+print(x)

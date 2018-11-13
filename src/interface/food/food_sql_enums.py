@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class AmountType(Enum):
+    error = 0
     g = 1
     number = 2
     a_little = 3
