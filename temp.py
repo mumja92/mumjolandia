@@ -1,7 +1,4 @@
 # db browser for sqlite
-from src.interface.food.food_file_broken_exception import FoodFileBrokenException
-from src.interface.food.ingredient import Ingredient
-from src.interface.food.meal import Meal
 from src.interface.food.recipe_day import RecipeDay
 from src.modules.food.food_database_helper import FoodDatabaseHelper
 from src.modules.food.food_supervisor import FoodSupervisor
@@ -11,6 +8,16 @@ from src.modules.food.utils.meal_loader_from_file import MealLoaderFromFile
 
 db_location = 'data/jedzonko2.db'
 
+
+def xml_to_dict():
+    from src.utils import xmltodict
+    with open('data/tasks.xml', 'r') as my_file:
+        data = my_file.read()
+    a = xmltodict.parse(data)
+    pass
+    for i in a['tasks']['task']:
+        print('name: ' + i['@name'])
+    print(a['tasks']['task'][0]['@name'])
 
 def get_recipe(id_recipe=1):
     s = FoodSupervisor(db_location)
@@ -40,6 +47,7 @@ def add_recipe():
 #
 # print(x)
 
-m = MealLoaderFromFile('data/meal_test.txt')
-x = m.load_meals()
-print(x)
+# m = MealLoaderFromFile('data/meal_test.txt')
+# x = m.load_meals()
+# print(x)
+xml_to_dict()
