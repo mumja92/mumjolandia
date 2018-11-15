@@ -2,6 +2,8 @@ import logging
 import os
 import threading
 from queue import Queue
+
+from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.mumjolandia.mumjolandia_data_passer import MumjolandiaDataPasser
 from src.modules.mumjolandia.mumjolandia_thread import MumjolandiaThread
 from src.modules.mumjolandia.ui.mumjolandia_cli import MumjolandiaCli
@@ -10,6 +12,7 @@ from src.modules.mumjolandia.ui.mumjolandia_gui import MumjolandiaGui
 
 class MumjolandiaStarter:
     def __init__(self):
+        self.config = ConfigLoader.get_config_starter()
         self.log_location = 'data/log.log'
         self.command_queue_request = Queue()
         self.command_queue_response = Queue()
@@ -37,7 +40,8 @@ class MumjolandiaStarter:
         logging.info('Starting mumjolandia')
         mumjolandia_thread = MumjolandiaThread(self.command_queue_request,
                                                self.command_queue_response,
-                                               self.command_responded_event)
+                                               self.command_responded_event,
+                                               self.config)
         mumjolandia_thread.setName('mumjolandia thread')
         mumjolandia_thread.start()
 
@@ -55,9 +59,11 @@ class MumjolandiaStarter:
                 os.remove(self.log_location)
         except OSError as e:
             pass
-
-        logging.basicConfig(format='%(asctime)s [%(levelname).1s] %(module)s::%(funcName)s --- %(message)s',
-                            datefmt='%d/%m/%Y %H:%M:%S', filename=self.log_location, level=logging.DEBUG)
+        try:
+            logging.basicConfig(format='%(asctime)s [%(levelname).1s] %(module)s::%(funcName)s --- %(message)s',
+                                datefmt='%d/%m/%Y %H:%M:%S', filename=self.log_location, level=self.config.log_level)
+        except ValueError:
+            logging.error('Logging level: "' + self.config.log_level + '" is incorrect.')
 
         self.data_passer = MumjolandiaDataPasser(self.command_queue_request,
                                                  self.command_queue_response,

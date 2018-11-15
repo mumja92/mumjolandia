@@ -50,4 +50,11 @@ def add_recipe():
 # m = MealLoaderFromFile('data/meal_test.txt')
 # x = m.load_meals()
 # print(x)
-xml_to_dict()
+from src.utils import xmltodict
+with open('data/config.xml', 'r') as my_file:
+    data = my_file.read()
+a = xmltodict.parse(data)
+pass
+for i in a['tasks']['task']:
+    print('name: ' + i['@name'])
+print(a['tasks']['task'][0]['@name'])

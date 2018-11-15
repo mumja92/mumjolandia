@@ -11,8 +11,9 @@ from src.modules.tasks.task_supervisor import TaskSupervisor
 
 
 class MumjolandiaThread(Thread):
-    def __init__(self, queue_in, queue_response, event):
+    def __init__(self, queue_in, queue_response, event, config_object):
         Thread.__init__(self)
+        self.config_object = config_object
         self.queue_in = queue_in
         self.queue_response = queue_response
         self.supervisors = {}
@@ -46,7 +47,11 @@ class MumjolandiaThread(Thread):
                 break
 
     def __init(self):
-        self.supervisors['task'] = TaskSupervisor(storage_type=StorageType.xml)
+        try:
+            self.supervisors['task'] = TaskSupervisor(storage_type=StorageType[self.config_object.task_io_method])
+        except KeyError:
+            logging.error('Storage type: "' + self.config_object.task_io_method + '" is incorrect. Using xml instead. ')
+            self.supervisors['task'] = TaskSupervisor(storage_type=StorageType.xml)
         self.supervisors['food'] = FoodSupervisor('data/jedzonko2.db')
         self.supervisors['fat'] = FatSupervisor('data/fat.pickle')
 

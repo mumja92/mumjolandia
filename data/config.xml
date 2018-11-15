@@ -1,0 +1,6 @@
+<config>
+    <!--'CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET'-->
+    <log_level>DEBUG</log_level>
+    <!--'xml, pickle'-->
+    <task_io_method>xml</task_io_method>
+</config>
