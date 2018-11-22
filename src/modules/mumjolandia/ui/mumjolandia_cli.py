@@ -34,6 +34,21 @@ class MumjolandiaCli(Thread):
                 break
 
     def __prepare_command(self, command):
+        if command.arguments[0] == 'date':  # to delete later
+            import datetime
+            print('datetime.date.today:')
+            print(datetime.date.today())
+            from datetime import date
+            import time
+            print('date.fromtimestamp(time.time())')
+            print(date.fromtimestamp(time.time()))
+            return False
+
+        if command.arguments[0] == 'help':
+            print('Available commands:')
+            print('fat, task, food, mode, cls, path, date')
+            return False
+
         if command.arguments[0] == 'cls':
             self.__clear_screen()
             return False
