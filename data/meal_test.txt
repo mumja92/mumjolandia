@@ -1,13 +1,31 @@
-Nazwa
-opis xD xDD
-1
-sok 1 1
-super sprawa xD 1 2
-picie 2 5
-tyle 3 2
+Kanapki z pastą jajeczną
+[2  porcje]  –  4 jajka ugotować na twardo, szczypiorek pokroić drobno, jajka rozdrobnić widelcem lub tłuczkiem do ziemniaków. Doprawić solą, pieprzem i dokładnie wymieszać z ½ łyżeczki musztardy i 1 łyżeczki jogurtu naturalnego.
+Chleb żytni 3 slice
+Jajko 4 number
+Musztarda 1 a_little
+Jogurt naturalny 1 a_little
 <>
-Drugi posilek
-opis drugiego
-5
-duzo nie ma xD 1 1
+Owsianka
+-
+Jogurt naturalny 250 g
+Owoc 1 number
+Platki owsiane gorskie 4 spoon
+<>
+Kurczak w mleku kokosowym i szpinaku
+[2 porcje]  –  na patelni podgrzać 2 łyżeczki oleju rzepakowego i podsmażyć cebulę. Do cebuli dodać 400g pokrojonego w kostkę mięsa z piersi z kurczaka, doprawić solą i pieprzem. Gdy kurczak będzie już zarumieniony dodać 2/3 szklanki mleka kokosowego (160g) i podgrzewać 5-10 minut tak, by  mleko  zgęstniało.  Danie  zdjąć  z  ognia  i  dodać  startą  skórkę  z  cytryny  (z  ½  cytryny)  i  4  garści  świeżego,  opłukanego  szpinaku  (będzie  go  początkowo  dużo,  ale później zmniejszy objętość – można dodawać stopniowo), dokładnie mieszać przez jakiś czas. Podawać z ryżem ugotowanym na sypko.
+Ryż brązowy 100 g
+Kurczak 400 g
+Mleko kokosowe 160 g
+Szpinak 4 handful
+<>
+Podwieczorek
+-
+Przegryzka 1 number
+Owoc 1 number
+<>
+Kasza jęczmienna z warzywami i kurczakiem
+[2  porcje]  –  na 1 łyżeczce oleju z wodą  poddusić 300g mięsa z kurczaka, 1 opakowanie dowolnych warzyw mrożonych(400g), dodać ugotowaną 1 torebeczkę kaszy jęczmiennej (100g), doprawić do smaku i wymieszać.
+Kurczak 300 g
+Warzywa mrożone 400 g
+Kasza jęczmienna 100 g
 <>

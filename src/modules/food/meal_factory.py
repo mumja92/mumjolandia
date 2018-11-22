@@ -5,7 +5,10 @@ from src.interface.food.meal import Meal
 class MealFactory:
     @staticmethod
     def get_meal(name=None, recipe=None, meal_type=None, ingredients=None):
-        return Meal(name, recipe, meal_type, ingredients)
+        if meal_type is MealType:
+            return Meal(name, recipe, meal_type, ingredients)
+        else:
+            return Meal(name, recipe, MealType(meal_type), ingredients)
 
     @staticmethod
     def get_meal_breakfast(name, recipe, ingredients):

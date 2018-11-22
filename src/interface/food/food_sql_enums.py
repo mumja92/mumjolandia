@@ -7,7 +7,9 @@ class AmountType(Enum):
     number = 2
     a_little = 3
     ml = 4
-
+    handful = 5
+    slice = 6
+    spoon = 7
 
 class Ingradient(Enum):
     chleb_zytni = 1

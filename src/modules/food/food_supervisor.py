@@ -1,6 +1,6 @@
 from src.interface.food.food_file_broken_exception import FoodFileBrokenException
+from src.interface.food.food_sql_enums import AmountType
 from src.interface.food.ingredient import Ingredient
-from src.interface.food.meal import Meal
 from src.interface.food.recipe_day import RecipeDay
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
@@ -51,17 +51,19 @@ class FoodSupervisor(MumjolandiaSupervisor):
         recipe = self.db_helper.get_meal_recipe(id_meal)
         meal_type = self.db_helper.get_meal_type(id_meal)
         for t in dish:
-            ingredients.append(Ingredient(t[1].rstrip(), str(t[3]), t[2].rstrip()))
+            ingredients.append(Ingredient(t[1].rstrip(), str(t[3]), AmountType[t[2].rstrip()]))
         m = MealFactory().get_meal(name, recipe, meal_type, ingredients)
         return m
 
     def __insert_meal(self, meal):
-        meal_id = self.db_helper.get_new_meal_id(meal)
+        meal_id = self.db_helper.get_meal_id_if_exists(meal.name, meal.recipe, meal.type.value)
+        if meal_id is None:
+            meal_id = self.db_helper.get_new_meal_id(meal.type.value, meal.name, meal.recipe)
         ingredient_list = []
         for i in meal.ingredients:
             ingredient_list.append([self.db_helper.get_ingredient_id(i.name), i.amount, i.amount_type])
         for l in ingredient_list:
-            self.db_helper.insert_meal_ingredient(meal_id, l[0], l[2], l[1])
+            self.db_helper.insert_meal_ingredient(meal_id, l[0], l[2].value, l[1])
         return meal_id
 
     def __add_command_parsers(self):

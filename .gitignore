@@ -8,5 +8,6 @@ tests/test_tasks.xml
 *db.bak
 venv/
 *.pyc
+data/meal_recipes_backup/
 
-!data/jedzonko2.db
+!data/jedzonko.db

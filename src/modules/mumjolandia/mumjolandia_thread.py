@@ -52,7 +52,7 @@ class MumjolandiaThread(Thread):
         except KeyError:
             logging.error('Storage type: "' + self.config_object.task_io_method + '" is incorrect. Using xml instead. ')
             self.supervisors['task'] = TaskSupervisor(storage_type=StorageType.xml)
-        self.supervisors['food'] = FoodSupervisor('data/jedzonko2.db')
+        self.supervisors['food'] = FoodSupervisor('data/jedzonko.db')
         self.supervisors['fat'] = FatSupervisor('data/fat.pickle')
 
         self.command_parsers['exit'] = self.__command_exit

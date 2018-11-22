@@ -13,4 +13,4 @@ class MumjolandiaGui:
         # app.exec_()
 
     def __pass_command(self, command):
-        self.queue.put(command)
+        pass

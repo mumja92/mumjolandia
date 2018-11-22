@@ -1,4 +1,5 @@
 import sqlite3
+import unicodedata
 from pathlib import Path
 
 
@@ -92,7 +93,7 @@ class FoodDatabaseHelper:
             result = c.execute('''INSERT INTO meal (fk_meal_type, name, recipe) VALUES (?, ?, ?)''', (type, name, recipe,))
             return_value = result.lastrowid
         except sqlite3.IntegrityError as e:
-            return_value = 'sqlite error: ' + e.args[0]  # column name is not unique
+            return_value = None
         conn.commit()
         conn.close()
         return return_value
@@ -125,7 +126,7 @@ class FoodDatabaseHelper:
                 return_value = x[0]
         return return_value
 
-    def __get_meal_id_if_exists(self, name, recipe, meal_type):
+    def get_meal_id_if_exists(self, name, recipe, meal_type):
         conn = sqlite3.connect(self.db_location)
         c = conn.cursor()
         c.execute("SELECT * FROM meal")
@@ -133,12 +134,13 @@ class FoodDatabaseHelper:
         conn.close()
         return_value = None
         for x in response:
-            if self.__strings_equal(x[1], meal_type) and self.__strings_equal(x[2], name) and self.__strings_equal(x[3], recipe):
+            if self.__strings_equal(str(x[1]), str(meal_type)) and self.__strings_equal(x[2], name):
                 return_value = x[0]
+                break
         return return_value
 
-    def get_new_meal_id(self, meal):
-        meal_id = self.insert_meal(meal.type, meal.name, meal.recipe)
+    def get_new_meal_id(self, value, name, recipe):
+        meal_id = self.insert_meal(value, name, recipe)
         return meal_id
 
     def get_recipes_ids(self):

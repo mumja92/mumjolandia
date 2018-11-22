@@ -8,9 +8,9 @@ class Meal:
         self.ingredients = ingredients
 
     def __str__(self):
-        return_value = self.name + ' ' + str(self.type) + '\n'
+        return_value = self.name + ' [' + str(self.type.name) + ']\n'
         for i in self.ingredients:
-            return_value += i.name + ' - ' + i.amount + ' [' + i.amount_type + ']' + '\n'
+            return_value += i.name + ' - ' + str(i.amount) + ' [' + i.amount_type.name + ']' + '\n'
         return_value += 'Recipe: \n'
         return_value += self.recipe
         return return_value
