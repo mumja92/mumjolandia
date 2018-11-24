@@ -28,3 +28,4 @@
 parowy/bugi:
     - add preparing food command in cli (don't let 'food print xD' (exception 'sqlite3.OperationalError: no such column') to be passed)
     -"task add 'xD 'hombre'" - no space between words
+    - cli 'prepare command' and 'shortcut generator' should be refactored

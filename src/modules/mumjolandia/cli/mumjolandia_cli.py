@@ -34,6 +34,8 @@ class MumjolandiaCli(Thread):
                 break
 
     def __prepare_command(self, command):
+        self.__shortcut_generator(command)
+
         if command.arguments[0] == 'date':  # to delete later
             import datetime
             print('datetime.date.today:')
@@ -61,7 +63,7 @@ class MumjolandiaCli(Thread):
         if command.arguments[0] == 'exit':
             return True
 
-        if command.arguments[0] == 'mode':
+        if command.arguments[0] == 'mode' or command.arguments[0] == 'm':
             if len(command.arguments) == 1:
                 self.mode = MumjolandiaCliMode.none
                 return False
@@ -109,3 +111,22 @@ class MumjolandiaCli(Thread):
             return 'mumjolandia>'
         else:
             return 'mumjolandia/' + self.mode.name + '>'
+
+    def __shortcut_generator(self, command):
+        try:
+            if command.arguments[0] == 't':
+                command.arguments[0] = 'task'
+            if command.arguments[0] == 'fo':
+                command.arguments[0] = 'fo'
+            if command.arguments[0] == 'fa':
+                command.arguments[0] = 'fat'
+            if command.arguments[0] == 'h':
+                command.arguments[0] = 'help'
+            if command.arguments[1] == 'ls':
+                command.arguments[1] = 'print'
+            if command.arguments[1] == 'rm':
+                command.arguments[1] = 'delete'
+            if command.arguments[1] == 'h':
+                command.arguments[1] = 'help'
+        except IndexError:
+            pass
