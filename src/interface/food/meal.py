@@ -1,4 +1,7 @@
-class Meal:
+from src.interface.mumjolandia.pod_template import PODTemplate
+
+
+class Meal(PODTemplate):
     def __init__(self, name, recipe, meal_type, ingredients=None):
         if ingredients is None:
             ingredients = []

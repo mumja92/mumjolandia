@@ -85,7 +85,7 @@ class TestMumjolandiaCli(TestCase):
             self.assertEqual(mock_command.call_count, 14)
             self.assertEqual(mock_passer.call_count, 7)
 
-    @patch('src.modules.mumjolandia.ui.mumjolandia_cli.MumjolandiaCli._MumjolandiaCli__clear_screen', return_value=None)
+    @patch('src.modules.mumjolandia.cli.mumjolandia_cli.MumjolandiaCli._MumjolandiaCli__clear_screen', return_value=None)
     @patch('src.modules.mumjolandia.mumjolandia_data_passer.MumjolandiaDataPasser.pass_command', return_value=None)
     @patch('src.modules.console.console.Console.get_next_command',
            side_effect=[CommandFactory.get_command('cls'),
@@ -148,7 +148,7 @@ class TestMumjolandiaCli(TestCase):
             self.assertEqual(mock_command.call_count, 9)
             self.assertEqual(mock_passer.call_count, 5)
 
-    @patch('src.modules.mumjolandia.ui.mumjolandia_cli.MumjolandiaCli._MumjolandiaCli__clear_screen', return_value=None)
+    @patch('src.modules.mumjolandia.cli.mumjolandia_cli.MumjolandiaCli._MumjolandiaCli__clear_screen', return_value=None)
     @patch('src.modules.mumjolandia.mumjolandia_data_passer.MumjolandiaDataPasser.pass_command', return_value=None)
     @patch('src.modules.console.console.Console.get_next_command',
            side_effect=[CommandFactory.get_command('cls'),

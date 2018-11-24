@@ -17,6 +17,7 @@
     - change encoding in xml files to get rif of '&#263' chars
 
 - food
+    - mealFactory should use 'isinstance', but i am not sure if it wont break save/load to db
     - add quality sql errors handling
     - refactor to be more readable
 

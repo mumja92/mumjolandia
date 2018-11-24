@@ -6,7 +6,9 @@ class IngredientFactory:
     @staticmethod
     def get_ingredient(name=None, amount=None, amount_type=None):
         a_type = amount_type
-        if a_type is not None and a_type is not AmountType:
+        if a_type is None:
+            a_type = AmountType['error']
+        elif not isinstance(a_type, AmountType):
             try:
                 a_type = AmountType(int(amount_type))
             except ValueError:
@@ -19,22 +21,9 @@ class IngredientFactory:
                 am = -1
         na = 'error'
         if name is not None:
-            if len(name) > 0:
-                na = name
+            try:
+                if len(name) > 0 and isinstance(name, str):
+                    na = name
+            except TypeError:
+                pass
         return Ingredient(na, am, a_type)
-
-    @staticmethod
-    def get_ingredient_g(name, amount):
-        return Ingredient(name, amount, AmountType.g.value)
-
-    @staticmethod
-    def get_ingredient_number(name, amount):
-        return Ingredient(name, amount, AmountType.number.value)
-
-    @staticmethod
-    def get_ingredient_a_little(name, amount):
-        return Ingredient(name, amount, AmountType.a_little.value)
-
-    @staticmethod
-    def get_ingredient_ml(name, amount):
-        return Ingredient(name, amount, AmountType.ml.value)

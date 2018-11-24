@@ -1,4 +1,7 @@
-class RecipeDay:
+from src.interface.mumjolandia.pod_template import PODTemplate
+
+
+class RecipeDay(PODTemplate):
     def __init__(self, breakfast, second_breakfast, dinner, tea, supper):
         self.breakfast = breakfast
         self.second_breakfast = second_breakfast

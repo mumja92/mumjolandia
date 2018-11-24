@@ -1,7 +1,8 @@
 from src.interface.food.food_sql_enums import AmountType
+from src.interface.mumjolandia.pod_template import PODTemplate
 
 
-class Ingredient:
+class Ingredient(PODTemplate):
     def __init__(self, name, amount, amount_type):
         self.name = name
         self.amount = amount

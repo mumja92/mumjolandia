@@ -1,6 +1,7 @@
 # db browser for sqlite
 import sqlite3
 
+from src.interface.food.food_sql_enums import AmountType
 from src.interface.food.recipe_day import RecipeDay
 from src.modules.food.food_database_helper import FoodDatabaseHelper
 from src.modules.food.food_supervisor import FoodSupervisor
@@ -56,3 +57,5 @@ def add_recipe():
 # s.add_recipe_day(r)
 #
 # print(get_recipe(2))
+d = AmountType.ml
+print(isinstance(d, AmountType))
