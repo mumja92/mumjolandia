@@ -5,8 +5,8 @@ from src.interface.mumjolandia.mumjolandia_cli_mode import MumjolandiaCliMode
 from src.interface.mumjolandia.mumjolandia_immutable_type_wrapper import MumjolandiaImmutableTypeWrapper
 from src.modules.command.command_factory import CommandFactory
 from src.modules.mumjolandia.mumjolandia_data_passer import MumjolandiaDataPasser
-from src.modules.mumjolandia.ui.mumjolandia_cli import MumjolandiaCli
-from src.modules.mumjolandia.ui.mumjolandia_cli_printer import MumjolandiaCliPrinter
+from src.modules.mumjolandia.cli.mumjolandia_cli import MumjolandiaCli
+from src.modules.mumjolandia.cli.mumjolandia_cli_printer import MumjolandiaCliPrinter
 from src.utils.hidden_prints import HiddenPrints
 
 

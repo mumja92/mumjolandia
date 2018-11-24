@@ -7,13 +7,14 @@ from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturn
 from src.interface.tasks.task_storage_type import StorageType
 from src.modules.fat.fat_supervisor import FatSupervisor
 from src.modules.food.food_supervisor import FoodSupervisor
+from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.tasks.task_supervisor import TaskSupervisor
 
 
 class MumjolandiaThread(Thread):
-    def __init__(self, queue_in, queue_response, event, config_object):
+    def __init__(self, queue_in, queue_response, event):
         Thread.__init__(self)
-        self.config_object = config_object
+        self.config_object = ConfigLoader.get_config()
         self.queue_in = queue_in
         self.queue_response = queue_response
         self.supervisors = {}

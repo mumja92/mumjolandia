@@ -6,7 +6,7 @@ from threading import Thread
 from src.interface.mumjolandia.mumjolandia_cli_mode import MumjolandiaCliMode
 from src.interface.mumjolandia.mumjolandia_immutable_type_wrapper import MumjolandiaImmutableTypeWrapper
 from src.modules.console.console import Console
-from src.modules.mumjolandia.ui.mumjolandia_cli_printer import MumjolandiaCliPrinter
+from src.modules.mumjolandia.cli.mumjolandia_cli_printer import MumjolandiaCliPrinter
 
 
 class MumjolandiaCli(Thread):

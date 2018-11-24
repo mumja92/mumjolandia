@@ -6,13 +6,13 @@ from queue import Queue
 from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.mumjolandia.mumjolandia_data_passer import MumjolandiaDataPasser
 from src.modules.mumjolandia.mumjolandia_thread import MumjolandiaThread
-from src.modules.mumjolandia.ui.mumjolandia_cli import MumjolandiaCli
-from src.modules.mumjolandia.ui.mumjolandia_gui import MumjolandiaGui
+from src.modules.mumjolandia.cli.mumjolandia_cli import MumjolandiaCli
+from src.modules.mumjolandia.gui.mumjolandia_gui import MumjolandiaGui
 
 
 class MumjolandiaStarter:
     def __init__(self):
-        self.config = ConfigLoader.get_config_starter()
+        self.config = ConfigLoader.get_config()
         self.log_location = 'data/log.log'
         self.command_queue_request = Queue()
         self.command_queue_response = Queue()
@@ -40,8 +40,7 @@ class MumjolandiaStarter:
         logging.info('Starting mumjolandia')
         mumjolandia_thread = MumjolandiaThread(self.command_queue_request,
                                                self.command_queue_response,
-                                               self.command_responded_event,
-                                               self.config)
+                                               self.command_responded_event)
         mumjolandia_thread.setName('mumjolandia thread')
         mumjolandia_thread.start()
 
@@ -69,6 +68,3 @@ class MumjolandiaStarter:
                                                  self.command_queue_response,
                                                  self.command_mutex,
                                                  self.command_responded_event)
-
-
-

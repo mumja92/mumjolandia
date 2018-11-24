@@ -7,7 +7,7 @@ from src.utils import xmltodict
 
 class ConfigLoader:
     @staticmethod
-    def get_config_starter():
+    def get_config():
         config_location = 'data/config.xml'
         file = Path(config_location)
         if not file.is_file():

@@ -1,9 +1,6 @@
-- now
-    - tests for fat mode and classes
-    - should supervisor get via command task object, or everything to create it by itself?
-    - check if enums ids in factories are correct in db
-    - should i refactor messages to ['task add', 'success']
+- random
     - refactor loaders to have common interface
+    - config_loader should check if values are correct
 
 - mumjolandia
     - what happens when I run the application twice at the same time?
@@ -23,15 +20,10 @@
     - add quality sql errors handling
     - refactor to be more readable
 
-- sql
-    - check if connection to database is successful
-    - check if sql enums are correct with db (or add mechanism to create them based on db)
-
 - games
     - function to add games to db quickly
 
 
 parowy/bugi:
     - add preparing food command in cli (don't let 'food print xD' (exception 'sqlite3.OperationalError: no such column') to be passed)
-    - cli exits when it spots a string - implement queue for cli that supervisor will put exit command in and then it will exit
     -"task add 'xD 'hombre'" - no space between words
