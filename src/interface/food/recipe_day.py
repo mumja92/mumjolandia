@@ -18,3 +18,6 @@ class RecipeDay:
         return_value += 'Supper: \n'
         return_value += str(self.supper)
         return return_value
+
+    def translate(self, x):
+        return self.__str__().translate(x)

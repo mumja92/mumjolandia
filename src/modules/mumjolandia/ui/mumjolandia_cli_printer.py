@@ -1,6 +1,7 @@
 import logging
 import sys
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
+from src.utils.polish_utf_to_ascii import PolishUtfToAscii
 
 
 class MumjolandiaCliPrinter:
@@ -93,7 +94,7 @@ class MumjolandiaCliPrinter:
         print("Task name not given")
 
     def view_food_get_ok(self, return_value):
-        print(return_value.arguments[0])
+        print(PolishUtfToAscii.translate(return_value.arguments[0]))
 
     def view_food_help(self, return_value):
         print(return_value.arguments[0])

@@ -7,6 +7,7 @@ from src.modules.food.food_supervisor import FoodSupervisor
 from src.modules.food.ingredient_factory import IngredientFactory
 from src.modules.food.meal_factory import MealFactory
 from src.modules.food.utils.meal_loader_from_file import MealLoaderFromFile
+from src.utils.polish_utf_to_ascii import PolishUtfToAscii
 
 db_location = 'data/jedzonko.db'
 
@@ -48,10 +49,10 @@ def add_recipe():
 # c = get_recipe(x[-2])
 # print(c)
 
-m = MealLoaderFromFile('data/meal_test.txt')
-x = m.load_meals()
-s = FoodSupervisor('data/jedzonko.db')
-r = RecipeDay(x[0], x[1], x[2], x[3], x[4])
-s.add_recipe_day(r)
-
-print(get_recipe(2))
+# m = MealLoaderFromFile('data/meal_test.txt')
+# x = m.load_meals()
+# s = FoodSupervisor('data/jedzonko.db')
+# r = RecipeDay(x[0], x[1], x[2], x[3], x[4])
+# s.add_recipe_day(r)
+#
+# print(get_recipe(2))
