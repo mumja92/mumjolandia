@@ -3,6 +3,7 @@
 data/log.log
 data/tasks.*
 data/fat.*
+data/games.*
 tests/test_tasks.xml
 *.db
 *db.bak

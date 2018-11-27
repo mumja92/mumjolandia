@@ -33,4 +33,10 @@ class MumjolandiaReturnValue(Enum):
     fat_value_not_given = 24
     fat_add_must_be_float = 25
     fat_added = 26
-
+    #game
+    game_get_ok = 27
+    game_value_not_given = 28
+    game_added = 29
+    game_delete_success = 30
+    game_delete_incorrect_index = 31
+    game_delete_incorrect_name = 32

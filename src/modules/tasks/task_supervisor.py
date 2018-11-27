@@ -108,7 +108,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
         if len(args) < 1:
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_name_not_given)
         else:
-            return self.add_task(args[0])
+            return self.add_task(' '.join(args[0:]))
 
     def __command_get(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get, arguments=self.tasks)
