@@ -117,7 +117,7 @@ class MumjolandiaCliPrinter:
         sorted_list = return_value.arguments[0]
         sorted_list.sort()
         for i in sorted_list:
-            print(str(i))
+            print(PolishUtfToAscii.translate(i))
 
     def view_fat_get_ok(self, return_value):
         for i, t in enumerate(return_value.arguments):
