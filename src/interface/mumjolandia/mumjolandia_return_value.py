@@ -25,6 +25,7 @@ class MumjolandiaReturnValue(Enum):
     food_get_ok = 17
     food_help = 18
     food_file_broken = 19
+    food_ingredient_ok = 32
     #fat
     fat_incorrect_date_format = 20
     fat_delete_success = 21
@@ -39,4 +40,4 @@ class MumjolandiaReturnValue(Enum):
     game_added = 29
     game_delete_success = 30
     game_delete_incorrect_index = 31
-    game_delete_incorrect_name = 32
+    game_delete_incorrect_name = 33

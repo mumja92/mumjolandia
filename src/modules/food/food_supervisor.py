@@ -1,3 +1,5 @@
+import itertools
+
 from src.interface.food.food_file_broken_exception import FoodFileBrokenException
 from src.interface.food.food_sql_enums import AmountType
 from src.interface.food.ingredient import Ingredient
@@ -69,6 +71,7 @@ class FoodSupervisor(MumjolandiaSupervisor):
     def __add_command_parsers(self):
         self.command_parsers['print'] = self.__command_print
         self.command_parsers['help'] = self.__command_help
+        self.command_parsers['ingredient'] = self.__command_ingredient
 
     def __command_print(self, args):
         try:
@@ -84,3 +87,23 @@ class FoodSupervisor(MumjolandiaSupervisor):
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_help, arguments=['get [id]'])
+
+    def __command_ingredient(self, args):
+        try:
+            recipe = self.get_recipe_day(int(args[0]))
+        except (IndexError, ValueError):
+            try:
+                return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_get_wrong_index,
+                                                 arguments=[args[0]])
+            except IndexError:  # if args[0] is empty (parameter not given) it will throw IndexError again
+                return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_get_wrong_index,
+                                                 arguments=[''])
+        ingredients = []
+        iterator = itertools.chain(recipe.breakfast.ingredients,
+                                   recipe.second_breakfast.ingredients,
+                                   recipe.dinner.ingredients,
+                                   recipe.tea.ingredients,
+                                   recipe.supper.ingredients)
+        for i in iterator:
+            ingredients.append(str(i.name) + ' - ' + str(i.amount) + ' ' + str(i.amount_type.name))
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_ingredient_ok, arguments=[ingredients])

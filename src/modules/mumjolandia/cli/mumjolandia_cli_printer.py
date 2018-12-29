@@ -37,6 +37,7 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.food_get_wrong_index.name] = self.view_food_get_wrong_index
         self.views[MumjolandiaReturnValue.food_help.name] = self.view_food_help
         self.views[MumjolandiaReturnValue.food_file_broken.name] = self.view_food_file_broken
+        self.views[MumjolandiaReturnValue.food_ingredient_ok.name] = self.view_food_ingredient_ok
 
         self.views[MumjolandiaReturnValue.fat_get_ok.name] = self.view_fat_get_ok
         self.views[MumjolandiaReturnValue.fat_delete_success.name] = self.view_fat_delete_ok
@@ -111,6 +112,12 @@ class MumjolandiaCliPrinter:
 
     def view_food_file_broken(self, return_value):
         print('Database file: "' + return_value.arguments[0] + '" is broken')
+
+    def view_food_ingredient_ok(self, return_value):
+        sorted_list = return_value.arguments[0]
+        sorted_list.sort()
+        for i in sorted_list:
+            print(str(i))
 
     def view_fat_get_ok(self, return_value):
         for i, t in enumerate(return_value.arguments):

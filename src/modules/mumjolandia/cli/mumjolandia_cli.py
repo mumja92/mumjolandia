@@ -126,6 +126,8 @@ class MumjolandiaCli(Thread):
                     command.arguments[0] = 'delete'
                 if command.arguments[0] == 'h':
                     command.arguments[0] = 'help'
+                if command.arguments[0] == 'i':
+                    command.arguments[0] = 'ingredient'
         except IndexError:
             pass
         try:
@@ -143,5 +145,7 @@ class MumjolandiaCli(Thread):
                 command.arguments[1] = 'delete'
             if command.arguments[1] == 'h':
                 command.arguments[1] = 'help'
+            if command.arguments[1] == 'i':
+                command.arguments[1] = 'ingredient'
         except IndexError:
             pass
