@@ -122,8 +122,8 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(mock_save.call_count, 2)
 
         response = ts.execute(CommandFactory.get_command('get xD'))
-        self.assertEqual(response.status, MumjolandiaReturnValue.task_get)
-        self.assertEqual(response.arguments, [TaskFactory.get_task('Task')])
+        self.assertEqual(response.status, MumjolandiaReturnValue.task_get_wrong_data)
+        self.assertEqual(response.arguments, ['xD'])
 
         response = ts.execute(CommandFactory.get_command("edit 1 new"))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_edit_wrong_index)
@@ -134,10 +134,6 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(response.status, MumjolandiaReturnValue.task_edit_ok)
         self.assertEqual(response.arguments, ['0'])
         self.assertEqual(mock_save.call_count, 3)
-
-        response = ts.execute(CommandFactory.get_command('get xD'))
-        self.assertEqual(response.status, MumjolandiaReturnValue.task_get)
-        self.assertEqual(response.arguments, [TaskFactory.get_task('new')])
 
         response = ts.execute(CommandFactory.get_command("delete 0"))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_delete_success)

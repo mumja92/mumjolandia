@@ -12,4 +12,4 @@ class Task(PODTemplate):
         self.status = status
 
     def __str__(self):
-        return self.name
+        return self.name + ' - ' + str(self.date_to_finish)

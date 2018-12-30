@@ -10,8 +10,8 @@ class TaskFactory:
     @staticmethod
     def get_task(name='unknown',
                  description='unknown',
-                 date_added=datetime.date.today(),
-                 date_to_finish=datetime.date.today(),
+                 date_added=datetime.datetime.today().replace(microsecond=0),
+                 date_to_finish=datetime.datetime.today().replace(microsecond=0),
                  priority=TaskPriority.unknown,
                  task_type=TaskType.unknown,
                  status=TaskStatus.unknown):

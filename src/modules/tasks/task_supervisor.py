@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
@@ -16,7 +17,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
         super().__init__()
         self.storage_type = storage_type
         self.task_file_location = "data/tasks." + self.storage_type.name
-        self.allowedToSaveTasks = True           # if loaded tasks are broken they wont be overwritten to not loose them
+        self.allowedToSaveTasks = True  # if loaded tasks are broken they wont be overwritten to not loose them
         self.task_loader = None
         self.tasks = None
         self.__init()
@@ -103,6 +104,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
         self.command_parsers['delete'] = self.__command_delete
         self.command_parsers['edit'] = self.__command_edit
         self.command_parsers['help'] = self.__command_help
+        self.command_parsers['set'] = self.__command_set
 
     def __command_add(self, args):
         if len(args) < 1:
@@ -110,11 +112,36 @@ class TaskSupervisor(MumjolandiaSupervisor):
         else:
             return self.add_task(' '.join(args[0:]))
 
-    def __command_get(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get, arguments=self.tasks)
+    def __command_get(self, args):  # 'get' - return today, 'get 1' - return tomorrow,get '0' - return all
+        return_list = []
+        return_status = MumjolandiaReturnValue.task_get
+        if args:
+            try:
+                day_amount = int(args[0])
+            except ValueError:
+                return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get_wrong_data, arguments=args)
+            if int(args[0]) == 0:
+                return_list = self.tasks
+            else:
+                for t in self.tasks:
+                    temp = datetime.datetime.combine(datetime.datetime.today() + datetime.timedelta(days=day_amount),
+                                                     datetime.datetime.min.time())
+                    if t.date_to_finish.year == temp.year and \
+                            t.date_to_finish.month == temp.month and \
+                            t.date_to_finish.day == temp.day:
+                        return_list.append(t)
+        else:
+            for t in self.tasks:
+                temp = datetime.datetime.today()
+                if t.date_to_finish.year == temp.year and \
+                        t.date_to_finish.month == temp.month and \
+                        t.date_to_finish.day == temp.day:
+                    return_list.append(t)
+        return MumjolandiaResponseObject(status=return_status, arguments=return_list)
 
     def __command_help(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help, arguments=['print, add [name], delete [name || id], edit [id] [name]'])
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help,
+                                         arguments=['print, add [name], delete [name || id], edit [id] [name]'])
 
     def __command_delete(self, args):
         try:
@@ -125,3 +152,16 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
     def __command_edit(self, args):
         return self.edit_task(int(args[0]), TaskFactory.get_task(name=args[1]))
+
+    def __command_set(self, args):
+        try:
+            if int(args[0]) > len(self.tasks) or int(args[0]) < 0:
+                raise IndexError
+            self.tasks[int(args[0])].date_to_finish = datetime.datetime.today().replace(microsecond=0) + \
+                                                      datetime.timedelta(days=int(args[1]))
+            self.__save_if_allowed()
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_set_ok,
+                                             arguments=[self.tasks[int(args[0])].name, args[1]])
+        except IndexError:
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_set_incorrect_parameter,
+                                             arguments=args)

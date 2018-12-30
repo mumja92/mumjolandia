@@ -17,6 +17,7 @@ class MumjolandiaCli(Thread):
         self.exit_flag = MumjolandiaImmutableTypeWrapper(False)
         self.cli_printer = MumjolandiaCliPrinter(self.exit_flag)
         self.mode = MumjolandiaCliMode.none
+        self.permanent_cls = False
 
     def __del__(self):
         logging.info('mumjolandia cli exiting')
@@ -29,6 +30,8 @@ class MumjolandiaCli(Thread):
             if not self.__prepare_command(command):
                 continue
             return_value = self.data_passer.pass_command(command)
+            if self.permanent_cls:
+                self.__clear_screen()
             self.cli_printer.execute(return_value)
             if self.exit_flag.object:
                 break
@@ -48,11 +51,15 @@ class MumjolandiaCli(Thread):
 
         if command.arguments[0] == 'help':
             print('Available commands:')
-            print('fat, task, food, game, mode, cls, path, date')
+            print('fat, task, food, game, mode, cls, path, date, c')
             return False
 
         if command.arguments[0] == 'cls':
             self.__clear_screen()
+            return False
+
+        if command.arguments[0] == 'c':
+            self.permanent_cls = not self.permanent_cls
             return False
 
         if command.arguments[0] == 'path':
