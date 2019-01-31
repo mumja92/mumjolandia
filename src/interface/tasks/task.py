@@ -1,5 +1,6 @@
 from src.interface.mumjolandia.pod_template import PODTemplate
 from src.interface.tasks.task_status import TaskStatus
+from src.interface.tasks.task_type import TaskType
 
 
 class Task(PODTemplate):
@@ -20,4 +21,6 @@ class Task(PODTemplate):
             status = '-'
         if self.status == TaskStatus.unknown:
             status = '?'
+        if self.type == TaskType.periodic:
+            status = 'p'
         return '[' + status + ']' + '(' + str(self.date_to_finish.strftime('%d %b')) + ') ' + self.name

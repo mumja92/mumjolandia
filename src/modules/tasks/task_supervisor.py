@@ -8,6 +8,7 @@ from src.interface.tasks.task_file_broken_exception import TaskFileBrokenExcepti
 from src.interface.mumjolandia.incorrect_date_format_exception import IncorrectDateFormatException
 from src.interface.tasks.task_status import TaskStatus
 from src.interface.tasks.task_storage_type import StorageType
+from src.modules.tasks.periodic_tasks_generator import PeriodicTasksGenerator
 from src.modules.tasks.task_factory import TaskFactory
 from src.utils.object_loader_pickle import ObjectLoaderPickle
 from src.modules.tasks.task_loader_xml import TaskLoaderXml
@@ -17,6 +18,8 @@ class TaskSupervisor(MumjolandiaSupervisor):
     def __init__(self, storage_type=StorageType.xml):
         super().__init__()
         self.storage_type = storage_type
+        self.periodic_tasks_location = "data/periodic_tasks.xml"
+        self.periodic_tasks_generator = PeriodicTasksGenerator(self.periodic_tasks_location)
         self.task_file_location = "data/tasks." + self.storage_type.name
         self.allowedToSaveTasks = True  # if loaded tasks are broken they wont be overwritten to not loose them
         self.task_loader = None
@@ -119,6 +122,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
         return_list = []
         return_indexes = []
         return_status = MumjolandiaReturnValue.task_get
+        day_amount = 0
         if args:
             try:
                 day_amount = int(args[0])
@@ -150,6 +154,10 @@ class TaskSupervisor(MumjolandiaSupervisor):
                 if t.status == TaskStatus.not_done and t.date_to_finish <= temp:
                     return_list.append(t)
                     return_indexes.append(i)
+        tasks = self.periodic_tasks_generator.get_tasks(day_amount)
+        for t in tasks:
+            return_list.insert(0, t)
+            return_indexes.insert(0, -1)
         return MumjolandiaResponseObject(status=return_status, arguments=[return_indexes, return_list])
 
     def __command_help(self, args):

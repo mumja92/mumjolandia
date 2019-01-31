@@ -1,0 +1,15 @@
+<!--'available occurrence type: week, day'-->
+<tasks>
+    <task>
+        <name>sprzatanko</name>
+        <occurrence_type>week</occurrence_type>
+        <occurrence>4</occurrence>
+        <start>2019-01-26 18:29:47</start>
+    </task>
+    <task>
+        <name>pompki</name>
+        <occurrence_type>day</occurrence_type>
+        <occurrence>2</occurrence>
+        <start>2019-01-29 10:01:02</start>
+    </task>
+</tasks>

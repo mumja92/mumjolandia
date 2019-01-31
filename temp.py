@@ -10,6 +10,7 @@ from src.modules.food.food_supervisor import FoodSupervisor
 from src.modules.food.ingredient_factory import IngredientFactory
 from src.modules.food.meal_factory import MealFactory
 from src.modules.food.utils.meal_loader_from_file import MealLoaderFromFile
+from src.modules.tasks.periodic_tasks_generator import PeriodicTasksGenerator
 from src.modules.tasks.task_factory import TaskFactory
 from src.utils.polish_utf_to_ascii import PolishUtfToAscii
 
@@ -61,4 +62,8 @@ def add_recipe():
 #
 # print(get_recipe(2))
 
-'%Y-%m-%d %H:%M:%S'
+
+# p = PeriodicTasksGenerator('data/periodic_tasks.xml')
+# x = p.get_tasks(23)
+# for t in x:
+#     print(t)
