@@ -59,7 +59,7 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.game_get_ok.name] = self.view_game_get_ok
 
     def view_task_print(self, return_value):
-        print(len(return_value.arguments), 'items:')
+        print(len(return_value.arguments[0]), 'items:')
         for i, t in zip(return_value.arguments[0], return_value.arguments[1]):
             print('[' + str(i) + ']' + str(t))
 
