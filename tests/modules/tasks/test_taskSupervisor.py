@@ -106,7 +106,7 @@ class TestTaskSupervisor(TestCase):
 
         response = ts.execute(CommandFactory.get_command('get'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_get)
-        self.assertEqual(response.arguments, [TaskFactory.get_task('Task'), TaskFactory.get_task('new task')])
+        self.assertEqual(response.arguments[1], [TaskFactory.get_task('Task'), TaskFactory.get_task('new task')])
 
         response = ts.execute(CommandFactory.get_command('delete not_existing_task'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_delete_incorrect_name)
@@ -142,7 +142,7 @@ class TestTaskSupervisor(TestCase):
 
         response = ts.execute(CommandFactory.get_command('get'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_get)
-        self.assertEqual(response.arguments, [])
+        self.assertEqual(response.arguments, [[], []])
 
         response = ts.execute(CommandFactory.get_command('help'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_help)
