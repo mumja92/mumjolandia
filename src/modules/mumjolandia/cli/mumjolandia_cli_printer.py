@@ -35,6 +35,8 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.task_get_wrong_data.name] = self.view_task_get_wrong_data
         self.views[MumjolandiaReturnValue.task_set_ok.name] = self.view_task_set_ok
         self.views[MumjolandiaReturnValue.task_set_incorrect_parameter.name] = self.view_task_set_incorrect_parameter
+        self.views[MumjolandiaReturnValue.task_done_ok.name] = self.view_task_done
+        self.views[MumjolandiaReturnValue.task_done_wrong_parameter.name] = self.view_task_done_wrong_parameter
 
         self.views[MumjolandiaReturnValue.food_get_ok.name] = self.view_food_get_ok
         self.views[MumjolandiaReturnValue.food_get_wrong_index.name] = self.view_food_get_wrong_index
@@ -112,6 +114,12 @@ class MumjolandiaCliPrinter:
 
     def view_task_set_ok(self, return_value):
         print("Set '" + return_value.arguments[0] + "' to " + return_value.arguments[1] + " days ahead")
+
+    def view_task_done(self, return_value):
+        print("done")
+
+    def view_task_done_wrong_parameter(self, return_value):
+        print("Wrong parameters " + str(return_value.arguments))
 
     def view_food_get_ok(self, return_value):
         print('WARNING: to get correct index of task use "task ls 0"')

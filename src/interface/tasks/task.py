@@ -1,4 +1,5 @@
 from src.interface.mumjolandia.pod_template import PODTemplate
+from src.interface.tasks.task_status import TaskStatus
 
 
 class Task(PODTemplate):
@@ -12,4 +13,11 @@ class Task(PODTemplate):
         self.status = status
 
     def __str__(self):
-        return self.name + ' - ' + str(self.date_to_finish)
+        status = 'error'
+        if self.status == TaskStatus.done:
+            status = '+'
+        if self.status == TaskStatus.not_done:
+            status = '-'
+        if self.status == TaskStatus.unknown:
+            status = '?'
+        return '[' + status + '] ' + self.name + ' - ' + str(self.date_to_finish)

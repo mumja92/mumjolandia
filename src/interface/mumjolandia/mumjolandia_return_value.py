@@ -23,6 +23,8 @@ class MumjolandiaReturnValue(Enum):
     task_edit_wrong_index = 15
     task_set_incorrect_parameter = 34
     task_set_ok = 35
+    task_done_ok = 36
+    task_done_wrong_parameter = 37
     #food
     food_get_wrong_index = 16
     food_get_ok = 17
@@ -43,4 +45,4 @@ class MumjolandiaReturnValue(Enum):
     game_added = 29
     game_delete_success = 30
     game_delete_incorrect_index = 31
-    game_delete_incorrect_name = 36
+    game_delete_incorrect_name = 38

@@ -1,5 +1,10 @@
-MumjolandiaSupervisor:
-- starts threads for:
-    - mumjolandia main thread
-    - cli/gui
-- handles communication messages between ui and main thread (by queues)
+- task
+task print
+task print 0
+task set
+task edit
+
+- fat
+- game
+- food
+- general

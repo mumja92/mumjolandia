@@ -6,6 +6,7 @@ from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturn
 from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.interface.tasks.task_file_broken_exception import TaskFileBrokenException
 from src.interface.mumjolandia.incorrect_date_format_exception import IncorrectDateFormatException
+from src.interface.tasks.task_status import TaskStatus
 from src.interface.tasks.task_storage_type import StorageType
 from src.modules.tasks.task_factory import TaskFactory
 from src.utils.object_loader_pickle import ObjectLoaderPickle
@@ -105,6 +106,8 @@ class TaskSupervisor(MumjolandiaSupervisor):
         self.command_parsers['edit'] = self.__command_edit
         self.command_parsers['help'] = self.__command_help
         self.command_parsers['set'] = self.__command_set
+        self.command_parsers['done'] = self.__command_done
+        self.command_parsers['undone'] = self.__command_undone
 
     def __command_add(self, args):
         if len(args) < 1:
@@ -120,9 +123,9 @@ class TaskSupervisor(MumjolandiaSupervisor):
                 day_amount = int(args[0])
             except ValueError:
                 return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get_wrong_data, arguments=args)
-            if int(args[0]) == 0:
+            if int(args[0]) == 0:   # task get 0
                 return_list = self.tasks
-            else:
+            else:                   # task get x
                 for t in self.tasks:
                     temp = datetime.datetime.combine(datetime.datetime.today() + datetime.timedelta(days=day_amount),
                                                      datetime.datetime.min.time())
@@ -130,12 +133,16 @@ class TaskSupervisor(MumjolandiaSupervisor):
                             t.date_to_finish.month == temp.month and \
                             t.date_to_finish.day == temp.day:
                         return_list.append(t)
-        else:
+        else:       # task get
             for t in self.tasks:
-                temp = datetime.datetime.today()
+                temp = datetime.datetime.today()    # first tasks for today
                 if t.date_to_finish.year == temp.year and \
                         t.date_to_finish.month == temp.month and \
                         t.date_to_finish.day == temp.day:
+                    return_list.append(t)
+                    continue
+                # now not finished tasks from previous days
+                if t.status == TaskStatus.not_done and t.date_to_finish <= temp:
                     return_list.append(t)
         return MumjolandiaResponseObject(status=return_status, arguments=return_list)
 
@@ -164,4 +171,28 @@ class TaskSupervisor(MumjolandiaSupervisor):
                                              arguments=[self.tasks[int(args[0])].name, args[1]])
         except IndexError:
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_set_incorrect_parameter,
+                                             arguments=args)
+
+    def __command_done(self, args):
+        try:
+            if int(args[0]) > len(self.tasks) or int(args[0]) < 0:
+                raise IndexError
+            self.tasks[int(args[0])].status = TaskStatus.done
+            self.__save_if_allowed()
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_ok,
+                                             arguments=[self.tasks[int(args[0])].status.name])
+        except IndexError:
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_wrong_parameter,
+                                             arguments=args)
+
+    def __command_undone(self, args):
+        try:
+            if int(args[0]) > len(self.tasks) or int(args[0]) < 0:
+                raise IndexError
+            self.tasks[int(args[0])].status = TaskStatus.not_done
+            self.__save_if_allowed()
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_ok,
+                                             arguments=[self.tasks[int(args[0])].status.name])
+        except IndexError:
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_wrong_parameter,
                                              arguments=args)
