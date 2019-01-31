@@ -111,6 +111,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
         self.command_parsers['set'] = self.__command_set
         self.command_parsers['done'] = self.__command_done
         self.command_parsers['undone'] = self.__command_undone
+        self.command_parsers['periodic'] = self.__command_periodic
 
     def __command_add(self, args):
         if len(args) < 1:
@@ -162,7 +163,16 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help,
-                                         arguments=['print, add [name], delete [name || id], edit [id] [name]'])
+                                         arguments=['print\n'
+                                                    'print 0\n'
+                                                    'print [delta]\n'
+                                                    'add [name]\n'
+                                                    'delete [name || id]\n'
+                                                    'edit [id] [name]\n'
+                                                    'set [id] [delta_from_today]\n'
+                                                    'done\n'
+                                                    'undone\n'
+                                                    'periodic\n'])
 
     def __command_delete(self, args):
         try:
@@ -210,3 +220,12 @@ class TaskSupervisor(MumjolandiaSupervisor):
         except IndexError:
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_wrong_parameter,
                                              arguments=args)
+
+    def __command_periodic(self, args):
+        return_list = []
+        return_indexes = []
+        tasks = self.periodic_tasks_generator.get_list_next_occurrence()
+        for t in tasks:
+            return_list.append(t)
+            return_indexes.append(-1)
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get, arguments=[return_indexes, return_list])

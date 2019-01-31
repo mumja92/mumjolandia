@@ -63,7 +63,7 @@ def add_recipe():
 # print(get_recipe(2))
 
 
-# p = PeriodicTasksGenerator('data/periodic_tasks.xml')
-# x = p.get_tasks(23)
-# for t in x:
-#     print(t)
+p = PeriodicTasksGenerator('data/periodic_tasks.xml')
+x = p.get_list_next_occurrence()
+for t in x:
+    print(t)
