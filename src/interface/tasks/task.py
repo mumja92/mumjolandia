@@ -20,4 +20,4 @@ class Task(PODTemplate):
             status = '-'
         if self.status == TaskStatus.unknown:
             status = '?'
-        return '[' + status + '] ' + self.name + ' - ' + str(self.date_to_finish)
+        return '[' + status + ']' + '(' + str(self.date_to_finish.strftime('%d %b')) + ') ' + self.name

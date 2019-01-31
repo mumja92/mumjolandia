@@ -60,8 +60,8 @@ class MumjolandiaCliPrinter:
 
     def view_task_print(self, return_value):
         print(len(return_value.arguments), 'items:')
-        for i, t in enumerate(return_value.arguments):
-            print('[' + str(i) + '] ' + str(t))
+        for i, t in zip(return_value.arguments[0], return_value.arguments[1]):
+            print('[' + str(i) + ']' + str(t))
 
     def view_task_added(self, return_value):
         print('Added: ' + str(return_value.arguments[0]))

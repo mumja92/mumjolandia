@@ -117,6 +117,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
     def __command_get(self, args):  # 'get' - return today, 'get 1' - return tomorrow,get '0' - return all
         return_list = []
+        return_indexes = []
         return_status = MumjolandiaReturnValue.task_get
         if args:
             try:
@@ -124,27 +125,32 @@ class TaskSupervisor(MumjolandiaSupervisor):
             except ValueError:
                 return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get_wrong_data, arguments=args)
             if int(args[0]) == 0:   # task get 0
-                return_list = self.tasks
+                for i, t in enumerate(self.tasks):
+                    return_list.append(t)
+                    return_indexes.append(i)
             else:                   # task get x
-                for t in self.tasks:
+                for i, t in enumerate(self.tasks):
                     temp = datetime.datetime.combine(datetime.datetime.today() + datetime.timedelta(days=day_amount),
                                                      datetime.datetime.min.time())
                     if t.date_to_finish.year == temp.year and \
                             t.date_to_finish.month == temp.month and \
                             t.date_to_finish.day == temp.day:
                         return_list.append(t)
+                        return_indexes.append(i)
         else:       # task get
-            for t in self.tasks:
+            for i, t in enumerate(self.tasks):
                 temp = datetime.datetime.today()    # first tasks for today
                 if t.date_to_finish.year == temp.year and \
                         t.date_to_finish.month == temp.month and \
                         t.date_to_finish.day == temp.day:
                     return_list.append(t)
+                    return_indexes.append(i)
                     continue
                 # now not finished tasks from previous days
                 if t.status == TaskStatus.not_done and t.date_to_finish <= temp:
                     return_list.append(t)
-        return MumjolandiaResponseObject(status=return_status, arguments=return_list)
+                    return_indexes.append(i)
+        return MumjolandiaResponseObject(status=return_status, arguments=[return_indexes, return_list])
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help,
