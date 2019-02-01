@@ -19,7 +19,6 @@ class TaskSupervisor(MumjolandiaSupervisor):
         super().__init__()
         self.storage_type = storage_type
         self.periodic_tasks_location = "data/periodic_tasks.xml"
-        self.periodic_tasks_generator = PeriodicTasksGenerator(self.periodic_tasks_location)
         self.task_file_location = "data/tasks." + self.storage_type.name
         self.allowedToSaveTasks = True  # if loaded tasks are broken they wont be overwritten to not loose them
         self.task_loader = None
@@ -155,7 +154,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
                 if t.status == TaskStatus.not_done and t.date_to_finish <= temp:
                     return_list.append(t)
                     return_indexes.append(i)
-        tasks = self.periodic_tasks_generator.get_tasks(day_amount)
+        tasks = PeriodicTasksGenerator(self.periodic_tasks_location).get_tasks(day_amount)
         for t in tasks:
             return_list.insert(0, t)
             return_indexes.insert(0, -1)
@@ -224,7 +223,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
     def __command_periodic(self, args):
         return_list = []
         return_indexes = []
-        tasks = self.periodic_tasks_generator.get_list_next_occurrence()
+        tasks = PeriodicTasksGenerator(self.periodic_tasks_location).get_list_next_occurrence()
         for t in tasks:
             return_list.append(t)
             return_indexes.append(-1)

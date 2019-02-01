@@ -146,7 +146,6 @@ class TestTaskSupervisor(TestCase):
 
         response = ts.execute(CommandFactory.get_command('help'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_help)
-        self.assertEqual(response.arguments, ['print, add [name], delete [name || id], edit [id] [name]'])
 
         self.assertEqual(mock_save.call_count, 4)
         self.assertEqual(mock_load.call_count, 1)

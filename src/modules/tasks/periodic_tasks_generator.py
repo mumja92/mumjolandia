@@ -25,12 +25,12 @@ class PeriodicTasksGenerator:
             if t['occurrence_type'] == 'day':
                 if ((delta.days + time_delta) % int(t['occurrence'])) == 0:
                     tasks.append(TaskFactory().get_task(name=t['name'],
-                                                        date_to_finish=today,
+                                                        date_to_finish=today + datetime.timedelta(days=time_delta),
                                                         task_type=TaskType.periodic))
             if t['occurrence_type'] == 'week':
-                if ((delta.days + time_delta) % (int(t['occurrence']))*7) == 0:
+                if ((delta.days + time_delta) % (int(t['occurrence'])*7)) == 0:
                     tasks.append(TaskFactory().get_task(name=t['name'],
-                                                        date_to_finish=today,
+                                                        date_to_finish=today + datetime.timedelta(days=time_delta),
                                                         task_type=TaskType.periodic))
         return tasks
 
