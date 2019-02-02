@@ -122,7 +122,6 @@ class MumjolandiaCliPrinter:
         print("Wrong parameters " + str(return_value.arguments))
 
     def view_food_get_ok(self, return_value):
-        print('WARNING: to get correct index of task use "task ls 0"')
         print(PolishUtfToAscii.translate(return_value.arguments[0]))
 
     def view_food_help(self, return_value):
@@ -135,10 +134,22 @@ class MumjolandiaCliPrinter:
         print('Database file: "' + return_value.arguments[0] + '" is broken')
 
     def view_food_ingredient_ok(self, return_value):
-        sorted_list = return_value.arguments[0]
-        sorted_list.sort()
-        for i in sorted_list:
-            print(PolishUtfToAscii.translate(i))
+        def __view_food_ingredient_ok_print(recipe):
+            sorted_list = recipe
+            sorted_list.sort()
+            for i in sorted_list:
+                print(" " + PolishUtfToAscii.translate(i))
+        print("\nBreakfast (" + return_value.arguments[0][0] + "): ")
+        __view_food_ingredient_ok_print(return_value.arguments[0][1])
+        print("\nSecond breakfast (" + return_value.arguments[0][0] + "): ")
+        __view_food_ingredient_ok_print(return_value.arguments[1][1])
+        print("\nDinner (" + return_value.arguments[0][0] + "): ")
+        __view_food_ingredient_ok_print(return_value.arguments[2][1])
+        print("\nTea (" + return_value.arguments[0][0] + "): ")
+        __view_food_ingredient_ok_print(return_value.arguments[3][1])
+        print("\nSupper (" + return_value.arguments[0][0] + "): ")
+        __view_food_ingredient_ok_print(return_value.arguments[4][1])
+        print("")
 
     def view_fat_get_ok(self, return_value):
         for i, t in enumerate(return_value.arguments):

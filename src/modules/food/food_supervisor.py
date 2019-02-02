@@ -71,7 +71,8 @@ class FoodSupervisor(MumjolandiaSupervisor):
     def __add_command_parsers(self):
         self.command_parsers['print'] = self.__command_print
         self.command_parsers['help'] = self.__command_help
-        self.command_parsers['ingredient'] = self.__command_ingredient
+        self.command_parsers['ingredients'] = self.__command_ingredient
+        self.command_parsers['i'] = self.__command_ingredient
 
     def __command_print(self, args):
         try:
@@ -86,7 +87,9 @@ class FoodSupervisor(MumjolandiaSupervisor):
                                                  arguments=[''])
 
     def __command_help(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_help, arguments=['get [id]'])
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_help, arguments=['get [id]\n'
+                                                                                             '[i]ngredients [id]\n'
+                                                                                             ''])
 
     def __command_ingredient(self, args):
         try:
@@ -98,12 +101,24 @@ class FoodSupervisor(MumjolandiaSupervisor):
             except IndexError:  # if args[0] is empty (parameter not given) it will throw IndexError again
                 return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_get_wrong_index,
                                                  arguments=[''])
-        ingredients = []
-        iterator = itertools.chain(recipe.breakfast.ingredients,
-                                   recipe.second_breakfast.ingredients,
-                                   recipe.dinner.ingredients,
-                                   recipe.tea.ingredients,
-                                   recipe.supper.ingredients)
-        for i in iterator:
-            ingredients.append(str(i.name) + ' - ' + str(i.amount) + ' ' + str(i.amount_type.name))
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_ingredient_ok, arguments=[ingredients])
+        ingredients_breakfast = []
+        ingredients_second_breakfast = []
+        ingredients_dinner = []
+        ingredients_tea = []
+        ingredients_supper = []
+        for i in recipe.breakfast.ingredients:
+            ingredients_breakfast.append(str(i.name) + ' - ' + str(i.amount) + ' ' + str(i.amount_type.name))
+        for i in recipe.second_breakfast.ingredients:
+            ingredients_second_breakfast.append(str(i.name) + ' - ' + str(i.amount) + ' ' + str(i.amount_type.name))
+        for i in recipe.dinner.ingredients:
+            ingredients_dinner.append(str(i.name) + ' - ' + str(i.amount) + ' ' + str(i.amount_type.name))
+        for i in recipe.tea.ingredients:
+            ingredients_tea.append(str(i.name) + ' - ' + str(i.amount) + ' ' + str(i.amount_type.name))
+        for i in recipe.supper.ingredients:
+            ingredients_supper.append(str(i.name) + ' - ' + str(i.amount) + ' ' + str(i.amount_type.name))
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_ingredient_ok,
+                                         arguments=[(recipe.breakfast.name, ingredients_breakfast),
+                                                    (recipe.second_breakfast.name, ingredients_second_breakfast),
+                                                    (recipe.dinner.name, ingredients_dinner),
+                                                    (recipe.supper.name, ingredients_tea),
+                                                    (recipe.tea.name, ingredients_supper)])

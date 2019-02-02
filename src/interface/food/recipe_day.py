@@ -10,16 +10,11 @@ class RecipeDay(PODTemplate):
         self.supper = supper
 
     def __str__(self):
-        return_value = 'Breakast: \n'
-        return_value += str(self.breakfast) + '\n\n'
-        return_value += 'Second breakast: \n'
-        return_value += str(self.second_breakfast) + '\n\n'
-        return_value += 'Dinner: \n'
-        return_value += str(self.dinner) + '\n\n'
-        return_value += 'Tea: \n'
-        return_value += str(self.tea) + '\n\n'
-        return_value += 'Supper: \n'
-        return_value += str(self.supper)
+        return_value = self.breakfast.get_recipe() + '\n\n'
+        return_value += self.second_breakfast.get_recipe() + '\n\n'
+        return_value += self.dinner.get_recipe() + '\n\n'
+        return_value += self.tea.get_recipe() + '\n\n'
+        return_value += self.supper.get_recipe() + '\n'
         return return_value
 
     def translate(self, x):

@@ -10,6 +10,11 @@ class Meal(PODTemplate):
         self.recipe = recipe
         self.ingredients = ingredients
 
+    def get_recipe(self):
+        return_value = self.name + ' [' + str(self.type.name) + ']\n'
+        return_value += ' ' + self.recipe
+        return return_value
+
     def __str__(self):
         return_value = self.name + ' [' + str(self.type.name) + ']\n'
         for i in self.ingredients:

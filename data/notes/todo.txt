@@ -3,6 +3,8 @@
     - config_loader should check if values are correct
 
 - mumjolandia
+    - cli doesn't need to change input like 'i' -> ingredients' - it is better to make multiple commands in supervisors
+    (currently i -> ingredients is implemented in foodsupervisor; do the same with rest
     - what happens when I run the application twice at the same time?
     - every mumjolandia operation should return exit status up to dataPasser - should return to cli/gui
     - add task generator to generate task occurrences by scheme (weekly/daily/etc)
