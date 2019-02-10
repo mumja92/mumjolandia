@@ -19,8 +19,9 @@ class PeriodicTasksGenerator:
             data = my_file.read()
         d = xmltodict.parse(data)
         for t in d['tasks']['task']:
-            today = datetime.datetime.today().replace(microsecond=0)
+            today = datetime.datetime.today().replace(microsecond=0, second=0, minute=0, hour=0)
             start = datetime.datetime.strptime(t['start'], '%Y-%m-%d %H:%M:%S')
+            start = start.replace(microsecond=0, second=0, minute=0, hour=0)
             delta = today - start
             if t['occurrence_type'] == 'day':
                 if ((delta.days + time_delta) % int(t['occurrence'])) == 0:

@@ -60,8 +60,12 @@ class MumjolandiaCliPrinter:
 
     def view_task_print(self, return_value):
         print(len(return_value.arguments[0]), 'items:')
+        max_width = 0
+        for i in return_value.arguments[0]:
+            if len(str(i)) > max_width:
+                max_width = len(str(i))
         for i, t in zip(return_value.arguments[0], return_value.arguments[1]):
-            print('[' + str(i) + ']' + str(t))
+            print('[' + str(i).rjust(max_width, ' ') + ']' + str(t))
 
     def view_task_added(self, return_value):
         print('Added: ' + str(return_value.arguments[0]))
