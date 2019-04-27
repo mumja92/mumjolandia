@@ -7,3 +7,4 @@ class MumjolandiaCliMode(Enum):
     game = 2
     food = 3
     fat = 4
+    note = 5

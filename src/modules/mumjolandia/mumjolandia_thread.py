@@ -9,6 +9,7 @@ from src.modules.fat.fat_supervisor import FatSupervisor
 from src.modules.food.food_supervisor import FoodSupervisor
 from src.modules.game.game_supervisor import GameSupervisor
 from src.modules.mumjolandia.config_loader import ConfigLoader
+from src.modules.note.note_supervisor import NoteSupervisor
 from src.modules.tasks.task_supervisor import TaskSupervisor
 
 
@@ -57,12 +58,14 @@ class MumjolandiaThread(Thread):
         self.supervisors['food'] = FoodSupervisor('data/jedzonko.db')
         self.supervisors['fat'] = FatSupervisor('data/fat.pickle')
         self.supervisors['game'] = GameSupervisor('data/games.pickle')
+        self.supervisors['note'] = NoteSupervisor('data/notes.pickle')
 
         self.command_parsers['exit'] = self.__command_exit
         self.command_parsers['task'] = self.__command_task
         self.command_parsers['food'] = self.__command_food
         self.command_parsers['fat'] = self.__command_fat
         self.command_parsers['game'] = self.__command_game
+        self.command_parsers['note'] = self.__command_note
 
     def __get_next_command(self):
         command = self.queue_in.get()
@@ -85,3 +88,6 @@ class MumjolandiaThread(Thread):
 
     def __command_game(self, command):
         return self.supervisors['game'].execute(command)
+
+    def __command_note(self, command):
+        return self.supervisors['note'].execute(command)

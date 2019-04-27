@@ -86,6 +86,9 @@ class MumjolandiaCli(Thread):
         if command.arguments[0:2] == ['fat', 'print']:
             command.arguments[1] = 'get'
 
+        if command.arguments[0:2] == ['note', 'print']:
+            command.arguments[1] = 'get'
+
         if command.arguments[0:2] == ['task', 'print']:
             command.arguments[1] = 'get'
 
@@ -146,6 +149,8 @@ class MumjolandiaCli(Thread):
                 command.arguments[0] = 'fat'
             if command.arguments[0] == 'h':
                 command.arguments[0] = 'help'
+            if command.arguments[0] == 'n':
+                command.arguments[0] = 'note'
             if command.arguments[1] == 'ls':
                 command.arguments[1] = 'print'
             if command.arguments[1] == 'rm':

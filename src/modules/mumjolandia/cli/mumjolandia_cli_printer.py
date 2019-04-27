@@ -58,6 +58,13 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.game_delete_success.name] = self.view_game_delete_ok
         self.views[MumjolandiaReturnValue.game_get_ok.name] = self.view_game_get_ok
 
+        self.views[MumjolandiaReturnValue.note_get_ok.name] = self.view_note_get_ok
+        self.views[MumjolandiaReturnValue.note_delete_success.name] = self.view_note_delete_ok
+        self.views[MumjolandiaReturnValue.note_delete_incorrect_index.name] = self.view_note_delete_incorrect_index
+        self.views[MumjolandiaReturnValue.note_add_nook.name] = self.view_note_add_nook
+        self.views[MumjolandiaReturnValue.note_add_ok.name] = self.view_note_add_ok
+        self.views[MumjolandiaReturnValue.note_help.name] = self.view_note_help
+
     def view_task_print(self, return_value):
         print(len(return_value.arguments[0]), 'items:')
         max_width = 0
@@ -192,3 +199,22 @@ class MumjolandiaCliPrinter:
     def view_game_get_ok(self, return_value):
         for i, t in enumerate(return_value.arguments):
             print('[' + str(i) + '] ' + str(t))
+
+    def view_note_get_ok(self, return_value):
+        for i, t in enumerate(return_value.arguments):
+            print('[' + str(i) + '] ' + str(t))
+
+    def view_note_delete_ok(self, return_value):
+        print("Deleted " + return_value.arguments[1] + " element(s) using parameter: " + return_value.arguments[0])
+
+    def view_note_delete_incorrect_index(self, return_value):
+        print("Can't delete - incorrect index value: " + return_value.arguments[0])
+
+    def view_note_add_nook(self, return_value):
+        print("Wrong index")
+
+    def view_note_add_ok(self, return_value):
+        print('Added: ', return_value.arguments[0])
+
+    def view_note_help(self, return_value):
+        print(return_value.arguments[0])

@@ -5,6 +5,7 @@ data/tasks.*
 data/fat.*
 data/games.*
 data/periodic_tasks.xml
+data/notes.*
 tests/test_tasks.xml
 *.db
 *db.bak
