@@ -14,7 +14,7 @@ class TaskFactory:
                  date_to_finish=None,
                  priority=TaskPriority.unknown,
                  task_type=TaskType.unknown,
-                 status=TaskStatus.unknown):
+                 status=TaskStatus.not_done):
         try:
             if isinstance(date_added, str):
                 date_added = datetime.datetime.strptime(date_added, '%Y-%m-%d %H:%M:%S')

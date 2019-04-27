@@ -16,7 +16,7 @@ class TestTaskFactory(TestCase):
         self.assertEqual(t.date_to_finish, datetime.datetime.today().replace(microsecond=0))
         self.assertEqual(t.priority, TaskPriority['unknown'])
         self.assertEqual(t.type, TaskType['unknown'])
-        self.assertEqual(t.status, TaskStatus['unknown'])
+        self.assertEqual(t.status, TaskStatus['not_done'])
 
     def test_get_task_with_parameters(self):
         test_date_added = datetime.datetime.strptime("2018-10-25 00:00:00", '%Y-%m-%d %H:%M:%S')
