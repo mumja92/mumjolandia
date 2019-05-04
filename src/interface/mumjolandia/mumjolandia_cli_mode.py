@@ -8,3 +8,4 @@ class MumjolandiaCliMode(Enum):
     food = 3
     fat = 4
     note = 5
+    connection = 6

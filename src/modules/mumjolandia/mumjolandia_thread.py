@@ -5,6 +5,7 @@ from src.interface.mumjolandia.mumjolandia_cli_mode import MumjolandiaCliMode
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.interface.tasks.task_storage_type import StorageType
+from src.modules.connection.connection_supervisor import ConnectionSupervisor
 from src.modules.fat.fat_supervisor import FatSupervisor
 from src.modules.food.food_supervisor import FoodSupervisor
 from src.modules.game.game_supervisor import GameSupervisor
@@ -59,6 +60,7 @@ class MumjolandiaThread(Thread):
         self.supervisors['fat'] = FatSupervisor('data/fat.pickle')
         self.supervisors['game'] = GameSupervisor('data/games.pickle')
         self.supervisors['note'] = NoteSupervisor('data/notes.pickle')
+        self.supervisors['connection'] = ConnectionSupervisor()
 
         self.command_parsers['exit'] = self.__command_exit
         self.command_parsers['task'] = self.__command_task
@@ -66,6 +68,8 @@ class MumjolandiaThread(Thread):
         self.command_parsers['fat'] = self.__command_fat
         self.command_parsers['game'] = self.__command_game
         self.command_parsers['note'] = self.__command_note
+        self.command_parsers['connection'] = self.__command_connection
+        self.command_parsers['ssh'] = self.__command_connection
 
     def __get_next_command(self):
         command = self.queue_in.get()
@@ -91,3 +95,6 @@ class MumjolandiaThread(Thread):
 
     def __command_note(self, command):
         return self.supervisors['note'].execute(command)
+
+    def __command_connection(self, command):
+        return self.supervisors['connection'].execute(command)

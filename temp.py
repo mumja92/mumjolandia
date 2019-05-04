@@ -4,6 +4,7 @@ import sqlite3
 
 from src.interface.food.food_sql_enums import AmountType
 from src.interface.food.recipe_day import RecipeDay
+from src.modules.connection.connection_supervisor import ConnectionSupervisor
 from src.modules.fat.fat_factory import FatFactory
 from src.modules.food.food_database_helper import FoodDatabaseHelper
 from src.modules.food.food_supervisor import FoodSupervisor
@@ -63,7 +64,10 @@ def add_recipe():
 # print(get_recipe(2))
 
 
-p = PeriodicTasksGenerator('data/periodic_tasks.xml')
-x = p.get_list_next_occurrence()
-for t in x:
-    print(t)
+# p = PeriodicTasksGenerator('data/periodic_tasks.xml')
+# x = p.get_list_next_occurrence()
+# for t in x:
+#     print(t)
+
+cs = ConnectionSupervisor()
+cs.niewiemco()

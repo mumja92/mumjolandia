@@ -53,3 +53,5 @@ class MumjolandiaReturnValue(Enum):
     note_get_ok = 41
     note_delete_success = 42
     note_delete_incorrect_index = 43
+    #connection
+    connection_help = 45

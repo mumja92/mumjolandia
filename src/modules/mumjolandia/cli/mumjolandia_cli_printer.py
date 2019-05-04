@@ -65,6 +65,8 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.note_add_ok.name] = self.view_note_add_ok
         self.views[MumjolandiaReturnValue.note_help.name] = self.view_note_help
 
+        self.views[MumjolandiaReturnValue.note_help.name] = self.view_note_help
+
     def view_task_print(self, return_value):
         print(len(return_value.arguments[0]), 'items:')
         max_width = 0
@@ -217,4 +219,7 @@ class MumjolandiaCliPrinter:
         print('Added: ', return_value.arguments[0])
 
     def view_note_help(self, return_value):
+        print(return_value.arguments[0])
+
+    def view_connection_help(self, return_value):
         print(return_value.arguments[0])
