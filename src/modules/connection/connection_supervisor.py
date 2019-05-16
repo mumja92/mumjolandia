@@ -2,7 +2,6 @@ from src.interface.connection.status import Status
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
-from src.external import paramiko
 
 
 class ConnectionSupervisor(MumjolandiaSupervisor):
