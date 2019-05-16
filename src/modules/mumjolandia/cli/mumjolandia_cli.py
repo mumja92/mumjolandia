@@ -49,10 +49,10 @@ class MumjolandiaCli(Thread):
             print(date.fromtimestamp(time.time()))
             return False
 
-        if command.arguments[0] == 'help':
-            print('Available commands:')
-            print('fat, task, food, game, mode, cls, path, date, c')
-            return False
+        # if command.arguments[0] == 'help':
+        #     print('Available commands:')
+        #     print('fat, task, food, game, mode, cls, path, date, c')
+        #     return False
 
         if command.arguments[0] == 'cls':
             self.__clear_screen()

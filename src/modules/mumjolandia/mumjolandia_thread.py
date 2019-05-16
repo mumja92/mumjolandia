@@ -70,6 +70,7 @@ class MumjolandiaThread(Thread):
         self.command_parsers['note'] = self.__command_note
         self.command_parsers['connection'] = self.__command_connection
         self.command_parsers['ssh'] = self.__command_connection
+        self.command_parsers['help'] = self.__command_help
 
     def __get_next_command(self):
         command = self.queue_in.get()
@@ -98,3 +99,10 @@ class MumjolandiaThread(Thread):
 
     def __command_connection(self, command):
         return self.supervisors['connection'].execute(command)
+
+    def __command_help(self, command):
+        return_value = []
+        for key, value in self.command_parsers.items():
+            return_value.append(key)
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.mumjolandia_help,
+                                         arguments=return_value)

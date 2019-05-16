@@ -7,6 +7,7 @@ class MumjolandiaReturnValue(Enum):
     mumjolandia_unrecognized_parameters = 11
     mumjolandia_unrecognized_command = 2
     mumjolandia_exit = 9
+    mumjolandia_help = 45
     # task
     task_added = 3
     task_name_not_given = 4
@@ -54,4 +55,4 @@ class MumjolandiaReturnValue(Enum):
     note_delete_success = 42
     note_delete_incorrect_index = 43
     #connection
-    connection_help = 45
+    connection_help = 46

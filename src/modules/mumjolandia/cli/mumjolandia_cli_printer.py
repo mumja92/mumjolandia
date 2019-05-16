@@ -22,6 +22,7 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.mumjolandia_exit.name] = self.view_exit
         self.views[MumjolandiaReturnValue.mumjolandia_unrecognized_parameters.name] = \
             self.view_unrecognized_parameters
+        self.views[MumjolandiaReturnValue.mumjolandia_help.name] = self.view_help
 
         self.views[MumjolandiaReturnValue.task_get.name] = self.view_task_print
         self.views[MumjolandiaReturnValue.task_added.name] = self.view_task_added
@@ -97,6 +98,9 @@ class MumjolandiaCliPrinter:
               end='\n',
               file=sys.stdout,
               flush=False)
+
+    def view_help(self, return_value):
+        print(return_value.arguments)
 
     def view_task_delete_success(self, return_value):
         print("Deleted " + return_value.arguments[1] + " element(s) using parameter: " + return_value.arguments[0])
