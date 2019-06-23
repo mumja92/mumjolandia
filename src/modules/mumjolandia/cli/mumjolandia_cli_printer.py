@@ -58,6 +58,7 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.game_delete_incorrect_name] = self.view_game_delete_incorrect_name
         self.views[MumjolandiaReturnValue.game_delete_success.name] = self.view_game_delete_ok
         self.views[MumjolandiaReturnValue.game_get_ok.name] = self.view_game_get_ok
+        self.views[MumjolandiaReturnValue.game_help.name] = self.view_game_help
 
         self.views[MumjolandiaReturnValue.note_get_ok.name] = self.view_note_get_ok
         self.views[MumjolandiaReturnValue.note_delete_success.name] = self.view_note_delete_ok
@@ -205,6 +206,9 @@ class MumjolandiaCliPrinter:
     def view_game_get_ok(self, return_value):
         for i, t in enumerate(return_value.arguments):
             print('[' + str(i) + '] ' + str(t))
+
+    def view_game_help(self, return_value):
+        print(return_value.arguments[0])
 
     def view_note_get_ok(self, return_value):
         for i, t in enumerate(return_value.arguments):

@@ -47,6 +47,7 @@ class MumjolandiaReturnValue(Enum):
     game_delete_success = 30
     game_delete_incorrect_index = 31
     game_delete_incorrect_name = 38
+    game_help = 46
     #note
     note_add_ok = 39
     note_add_nook = 44
@@ -55,4 +56,4 @@ class MumjolandiaReturnValue(Enum):
     note_delete_success = 42
     note_delete_incorrect_index = 43
     #connection
-    connection_help = 46
+    connection_help = 47
