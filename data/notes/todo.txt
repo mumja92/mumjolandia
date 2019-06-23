@@ -1,3 +1,6 @@
+- games
+
+
 - random
     - refactor loaders to have common interface
     - config_loader should check if values are correct
@@ -23,8 +26,6 @@
     - add quality sql errors handling
     - refactor to be more readable
 
-- games
-    - function to add games to db quickly
 
 
 parowy/bugi:

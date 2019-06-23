@@ -1,0 +1,2 @@
+class WrongGameTypeException(Exception):
+    pass

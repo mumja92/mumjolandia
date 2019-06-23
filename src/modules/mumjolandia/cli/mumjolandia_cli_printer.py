@@ -204,8 +204,7 @@ class MumjolandiaCliPrinter:
         print('Added: ', return_value.arguments[0])
 
     def view_game_get_ok(self, return_value):
-        for i, t in enumerate(return_value.arguments):
-            print('[' + str(i) + '] ' + str(t))
+        print(return_value.arguments)
 
     def view_game_help(self, return_value):
         print(return_value.arguments[0])
