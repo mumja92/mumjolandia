@@ -12,7 +12,7 @@ class GameLoader:
         games = GamesContainer()
         file = Path(self.file)
         if not file.is_file():
-            return []
+            return games
         with open(self.file, 'r') as my_file:
             data = my_file.read()
         d = xmltodict.parse(data)
