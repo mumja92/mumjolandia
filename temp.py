@@ -15,8 +15,10 @@ from src.modules.food.ingredient_factory import IngredientFactory
 from src.modules.food.meal_factory import MealFactory
 from src.modules.food.utils.meal_loader_from_file import MealLoaderFromFile
 from src.modules.game.game_loader import GameLoader
+from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.tasks.periodic_tasks_generator import PeriodicTasksGenerator
 from src.modules.tasks.task_factory import TaskFactory
+from src.utils.logger import Logger
 from src.utils.polish_utf_to_ascii import PolishUtfToAscii
 
 db_location = 'data/jedzonko.db'
@@ -73,7 +75,8 @@ def add_recipe():
 # for t in x:
 #     print(t)
 
-gl = GameLoader('data/games.xml')
-xD = gl.get()
-print(xD)
+l = Logger('data/log.log', ConfigLoader.get_config().log_level, ConfigLoader.get_config().log_print_to_display)
 
+Logger.warning('warning')
+Logger.error('error')
+Logger.info('info')
