@@ -7,7 +7,7 @@ from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervis
 from src.interface.tasks.task_file_broken_exception import TaskFileBrokenException
 from src.interface.mumjolandia.incorrect_date_format_exception import IncorrectDateFormatException
 from src.interface.tasks.task_status import TaskStatus
-from src.interface.tasks.task_storage_type import StorageType
+from src.interface.tasks.task_storage_type import TaskStorageType
 from src.modules.tasks.periodic_tasks_generator import PeriodicTasksGenerator
 from src.modules.tasks.task_factory import TaskFactory
 from src.utils.object_loader_pickle import ObjectLoaderPickle
@@ -15,11 +15,11 @@ from src.modules.tasks.task_loader_xml import TaskLoaderXml
 
 
 class TaskSupervisor(MumjolandiaSupervisor):
-    def __init__(self, storage_type=StorageType.xml):
+    def __init__(self, storage_type=TaskStorageType.xml):
         super().__init__()
         self.storage_type = storage_type
         self.periodic_tasks_location = "data/periodic_tasks.xml"
-        self.task_file_location = "data/tasks." + self.storage_type.name
+        self.task_file_location = "data/tasks." + self.storage_type.name.lower()
         self.allowedToSaveTasks = True  # if loaded tasks are broken they wont be overwritten to not loose them
         self.task_loader = None
         self.tasks = None
@@ -77,9 +77,11 @@ class TaskSupervisor(MumjolandiaSupervisor):
     def __init(self):
         self.__add_command_parsers()
 
-        if self.storage_type == StorageType.xml:
+        if self.storage_type == TaskStorageType.xml:
+            logging.info("using xml file: " + self.task_file_location)
             self.task_loader = TaskLoaderXml(self.task_file_location)
-        elif self.storage_type == StorageType.pickle:
+        elif self.storage_type == TaskStorageType.pickle:
+            logging.info("using pickle file: " + self.task_file_location)
             self.task_loader = ObjectLoaderPickle(self.task_file_location)
         else:
             logging.error("Unrecognized storage type: '" + str(self.storage_type.name) + "' - using xml instead")

@@ -59,11 +59,18 @@ class MumjolandiaStarter:
         except OSError as e:
             pass
         try:
-            logging.basicConfig(format='%(asctime)s [%(levelname).1s] %(module)s::%(funcName)s --- %(message)s',
-                                datefmt='%d/%m/%Y %H:%M:%S', filename=self.log_location, level=self.config.log_level)
+            handlers = []
+            if self.config.log_to_display.lower() == 'True'.lower():
+                handlers.append(logging.StreamHandler())
+            if self.config.log_to_file.lower() == 'True'.lower():
+                handlers.append(logging.FileHandler(self.log_location))
+            if len(handlers) == 0:
+                logging.getLogger().disabled = True
+            else:
+                logging.basicConfig(format='%(asctime)s [%(levelname).1s] %(module)s::%(funcName)s --- %(message)s',
+                                    datefmt='%d/%m/%Y %H:%M:%S', handlers=handlers, level=self.config.log_level.upper())
         except ValueError:
             logging.error('Logging level: "' + self.config.log_level + '" is incorrect.')
-
         self.data_passer = MumjolandiaDataPasser(self.command_queue_request,
                                                  self.command_queue_response,
                                                  self.command_mutex,

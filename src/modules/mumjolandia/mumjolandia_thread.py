@@ -4,7 +4,7 @@ from threading import Thread
 from src.interface.mumjolandia.mumjolandia_cli_mode import MumjolandiaCliMode
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
-from src.interface.tasks.task_storage_type import StorageType
+from src.interface.tasks.task_storage_type import TaskStorageType
 from src.modules.connection.connection_supervisor import ConnectionSupervisor
 from src.modules.fat.fat_supervisor import FatSupervisor
 from src.modules.food.food_supervisor import FoodSupervisor
@@ -51,11 +51,15 @@ class MumjolandiaThread(Thread):
                 break
 
     def __init(self):
-        try:
-            self.supervisors['task'] = TaskSupervisor(storage_type=StorageType[self.config_object.task_io_method])
-        except KeyError:
+        task_storage_type = None
+        for k in TaskStorageType:
+            if self.config_object.task_io_method.lower() == k.name.lower():
+                task_storage_type = TaskStorageType[k.name]
+                break
+        if task_storage_type is None:
             logging.error('Storage type: "' + self.config_object.task_io_method + '" is incorrect. Using xml instead. ')
-            self.supervisors['task'] = TaskSupervisor(storage_type=StorageType.xml)
+            task_storage_type = TaskStorageType.xml
+        self.supervisors['task'] = TaskSupervisor(storage_type=task_storage_type)
         self.supervisors['food'] = FoodSupervisor('data/jedzonko.db')
         self.supervisors['fat'] = FatSupervisor('data/fat.pickle')
         self.supervisors['game'] = GameSupervisor('data/games.xml')
