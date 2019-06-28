@@ -11,10 +11,9 @@ class ConfigLoader:
         config_location = 'data/config.xml'
         file = Path(config_location)
         if not file.is_file():
-            return MumjolandiaConfigObject('WARNING', True, 'xml')
+            return MumjolandiaConfigObject('DEBUG', 'xml')
         with open(config_location, 'r') as my_file:
             data = my_file.read()
         config_dict = xmltodict.parse(data)
         return MumjolandiaConfigObject(config_dict['config']['log_level'],
-                                       config_dict['config']['log_to_display'],
                                        config_dict['config']['task_io_method'])
