@@ -1,4 +1,5 @@
-- games
+- MumjolandiaCli.__prepare_command needs refactor badly :(
+
 
 
 - random

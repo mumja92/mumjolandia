@@ -95,6 +95,9 @@ class MumjolandiaCli(Thread):
         if command.arguments[0:2] == ['game', 'print']:
             command.arguments[1] = 'get'
 
+        if command.arguments[0:2] == ['event', 'print']:
+            command.arguments[1] = 'get'
+
         if command.arguments[0:2] == ['task', 'edit']:
             try:
                 int(command.arguments[2])

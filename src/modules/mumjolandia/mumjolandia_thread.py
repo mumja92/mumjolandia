@@ -6,6 +6,7 @@ from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaRes
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.interface.tasks.task_storage_type import TaskStorageType
 from src.modules.connection.connection_supervisor import ConnectionSupervisor
+from src.modules.event.event_supervisor import EventSupervisor
 from src.modules.fat.fat_supervisor import FatSupervisor
 from src.modules.food.food_supervisor import FoodSupervisor
 from src.modules.game.game_supervisor import GameSupervisor
@@ -65,6 +66,7 @@ class MumjolandiaThread(Thread):
         self.supervisors['game'] = GameSupervisor('data/games.xml')
         self.supervisors['note'] = NoteSupervisor('data/notes.pickle')
         self.supervisors['connection'] = ConnectionSupervisor()
+        self.supervisors['event'] = EventSupervisor('data/events.xml')
 
         self.command_parsers['exit'] = self.__command_exit
         self.command_parsers['task'] = self.__command_task
@@ -75,6 +77,7 @@ class MumjolandiaThread(Thread):
         self.command_parsers['connection'] = self.__command_connection
         self.command_parsers['ssh'] = self.__command_connection
         self.command_parsers['help'] = self.__command_help
+        self.command_parsers['event'] = self.__command_event
 
     def __get_next_command(self):
         command = self.queue_in.get()
@@ -110,3 +113,6 @@ class MumjolandiaThread(Thread):
             return_value.append(key)
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.mumjolandia_help,
                                          arguments=return_value)
+
+    def __command_event(self, command):
+        return self.supervisors['event'].execute(command)

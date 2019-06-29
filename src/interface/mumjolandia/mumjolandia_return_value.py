@@ -57,3 +57,6 @@ class MumjolandiaReturnValue(Enum):
     note_delete_incorrect_index = 43
     #connection
     connection_help = 47
+    #game
+    event_get_ok = 48
+    event_help = 49

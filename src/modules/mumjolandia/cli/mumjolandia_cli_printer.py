@@ -69,6 +69,9 @@ class MumjolandiaCliPrinter:
 
         self.views[MumjolandiaReturnValue.note_help.name] = self.view_note_help
 
+        self.views[MumjolandiaReturnValue.event_get_ok.name] = self.view_event_get_ok
+        self.views[MumjolandiaReturnValue.event_help.name] = self.view_event_help
+
     def view_task_print(self, return_value):
         print(len(return_value.arguments[0]), 'items:')
         max_width = 0
@@ -229,4 +232,11 @@ class MumjolandiaCliPrinter:
         print(return_value.arguments[0])
 
     def view_connection_help(self, return_value):
+        print(return_value.arguments[0])
+
+    def view_event_get_ok(self, return_value):
+        for e in return_value.arguments:
+            print(str(e))
+
+    def view_event_help(self, return_value):
         print(return_value.arguments[0])
