@@ -1,5 +1,5 @@
 - MumjolandiaCli.__prepare_command needs refactor badly :(
-
+- Event - add fixed type to code and xml
 
 
 - random

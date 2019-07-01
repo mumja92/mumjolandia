@@ -60,3 +60,6 @@ class MumjolandiaReturnValue(Enum):
     #game
     event_get_ok = 48
     event_help = 49
+    #weather
+    weather_get_ok = 50
+    weather_help = 51
