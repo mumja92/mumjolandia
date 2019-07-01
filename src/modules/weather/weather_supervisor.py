@@ -1,9 +1,9 @@
 import logging
-import requests
 
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
+from src.utils import requests
 
 
 class WeatherSupervisor(MumjolandiaSupervisor):
@@ -28,9 +28,9 @@ class WeatherSupervisor(MumjolandiaSupervisor):
 
     def __get_weather_now(self):
         try:
-            response = requests.get('https://fcc-weather-api.glitch.me:81/api/current?lat=51.1&lon=17.03', timeout=(3, 5))
+            response = requests.get('https://fcc-weather-api.glitch.me/api/current?lat=51.1&lon=17.03', timeout=(3, 5))
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
-            logging.info('Weather API timouted')
+            logging.info('Weather API timeout')
             return 'Timeout :('
         if response.status_code == 200:
             json_response = response.json()
