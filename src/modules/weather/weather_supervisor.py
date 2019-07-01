@@ -3,6 +3,7 @@ import logging
 from src.external import requests
 from src.external.requests import Timeout
 from src.external.requests import ConnectionError
+from src.external.requests.exceptions import MissingSchema
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
@@ -34,6 +35,8 @@ class WeatherSupervisor(MumjolandiaSupervisor):
         except (Timeout, ConnectionError) as e:
             logging.info('Weather API timeout')
             return 'Timeout :('
+        except MissingSchema:
+            return 'Invalid URL'
         if response.status_code == 200:
             json_response = response.json()
             weather = json_response['weather'][0]['main']
