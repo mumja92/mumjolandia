@@ -191,7 +191,7 @@ def parse(xml_input, encoding=None, expat=expat, process_namespaces=False,
     among regular child elements, using `@` as a prefix to avoid collisions. If
     set to `False`, they are just ignored.
     Simple example::
-        >>> from src.utils import xmltodict
+        >>> from src.external.xmltodict import xmltodict
         >>> doc = xmltodict.parse(\"\"\"
         ... <a prop="x">
         ...   <b>1</b>

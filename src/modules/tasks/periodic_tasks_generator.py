@@ -3,7 +3,7 @@ from pathlib import Path
 
 from src.interface.tasks.task_type import TaskType
 from src.modules.tasks.task_factory import TaskFactory
-from src.utils import xmltodict
+from src.external.xmltodict import xmltodict
 
 
 class PeriodicTasksGenerator:

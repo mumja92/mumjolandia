@@ -1,29 +1,17 @@
 # db browser for sqlite
-import datetime
-import sqlite3
 
-from src.interface.food.food_sql_enums import AmountType
 from src.interface.food.recipe_day import RecipeDay
-from src.interface.game.game_type import GameType
-from src.interface.game.games_container import GamesContainer
-from src.interface.game.wrong_game_type_exception import WrongGameTypeException
-from src.modules.connection.connection_supervisor import ConnectionSupervisor
-from src.modules.fat.fat_factory import FatFactory
 from src.modules.food.food_database_helper import FoodDatabaseHelper
 from src.modules.food.food_supervisor import FoodSupervisor
 from src.modules.food.ingredient_factory import IngredientFactory
 from src.modules.food.meal_factory import MealFactory
-from src.modules.food.utils.meal_loader_from_file import MealLoaderFromFile
 from src.modules.game.game_loader import GameLoader
-from src.modules.tasks.periodic_tasks_generator import PeriodicTasksGenerator
-from src.modules.tasks.task_factory import TaskFactory
-from src.utils.polish_utf_to_ascii import PolishUtfToAscii
 
 db_location = 'data/jedzonko.db'
 
 
 def xml_to_dict():
-    from src.utils import xmltodict
+    from src.external.xmltodict import xmltodict
     with open('data/tasks.xml', 'r') as my_file:
         data = my_file.read()
     a = xmltodict.parse(data)

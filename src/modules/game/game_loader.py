@@ -1,7 +1,7 @@
 from pathlib import Path
 from src.interface.game.game_type import GameType
 from src.interface.game.games_container import GamesContainer
-from src.utils import xmltodict
+from src.external.xmltodict import xmltodict
 
 
 class GameLoader:

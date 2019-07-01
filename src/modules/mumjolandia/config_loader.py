@@ -3,7 +3,7 @@ from pathlib import Path
 from src.interface.mumjolandia.mumjolandia_config_object import MumjolandiaConfigObject
 from src.interface.mumjolandia.mumjolandia_config_enums import MumjolandiaLogLevel, MumjolandiaConfigBool
 from src.interface.tasks.task_storage_type import TaskStorageType
-from src.utils import xmltodict
+from src.external.xmltodict import xmltodict
 
 
 class ConfigLoader:

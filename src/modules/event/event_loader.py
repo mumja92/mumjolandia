@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 
 from src.modules.event.event_factory import EventFactory
-from src.utils import xmltodict
+from src.external.xmltodict import xmltodict
 
 
 class EventLoader:
