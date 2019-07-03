@@ -344,7 +344,7 @@ class PreparedRequest(RequestEncodingMixin, RequestHooksMixin):
 
     @staticmethod
     def _get_idna_encoded_host(host):
-        import idna
+        import src.external.idna as idna
 
         try:
             host = idna.encode(host, uts46=True).decode('utf-8')

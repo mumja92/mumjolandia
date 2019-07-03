@@ -86,9 +86,10 @@ def _check_cryptography(cryptography_version):
 try:
     check_compatibility(urllib3.__version__, chardet.__version__)
 except (AssertionError, ValueError):
-    warnings.warn("urllib3 ({}) or chardet ({}) doesn't match a supported "
-                  "version!".format(urllib3.__version__, chardet.__version__),
-                  RequestsDependencyWarning)
+    pass
+    # warnings.warn("urllib3 ({}) or chardet ({}) doesn't match a supported "
+    #               "version!".format(urllib3.__version__, chardet.__version__),
+    #               RequestsDependencyWarning)
 
 # Attempt to enable urllib3's SNI support, if possible
 try:
@@ -102,8 +103,11 @@ except ImportError:
     pass
 
 # urllib3's DependencyWarnings should be silenced.
-from urllib3.exceptions import DependencyWarning
-warnings.simplefilter('ignore', DependencyWarning)
+try:
+    from urllib3.exceptions import DependencyWarning
+    warnings.simplefilter('ignore', DependencyWarning)
+except ImportError:
+    pass
 
 from .__version__ import __title__, __description__, __url__, __version__
 from .__version__ import __build__, __author__, __author_email__, __license__
