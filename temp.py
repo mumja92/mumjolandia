@@ -1,6 +1,7 @@
 # db browser for sqlite
 
 from src.interface.food.recipe_day import RecipeDay
+from src.modules.connection.connection_supervisor import SocketServer
 from src.modules.food.food_database_helper import FoodDatabaseHelper
 from src.modules.food.food_supervisor import FoodSupervisor
 from src.modules.food.ingredient_factory import IngredientFactory
@@ -61,7 +62,9 @@ def add_recipe():
 # for t in x:
 #     print(t)
 
-gl = GameLoader('data/games.xml')
-xD = gl.get()
-print(xD)
+# gl = GameLoader('data/games.xml')
+# xD = gl.get()
+# print(xD)
 
+s = SocketServer('localhost', 3333)
+s.run_session()
