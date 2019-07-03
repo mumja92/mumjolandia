@@ -42,11 +42,13 @@ class WeatherSupervisor(MumjolandiaSupervisor):
         except socket.gaierror:
             logging.warning('Could not connect to service')
             return None
+        return_value = None
         if response.status == 200:
             json_response = json.loads(response.read().decode())
             weather = json_response['weather'][0]['main']
             temperature = json_response['main']['temp']
-            return weather + ' ' + '%.1f' % temperature + 'C'
+            return_value = weather + ' ' + '%.1f' % temperature + 'C'
         else:
             logging.warning('Weather API returned non 200-response')
-            return None
+        connection.close()
+        return return_value
