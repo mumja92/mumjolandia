@@ -74,8 +74,9 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.event_get_ok.name] = self.view_weather_get_ok
         self.views[MumjolandiaReturnValue.event_help.name] = self.view_weather_help
 
-        self.views[MumjolandiaReturnValue.weather_get_ok.name] = self.view_event_get_ok
-        self.views[MumjolandiaReturnValue.weather_help.name] = self.view_event_help
+        self.views[MumjolandiaReturnValue.weather_get_ok.name] = self.view_weather_get_ok
+        self.views[MumjolandiaReturnValue.weather_get_nook.name] = self.view_weather_get_nook
+        self.views[MumjolandiaReturnValue.weather_help.name] = self.view_weather_help
 
     def view_task_print(self, return_value):
         print(len(return_value.arguments[0]), 'items:')
@@ -253,7 +254,10 @@ class MumjolandiaCliPrinter:
         print(return_value.arguments[0])
 
     def view_weather_get_ok(self, return_value):
-        print(str(return_value.arguments))
+        print(str(return_value.arguments[0]))
+
+    def view_weather_get_nook(self, return_value):
+        print(str(return_value.arguments[0]))
 
     def view_weather_help(self, return_value):
         print(return_value.arguments[0])

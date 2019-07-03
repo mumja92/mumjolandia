@@ -1,12 +1,12 @@
 import logging
+import socket
+import ssl
 
-from src.external import requests
-from src.external.requests import Timeout
-from src.external.requests import ConnectionError
-from src.external.requests.exceptions import MissingSchema
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
+import http.client
+import json
 
 
 class WeatherSupervisor(MumjolandiaSupervisor):
@@ -22,8 +22,13 @@ class WeatherSupervisor(MumjolandiaSupervisor):
         self.command_parsers['help'] = self.__command_help
 
     def __command_get(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.weather_get_ok,
-                                         arguments=[self.__get_weather_now()])
+        response = self.__get_weather_now()
+        if response is not None:
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.weather_get_ok,
+                                             arguments=[response])
+        else:
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.weather_get_nook,
+                                             arguments=['Connection failed'])
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.weather_help,
@@ -31,17 +36,17 @@ class WeatherSupervisor(MumjolandiaSupervisor):
 
     def __get_weather_now(self):
         try:
-            response = requests.get('https://fcc-weather-api.glitch.me/api/current?lat=51.1&lon=17.03', timeout=(3, 5))
-        except (Timeout, ConnectionError) as e:
-            logging.info('Weather API timeout')
-            return 'Timeout :('
-        except MissingSchema:
-            return 'Invalid URL'
-        if response.status_code == 200:
-            json_response = response.json()
+            connection = http.client.HTTPConnection("fcc-weather-api.glitch.me")
+            connection.request("GET", "/api/current?lat=51.1&lon=17.03")
+            response = connection.getresponse()
+        except socket.gaierror:
+            logging.warning('Could not connect to service')
+            return None
+        if response.status == 200:
+            json_response = json.loads(response.read().decode())
             weather = json_response['weather'][0]['main']
             temperature = json_response['main']['temp']
             return weather + ' ' + '%.1f' % temperature + 'C'
         else:
-            logging.info('Weather API returned non 200-response')
-            return 'API returned status code ' + response.status_code
+            logging.warning('Weather API returned non 200-response')
+            return None

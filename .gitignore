@@ -1,5 +1,9 @@
 .idea
 *__pycache__*
+*.db
+*.db.bak
+*.pyc
+temp.py
 data/log.log
 data/tasks.*
 data/fat.*
@@ -7,11 +11,8 @@ data/games.*
 data/periodic_tasks.xml
 data/notes.*
 data/events.xml
-tests/test_tasks.xml
-*.db
-*db.bak
-venv/
-*.pyc
 data/meal_recipes_backup/
+tests/test_tasks.xml
+venv/
 
 !data/jedzonko.db
