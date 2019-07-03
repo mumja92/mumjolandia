@@ -5,16 +5,16 @@ from src.modules.connection.message_factory import MessageFactory
 
 class SocketServer:
     def __init__(self, address, port):
-        self.address_server = address
         self.port_server = port
-        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.address_server = address
+        self.socket_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.server_socket.bind((self.address_server, self.port_server))
+        self.socket_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.socket_server.bind((self.address_server, self.port_server))
 
     def run_once(self):
-        self.server_socket.listen(1)
-        connect, address = self.server_socket.accept()
+        self.socket_server.listen(1)
+        connect, address = self.socket_server.accept()
         print("Connection Address:" + str(address))
         received_message = self.__get_message_object(connect)
         print(received_message.get_string())
@@ -23,8 +23,8 @@ class SocketServer:
         connect.close()
 
     def run_session(self):
-        self.server_socket.listen(1)
-        connect, address = self.server_socket.accept()
+        self.socket_server.listen(1)
+        connect, address = self.socket_server.accept()
         print("Connection Address:" + str(address))
         while True:
             received_message = self.__get_message_object(connect)

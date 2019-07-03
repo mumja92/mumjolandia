@@ -27,9 +27,8 @@ class ConnectionSupervisor(MumjolandiaSupervisor):
                                                     'tu[name]\n'])
 
     def __command_server_start(self, args):
-        address = 'localhost'
         port = 3333
-        s = SocketServer(address, port)
+        s = SocketServer('0.0.0.0', port)
         s.run_once()
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.connection_server_start,
                                          arguments=['done'])
