@@ -1,4 +1,5 @@
 import logging
+import os
 from pathlib import Path
 
 from src.modules.event.event_factory import EventFactory
@@ -16,11 +17,13 @@ class EventLoader:
             logging.warning('Could not open events file based on name: "' + self.file + '"')
             return events
         with open(self.file, 'r') as my_file:
+            logging.debug('opened ' + os.path.abspath(self.file))
             data = my_file.read()
         d = xmltodict.parse(data)
         try:
             for e in d['events']['event']:
                 try:
+                    logging.debug('parsing: ' + e['name'])
                     event = EventFactory.get_event(e['name'], e['date'])
                 except KeyError:
                     logging.warning('Incorrect xml entry')

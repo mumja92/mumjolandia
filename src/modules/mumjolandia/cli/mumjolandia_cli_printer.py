@@ -72,8 +72,8 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.connection_client_send_ok.name] = self.view_connection_client_send_ok
         self.views[MumjolandiaReturnValue.connection_failed.name] = self.view_connection_failed
 
-        self.views[MumjolandiaReturnValue.event_get_ok.name] = self.view_weather_get_ok
-        self.views[MumjolandiaReturnValue.event_help.name] = self.view_weather_help
+        self.views[MumjolandiaReturnValue.event_get_ok.name] = self.view_event_get_ok
+        self.views[MumjolandiaReturnValue.event_help.name] = self.view_event_help
 
         self.views[MumjolandiaReturnValue.weather_get_ok.name] = self.view_weather_get_ok
         self.views[MumjolandiaReturnValue.weather_get_nook.name] = self.view_weather_get_nook
@@ -251,7 +251,7 @@ class MumjolandiaCliPrinter:
         print(return_value.arguments[0])
 
     def view_event_get_ok(self, return_value):
-        for e in return_value.arguments:
+        for e in return_value.arguments[0]:
             print(str(e))
 
     def view_event_help(self, return_value):

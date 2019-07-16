@@ -21,7 +21,7 @@ class EventSupervisor(MumjolandiaSupervisor):
         self.command_parsers['help'] = self.__command_help
 
     def __command_get(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.event_get_ok, arguments=self.events)
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.event_get_ok, arguments=[self.events])
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.event_help,
