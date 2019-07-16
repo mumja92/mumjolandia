@@ -59,10 +59,11 @@ class MumjolandiaReturnValue(Enum):
     connection_help = 47
     connection_server_start = 52
     connection_client_send_ok = 51
+    connection_failed = 54
     #game
     event_get_ok = 48
     event_help = 49
     #weather
     weather_get_ok = 50
     weather_get_nook = 53
-    weather_help = 54
+    weather_help = 55

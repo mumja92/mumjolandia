@@ -1,7 +1,8 @@
+import os
 import socket
 
-from src.interface.connection.message import Message
 from src.modules.connection.message_factory import MessageFactory
+from src.modules.mumjolandia.config_loader import ConfigLoader
 
 
 class SocketClient:
@@ -11,26 +12,41 @@ class SocketClient:
         self.socket_client = None
 
     def send_message(self, message):    # message = bytes or str
-        self.socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket_client.connect(("localhost", 3333))
-        m_to_send = MessageFactory().get(message)
-        self.socket_client.send(m_to_send.get())
-        received_len = int.from_bytes(self.socket_client.recv(4), byteorder='big', signed=False)
-        m_received = Message(self.socket_client.recv(received_len))
-        self.socket_client.close()
-        return m_received.get_string()
-
-    def send_session(self):
-        self.socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket_client.connect(("localhost", 3333))
-        while True:
-            m_to_send = MessageFactory().get(input())
+        try:
+            self.socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket_client.connect((ConfigLoader.get_config().server_address,
+                                        int(ConfigLoader.get_config().server_port)))
+            m_to_send = MessageFactory().get(message)
             self.socket_client.send(m_to_send.get())
-            received_len = int.from_bytes(self.socket_client.recv(4), byteorder='big', signed=False)
-            m_received = Message(self.socket_client.recv(received_len))
-            print('got: ' + m_received.get_string())
-            x = m_received.get_string()
-            if m_received.get_string() == 'bye':
-                print('exiting')
-                break
+            return_value = MessageFactory.get(self.__receive_message()).get_string()
+        except ConnectionResetError:
+            self.socket_client.close()
+            return_value = 'connection broken'
+        except ConnectionRefusedError:
+            self.socket_client.close()
+            return_value = 'connection refused'
         self.socket_client.close()
+        return return_value
+
+    def get_mumjolandia_update_package(self, file_name='mumjolandia.tar.gz'):
+        self.socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket_client.connect((ConfigLoader.get_config().server_address,
+                                    int(ConfigLoader.get_config().server_port)))
+        m_to_send = MessageFactory().get('update')
+        self.socket_client.send(m_to_send.get())
+        bytes_received = self.__receive_message()
+        if os.path.isfile(file_name):
+            os.remove(file_name)
+        with open(file_name, 'wb') as f:
+            f.write(bytes_received)
+        self.socket_client.close()
+        return os.path.abspath(file_name)
+
+    def __receive_message(self):
+        len_bytes = b''
+        while len(len_bytes) < 4:   # first 4 bytes are length of message
+            len_bytes += self.socket_client.recv(1)
+        bytes_received = b''
+        while len(bytes_received) < int.from_bytes(len_bytes, byteorder='big', signed=False):
+            bytes_received += self.socket_client.recv(1024)
+        return bytes_received

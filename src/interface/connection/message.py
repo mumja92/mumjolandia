@@ -8,3 +8,6 @@ class Message:
 
     def get_string(self):
         return self.data.decode('utf-8')
+
+    def get_raw(self):
+        return self.data

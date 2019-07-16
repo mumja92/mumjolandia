@@ -1,3 +1,4 @@
+- chyba jest zla scierzka mumjolandi jak sie wystartuje skrypt z innego folderu niz z mainem
 - MumjolandiaCli.__prepare_command needs refactor badly :(
 - Event - add fixed type to code and xml
 

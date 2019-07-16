@@ -70,6 +70,7 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.connection_help.name] = self.view_connection_help
         self.views[MumjolandiaReturnValue.connection_server_start.name] = self.view_connection_server_start
         self.views[MumjolandiaReturnValue.connection_client_send_ok.name] = self.view_connection_client_send_ok
+        self.views[MumjolandiaReturnValue.connection_failed.name] = self.view_connection_failed
 
         self.views[MumjolandiaReturnValue.event_get_ok.name] = self.view_weather_get_ok
         self.views[MumjolandiaReturnValue.event_help.name] = self.view_weather_help
@@ -244,6 +245,9 @@ class MumjolandiaCliPrinter:
         print(return_value.arguments[0])
 
     def view_connection_client_send_ok(self, return_value):
+        print(return_value.arguments[0])
+
+    def view_connection_failed(self, return_value):
         print(return_value.arguments[0])
 
     def view_event_get_ok(self, return_value):
