@@ -1,3 +1,4 @@
+import os
 import socket
 
 from src.modules.connection.message_factory import MessageFactory
@@ -47,6 +48,7 @@ class SocketServer:
             update_file = MumjolandiaUpdater.pack_source()
             with open(update_file, 'rb') as f:
                 data = f.read()
+            os.remove(update_file)
             msg_return = MessageFactory().get(data)
         else:
             msg_return = MessageFactory().get(message.get_string())
