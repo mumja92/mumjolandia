@@ -2,6 +2,7 @@ from pathlib import Path
 from src.interface.game.game_type import GameType
 from src.interface.game.games_container import GamesContainer
 from src.external.xmltodict import xmltodict
+from src.modules.game.game_factory import GameFactory
 
 
 class GameLoader:
@@ -23,7 +24,7 @@ class GameLoader:
                 games.add(str(d['games'][game_type.name]['game']), game_type)
             elif isinstance(d['games'][game_type.name]['game'], list):          # node has many elements
                 for g in d['games'][game_type.name]['game']:
-                    games.add(str(g), game_type)
+                    games.add(GameFactory().get_game(name=g, description='', game_type=game_type), game_type)
         return games
 
     def save(self):

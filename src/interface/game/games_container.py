@@ -21,5 +21,5 @@ class GamesContainer:
         for game_type in GameType:
             return_string += game_type.name + '\n'
             for game in self.games[game_type.name]:
-                return_string += pre_game_string + game + '\n'
+                return_string += pre_game_string + str(game) + '\n'
         return return_string
