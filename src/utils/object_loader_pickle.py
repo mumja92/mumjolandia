@@ -7,15 +7,14 @@ class ObjectLoaderPickle:
         self.file = file_name
 
     def get(self):
-        objects = []
         try:
             with open(self.file, 'rb') as fi:
-                objects = pickle.load(fi)
+                data = pickle.load(fi)
         except FileNotFoundError:
             logging.info(self.file + " - file doesn't exist")
-            objects = []
-        return objects
+            data = None
+        return data
 
-    def save(self, tasks):
+    def save(self, data):
         with open(self.file, 'wb') as fi:
-            pickle.dump(tasks, fi)
+            pickle.dump(data, fi)
