@@ -39,6 +39,8 @@ class NoteSupervisor(MumjolandiaSupervisor):
     def __init(self):
         self.__add_command_parsers()
         self.notes = self.note_loader.get()
+        if self.notes is None:
+            self.notes = []
 
     def __save(self):
         self.note_loader.save(self.notes)
