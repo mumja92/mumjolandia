@@ -12,21 +12,24 @@ class SocketClient:
         self.socket_client = None
 
     def send_message(self, message):    # message = bytes or str
+        return_value = 'not known error'
         try:
             self.socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket_client.settimeout(3)
             self.socket_client.connect((ConfigLoader.get_config().server_address,
                                         int(ConfigLoader.get_config().server_port)))
             m_to_send = MessageFactory().get(message)
             self.socket_client.send(m_to_send.get())
             return_value = MessageFactory.get(self.__receive_message()).get_string()
         except ConnectionResetError:
-            self.socket_client.close()
             return_value = 'connection broken'
         except ConnectionRefusedError:
-            self.socket_client.close()
             return_value = 'connection refused'
-        self.socket_client.close()
-        return return_value
+        except socket.timeout:
+            return_value = 'connection timeout'
+        finally:
+            self.socket_client.close()
+            return return_value
 
     def get_mumjolandia_update_package(self, file_name='mumjolandia.tar.gz'):
         self.socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
