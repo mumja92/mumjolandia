@@ -17,16 +17,16 @@ from src.modules.weather.weather_supervisor import WeatherSupervisor
 
 
 class MumjolandiaThread(Thread):
-    def __init__(self, queue_in, queue_response, event):
+    def __init__(self, queue_in, queue_response, event):     # commands has to be Command[] type
         Thread.__init__(self)
+        self.command_done_event = event
+        self.command_parsers = {}
         self.config_object = ConfigLoader.get_config()
+        self.exit_flag = False
+        self.mode = MumjolandiaCliMode.none
+        self.supervisors = {}
         self.queue_in = queue_in
         self.queue_response = queue_response
-        self.supervisors = {}
-        self.mode = MumjolandiaCliMode.none
-        self.command_parsers = {}
-        self.exit_flag = False
-        self.command_done_event = event
         self.__init()
 
     def __del__(self):
@@ -36,20 +36,7 @@ class MumjolandiaThread(Thread):
         logging.info('mumjolandia thread started')
         while True:
             command = self.__get_next_command()
-            command_to_pass = copy.copy(command)
-            try:
-                command_to_pass.arguments = command_to_pass.arguments[1:]
-            except IndexError:
-                command_to_pass.arguments = []
-            try:
-                return_value = self.command_parsers[command.arguments[0]](command_to_pass)
-            except KeyError:
-                logging.debug("Unrecognized command: '" + str(command) + "'")
-                return_value = MumjolandiaResponseObject(status=MumjolandiaReturnValue.mumjolandia_unrecognized_command,
-                                                         arguments=command)
-            self.queue_response.put(return_value)
-            self.command_done_event.set()
-            if self.exit_flag:
+            if self.__execute_command(command):
                 break
 
     def __init(self):
@@ -81,6 +68,23 @@ class MumjolandiaThread(Thread):
         self.command_parsers['help'] = self.__command_help
         self.command_parsers['event'] = self.__command_event
         self.command_parsers['weather'] = self.__command_weather
+
+    def __execute_command(self, command):
+        command_to_pass = copy.copy(command)
+        try:
+            command_to_pass.arguments = command_to_pass.arguments[1:]
+        except IndexError:
+            command_to_pass.arguments = []
+        try:
+            return_value = self.command_parsers[command.arguments[0]](command_to_pass)
+        except KeyError:
+            logging.debug("Unrecognized command: '" + str(command) + "'")
+            return_value = MumjolandiaResponseObject(status=MumjolandiaReturnValue.mumjolandia_unrecognized_command,
+                                                     arguments=command)
+        self.queue_response.put(return_value)
+        self.command_done_event.set()
+        if self.exit_flag:
+            return 1
 
     def __get_next_command(self):
         command = self.queue_in.get()

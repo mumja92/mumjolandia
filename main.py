@@ -1,6 +1,5 @@
-#!/usr/bin/python3.5
+#!/usr/bin/python3
 from src.modules.mumjolandia.mumjolandia_starter import MumjolandiaStarter
 
-
-MumjolandiaStarter().run_cli()
-
+m = MumjolandiaStarter()
+m.run_cli()

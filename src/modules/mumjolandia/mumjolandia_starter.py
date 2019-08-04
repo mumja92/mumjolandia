@@ -3,6 +3,7 @@ import os
 import threading
 from queue import Queue
 
+from src.modules.command.command_factory import CommandFactory
 from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.mumjolandia.mumjolandia_data_passer import MumjolandiaDataPasser
 from src.modules.mumjolandia.mumjolandia_thread import MumjolandiaThread
@@ -11,7 +12,8 @@ from src.modules.mumjolandia.gui.mumjolandia_gui import MumjolandiaGui
 
 
 class MumjolandiaStarter:
-    def __init__(self):
+    def __init__(self, commands=None):
+        self.commands = CommandFactory().get_command(commands)
         self.config = ConfigLoader.get_config()
         self.log_location = 'data/log.log'
         self.command_queue_request = Queue()
@@ -31,7 +33,7 @@ class MumjolandiaStarter:
     def run_cli(self):
         logging.info('Starting CLI')
         self.__run_mumjolandia()
-        cli = MumjolandiaCli(self.data_passer)
+        cli = MumjolandiaCli(self.data_passer, self.commands)
         cli.setName('cli thread')
         cli.start()
         self.__main_loop()

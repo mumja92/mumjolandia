@@ -3,19 +3,23 @@ import os
 import platform
 from threading import Thread
 
+import time
+
 from src.interface.mumjolandia.mumjolandia_cli_mode import MumjolandiaCliMode
 from src.interface.mumjolandia.mumjolandia_immutable_type_wrapper import MumjolandiaImmutableTypeWrapper
+from src.modules.command.command_factory import CommandFactory
 from src.modules.console.console import Console
 from src.modules.mumjolandia.cli.mumjolandia_cli_printer import MumjolandiaCliPrinter
 
 
 class MumjolandiaCli(Thread):
-    def __init__(self, data_passer):
+    def __init__(self, data_passer, commands=None):
         Thread.__init__(self)
-        self.console = Console()
-        self.data_passer = data_passer
         self.exit_flag = MumjolandiaImmutableTypeWrapper(False)
         self.cli_printer = MumjolandiaCliPrinter(self.exit_flag)
+        self.commands = commands
+        self.console = Console()
+        self.data_passer = data_passer
         self.mode = MumjolandiaCliMode.none
         self.permanent_cls = False
 
@@ -24,17 +28,27 @@ class MumjolandiaCli(Thread):
 
     def run(self):
         logging.info('mumjolandia cli started')
-        while True:
+        if self.commands is None:
             print(self.__get_prompt(), end='')
-            command = self.console.get_next_command()
+            while True:
+                command = self.console.get_next_command()
+                if command is not None:
+                    self.__handle_command(command)
+                    print(self.__get_prompt(), end='')
+                if self.exit_flag.object:
+                    break
+        else:
+            for c in self.commands:
+                self.__handle_command(c)
+
+    def __handle_command(self, command):
+        if command is not None:
             if not self.__prepare_command(command):
-                continue
+                return
             return_value = self.data_passer.pass_command(command)
             if self.permanent_cls:
                 self.__clear_screen()
             self.cli_printer.execute(return_value)
-            if self.exit_flag.object:
-                break
 
     def __prepare_command(self, command):
         self.__shortcut_generator(command)

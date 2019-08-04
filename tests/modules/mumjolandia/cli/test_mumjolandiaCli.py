@@ -89,19 +89,17 @@ class TestMumjolandiaCli(TestCase):
     @patch('src.modules.mumjolandia.mumjolandia_data_passer.MumjolandiaDataPasser.pass_command', return_value=None)
     @patch('src.modules.console.console.Console.get_next_command',
            side_effect=[CommandFactory.get_command('cls'),
-                        CommandFactory.get_command('needed_to_exit_loop'),
-                        CommandFactory.get_command('path'),
-                        CommandFactory.get_command('needed_to_exit_loop')])
+                        CommandFactory.get_command('path')])
     def test_not_passable_commands(self, mock_command, mock_passer, mock_cls):
         with HiddenPrints():
             self.cli.run()
-            self.assertEqual(mock_command.call_count, 2)
-            self.assertEqual(mock_passer.call_count, 1)
+            self.assertEqual(mock_command.call_count, 1)
+            self.assertEqual(mock_passer.call_count, 0)
             self.assertEqual(mock_cls.call_count, 1)
 
             self.cli.run()
-            self.assertEqual(mock_command.call_count, 4)
-            self.assertEqual(mock_passer.call_count, 2)
+            self.assertEqual(mock_command.call_count, 2)
+            self.assertEqual(mock_passer.call_count, 0)
             self.assertEqual(mock_cls.call_count, 1)
 
     @patch('src.modules.mumjolandia.mumjolandia_data_passer.MumjolandiaDataPasser.pass_command', return_value=None)
@@ -117,14 +115,10 @@ class TestMumjolandiaCli(TestCase):
     @patch('src.modules.mumjolandia.mumjolandia_data_passer.MumjolandiaDataPasser.pass_command', return_value=None)
     @patch('src.modules.console.console.Console.get_next_command',
            side_effect=[CommandFactory.get_command('task edit 1 name'),
-                        CommandFactory.get_command('task edit name name'),
-                        CommandFactory.get_command('needed_to_exit_loop'),
-                        CommandFactory.get_command('task edit name'),
-                        CommandFactory.get_command('needed_to_exit_loop'),
+                        CommandFactory.get_command('task edit name name'),  # incorrect first parameter
+                        CommandFactory.get_command('task edit name'),       # incorrect first parameter
                         CommandFactory.get_command('task edit 1'),
-                        CommandFactory.get_command('needed_to_exit_loop'),
-                        CommandFactory.get_command('task edit'),
-                        CommandFactory.get_command('needed_to_exit_loop')])
+                        CommandFactory.get_command('task edit')])
     def test_task_edit(self, mock_command, mock_passer):
         with HiddenPrints():
             self.cli.run()
@@ -133,39 +127,37 @@ class TestMumjolandiaCli(TestCase):
             self.assertEqual(mock_passer.call_count, 1)
 
             self.cli.run()
-            self.assertEqual(mock_command.call_count, 3)
+            self.assertEqual(mock_command.call_count, 2)
             self.assertEqual(mock_passer.call_count, 2)
 
             self.cli.run()
-            self.assertEqual(mock_command.call_count, 5)
+            self.assertEqual(mock_command.call_count, 3)
             self.assertEqual(mock_passer.call_count, 3)
 
             self.cli.run()
-            self.assertEqual(mock_command.call_count, 7)
+            self.assertEqual(mock_command.call_count, 4)
             self.assertEqual(mock_passer.call_count, 4)
 
             self.cli.run()
-            self.assertEqual(mock_command.call_count, 9)
+            self.assertEqual(mock_command.call_count, 5)
             self.assertEqual(mock_passer.call_count, 5)
 
     @patch('src.modules.mumjolandia.cli.mumjolandia_cli.MumjolandiaCli._MumjolandiaCli__clear_screen', return_value=None)
     @patch('src.modules.mumjolandia.mumjolandia_data_passer.MumjolandiaDataPasser.pass_command', return_value=None)
     @patch('src.modules.console.console.Console.get_next_command',
            side_effect=[CommandFactory.get_command('cls'),
-                        CommandFactory.get_command('needed_to_exit_loop'),
-                        CommandFactory.get_command('path'),
-                        CommandFactory.get_command('needed_to_exit_loop')])
+                        CommandFactory.get_command('path')])
     def test_calling_not_passable_commands_with_mode(self, mock_command, mock_passer, mock_cls):
         with HiddenPrints():
             self.cli.mode = MumjolandiaCliMode.task
             self.cli.run()
-            self.assertEqual(mock_command.call_count, 2)
-            self.assertEqual(mock_passer.call_count, 1)
+            self.assertEqual(mock_command.call_count, 1)
+            self.assertEqual(mock_passer.call_count, 0)
             self.assertEqual(mock_cls.call_count, 1)
 
             self.cli.run()
-            self.assertEqual(mock_command.call_count, 4)
-            self.assertEqual(mock_passer.call_count, 2)
+            self.assertEqual(mock_command.call_count, 2)
+            self.assertEqual(mock_passer.call_count, 0)
             self.assertEqual(mock_cls.call_count, 1)
 
     @patch('src.modules.mumjolandia.mumjolandia_data_passer.MumjolandiaDataPasser.pass_command', return_value=None)
