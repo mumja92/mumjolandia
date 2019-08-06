@@ -21,6 +21,7 @@ class MumjolandiaStarter:
         self.command_responded_event = threading.Event()
         self.data_passer = None
         self.command_mutex = threading.Lock()
+        self.mumjolandia_thread = None
         self.__run_init()
 
     def run_gui(self):
@@ -28,7 +29,6 @@ class MumjolandiaStarter:
         self.__run_mumjolandia()
         gui = MumjolandiaGui(self.data_passer)  # not implemented yet
         gui.run()
-        self.__main_loop()
 
     def run_cli(self):
         logging.info('Starting CLI')
@@ -36,18 +36,20 @@ class MumjolandiaStarter:
         cli = MumjolandiaCli(self.data_passer, self.commands)
         cli.setName('cli thread')
         cli.start()
-        self.__main_loop()
+
+    def set_commands(self, commands):
+        self.commands = CommandFactory().get_command(commands)
+
+    def get_mumjolandia_thread(self):
+        return self.mumjolandia_thread
 
     def __run_mumjolandia(self):
         logging.info('Starting mumjolandia')
-        mumjolandia_thread = MumjolandiaThread(self.command_queue_request,
-                                               self.command_queue_response,
-                                               self.command_responded_event)
-        mumjolandia_thread.setName('mumjolandia thread')
-        mumjolandia_thread.start()
-
-    def __main_loop(self):
-        logging.info('All tasks started. Exiting. ')
+        self.mumjolandia_thread = MumjolandiaThread(self.command_queue_request,
+                                                    self.command_queue_response,
+                                                    self.command_responded_event)
+        self.mumjolandia_thread.setName('mumjolandia thread')
+        self.mumjolandia_thread.start()
 
     def __run_init(self):
         if not os.path.isdir("data"):
