@@ -11,4 +11,6 @@
     <server_address>127.0.0.1</server_address>
     <!--'1024-65535'-->
     <server_port>3333</server_port>
+    <!--[string]-->
+    <shared_preferences_location>data/shared_preferences.pickle</shared_preferences_location>
 </config>

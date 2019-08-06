@@ -19,13 +19,15 @@ class ConfigLoader:
                          'log_to_file': 'False',
                          'task_io_method': 'xml',
                          'server_address': '127.0.0.1',
-                         'server_port': '3333'}
+                         'server_port': '3333',
+                         'shared_preferences_location': 'data/shared_preferences.pickle'}
         config_enums = {'log_level': MumjolandiaLogLevel,
                         'log_to_display': MumjolandiaConfigBool,
                         'log_to_file': MumjolandiaConfigBool,
                         'task_io_method': TaskStorageType,
                         'server_address': 'ip',
-                        'server_port': 'port'}
+                        'server_port': 'port',
+                        'shared_preferences_location': 'string'}
         if file.is_file():
             with open(config_location, 'r') as my_file:
                 data = my_file.read()
@@ -52,6 +54,10 @@ class ConfigLoader:
     @staticmethod
     def __is_value_correct(value, parameter):
         if isinstance(parameter, str):
+            if parameter == 'string':
+                if value is None or len(str(value)) < 1:
+                    return False
+                return True
             if parameter == 'ip':
                 try:
                     ipaddress.ip_address(value)

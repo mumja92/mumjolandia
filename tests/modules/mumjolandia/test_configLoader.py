@@ -25,6 +25,8 @@ class TestConfigLoader(TestCase):
             <server_address>192.168.0.100</server_address>
             <!--'1024-65535'-->
             <server_port>1234</server_port>
+            <!--[string]-->
+            <shared_preferences_location>config/data.pickle</shared_preferences_location>
             </config>""")
         config = ConfigLoader.get_config("configLoader.xml")
         self.assertEqual(config.log_level.lower(), 'error')
@@ -33,6 +35,7 @@ class TestConfigLoader(TestCase):
         self.assertEqual(config.task_io_method.lower(), 'pickle')
         self.assertEqual(config.server_address.lower(), '192.168.0.100')
         self.assertEqual(config.server_port.lower(), '1234')
+        self.assertEqual(config.shared_preferences_location, 'config/data.pickle')
         os.remove("configLoader.xml")
 
     def test_get_config_file_does_not_exist(self):
@@ -83,6 +86,8 @@ class TestConfigLoader(TestCase):
             <server_address>kotek</server_address>
             <!--'1024-65535'-->
             <server_port>dzem</server_port>
+            <!--[string]-->
+            <shared_preferences_location></shared_preferences_location>
         </config>""")
         config = ConfigLoader.get_config("configLoader.xml")
         self.assertEqual(config.log_level.lower(), 'warning')
@@ -91,6 +96,7 @@ class TestConfigLoader(TestCase):
         self.assertEqual(config.task_io_method.lower(), 'xml')
         self.assertEqual(config.server_address.lower(), '127.0.0.1')
         self.assertEqual(config.server_port.lower(), '3333')
+        self.assertEqual(config.shared_preferences_location.lower(), 'data/shared_preferences.pickle')
         os.remove("configLoader.xml")
 
     def test_get_config_values_incorrect_server_values(self):
