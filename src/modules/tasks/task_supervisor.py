@@ -145,11 +145,12 @@ class TaskSupervisor(MumjolandiaSupervisor):
                 for i, t in enumerate(self.tasks):
                     temp = datetime.datetime.combine(datetime.datetime.today() + datetime.timedelta(days=day_amount),
                                                      datetime.datetime.min.time())
-                    if t.date_to_finish.year == temp.year and \
-                            t.date_to_finish.month == temp.month and \
-                            t.date_to_finish.day == temp.day:
-                        return_list.append(t)
-                        return_indexes.append(i)
+                    if t.date_to_finish is not None:
+                        if t.date_to_finish.year == temp.year and \
+                                t.date_to_finish.month == temp.month and \
+                                t.date_to_finish.day == temp.day:
+                            return_list.append(t)
+                            return_indexes.append(i)
         else:       # task get
             for i, t in enumerate(self.tasks):
                 temp = datetime.datetime.today()    # first tasks for today
