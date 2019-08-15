@@ -50,6 +50,13 @@ class SocketServer:
                 data = f.read()
             os.remove(update_file)
             msg_return = MessageFactory().get(data)
+        elif message.get_string().startswith('get '):
+            if os.path.isfile(message.get_string()[4:]):
+                with open(message.get_string()[4:], 'rb') as f:
+                    data = f.read()
+                msg_return = MessageFactory().get(data)
+            else:
+                msg_return = MessageFactory().get('')
         else:
             msg_return = MessageFactory().get(message.get_string())
         return msg_return

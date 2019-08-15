@@ -45,6 +45,25 @@ class SocketClient:
         self.socket_client.close()
         return os.path.abspath(file_name)
 
+    def get_file(self, file_name):
+        return_value = None
+        if type(file_name) is not str:
+            return None
+        self.socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket_client.connect((ConfigLoader.get_config().server_address,
+                                    int(ConfigLoader.get_config().server_port)))
+        m_to_send = MessageFactory().get('get ' + file_name)
+        self.socket_client.send(m_to_send.get())
+        bytes_received = self.__receive_message()
+        if len(bytes_received) > 0:
+            if os.path.isfile(file_name):
+                os.remove(file_name)
+            with open(file_name, 'wb+') as f:
+                f.write(bytes_received)
+            return_value = os.path.abspath(file_name)
+        self.socket_client.close()
+        return return_value
+
     def __receive_message(self):
         len_bytes = b''
         while len(len_bytes) < 4:   # first 4 bytes are length of message

@@ -20,6 +20,7 @@ class ConnectionSupervisor(MumjolandiaSupervisor):
         self.command_parsers['server'] = self.__command_server_start
         self.command_parsers['send'] = self.__command_client_send
         self.command_parsers['update'] = self.__command_update
+        self.command_parsers['get'] = self.__command_get
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.note_help,
@@ -27,6 +28,7 @@ class ConnectionSupervisor(MumjolandiaSupervisor):
                                                     'server [x] (session)\n'
                                                     'send [msg]\n'
                                                     'send exit (shutdown server)\n'
+                                                    'get [filename] \n'
                                                     'update\n'])
 
     def __command_server_start(self, args):
@@ -55,6 +57,20 @@ class ConnectionSupervisor(MumjolandiaSupervisor):
             MumjolandiaUpdater.install_source(path)
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.connection_client_send_ok,
                                              arguments=['ok'])
+        except ConnectionRefusedError:
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.connection_failed,
+                                             arguments=['Can\'t connect to server'])
+
+    def __command_get(self, args):
+        try:
+            s = SocketClient(ConfigLoader.get_config().server_address, int(ConfigLoader.get_config().server_port))
+            path = s.get_file(args[0])
+            if path is None:
+                return_value = 'Connection ok, but received file empty'
+            else:
+                return_value = 'received file: ' + path
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.connection_client_send_ok,
+                                             arguments=[return_value])
         except ConnectionRefusedError:
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.connection_failed,
                                              arguments=['Can\'t connect to server'])
