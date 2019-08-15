@@ -24,7 +24,10 @@ class TaskLoaderXml:
                 name = child.get('name')
                 description = child.get('description')
                 date_added = datetime.datetime.strptime(child.get('date_added'), '%Y-%m-%d %H:%M:%S')
-                date_to_finish = datetime.datetime.strptime(child.get('date_to_finish'), '%Y-%m-%d %H:%M:%S')
+                if child.get('date_to_finish') == 'None':
+                    date_to_finish = None
+                else:
+                    date_to_finish = datetime.datetime.strptime(child.get('date_to_finish'), '%Y-%m-%d %H:%M:%S')
                 priority = TaskPriority[child.get('priority')]
                 task_type = TaskType[child.get('type')]
                 status = TaskStatus[child.get('status')]
@@ -37,9 +40,6 @@ class TaskLoaderXml:
                 if date_added is None:
                     broken_file_flag = True
                     date_added = 'error'
-                if date_to_finish is None:
-                    broken_file_flag = True
-                    date_to_finish = 'error'
                 if priority is None:
                     broken_file_flag = True
                     priority = TaskPriority.unknown
@@ -62,12 +62,16 @@ class TaskLoaderXml:
     def save(self, tasks):
         root_element = ET.Element("tasks")
         for t in tasks:
+            if t.date_to_finish is None:
+                date_to_finish = 'None'
+            else:
+                date_to_finish = t.date_to_finish.strftime("%Y-%m-%d %H:%M:%S")
             ET.SubElement(root_element,
                           "task",
                           name=t.name,
                           description=t.description,
                           date_added=t.date_added.strftime("%Y-%m-%d %H:%M:%S"),
-                          date_to_finish=t.date_to_finish.strftime("%Y-%m-%d %H:%M:%S"),
+                          date_to_finish=date_to_finish,
                           priority=str(t.priority.name),
                           type=str(t.type.name),
                           status=str(t.status.name)

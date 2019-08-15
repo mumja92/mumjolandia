@@ -13,7 +13,7 @@ class TestTaskFactory(TestCase):
         self.assertEqual(t.name, 'unknown')
         self.assertEqual(t.description, 'unknown')
         self.assertEqual(t.date_added, datetime.datetime.today().replace(microsecond=0))
-        self.assertEqual(t.date_to_finish, datetime.datetime.today().replace(microsecond=0))
+        self.assertEqual(t.date_to_finish, None)
         self.assertEqual(t.priority, TaskPriority['unknown'])
         self.assertEqual(t.type, TaskType['unknown'])
         self.assertEqual(t.status, TaskStatus['not_done'])

@@ -1,3 +1,4 @@
+import datetime
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -85,7 +86,9 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(len(ts.get_tasks()), 0)
         self.assertEqual(mock_load.call_count, 2)
 
-    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get', return_value=[TaskFactory.get_task('Task')])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory.get_task('Task',
+                                              date_to_finish=datetime.datetime.today().replace(microsecond=0))])
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     @patch('logging.warning', return_value=None)
     def test_execute(self, mock_logging, mock_save, mock_load):
@@ -106,7 +109,23 @@ class TestTaskSupervisor(TestCase):
 
         response = ts.execute(CommandFactory.get_command('get'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_get)
-        self.assertEqual(response.arguments[1], [TaskFactory.get_task('Task'), TaskFactory.get_task('new task')])
+        self.assertEqual(response.arguments[1],
+                         [TaskFactory.get_task('Task',
+                                               date_to_finish=datetime.datetime.today().replace(microsecond=0))])
+
+        response = ts.execute(CommandFactory.get_command("set 1 0"))
+        self.assertEqual(response.status, MumjolandiaReturnValue.task_set_ok)
+        self.assertEqual(response.arguments[0], 'new task')
+        self.assertEqual(response.arguments[1], '0')
+        self.assertEqual(mock_save.call_count, 2)
+
+        response = ts.execute(CommandFactory.get_command('get'))
+        self.assertEqual(response.status, MumjolandiaReturnValue.task_get)
+        self.assertEqual(response.arguments[1],
+                         [TaskFactory.get_task('Task',
+                                               date_to_finish=datetime.datetime.today().replace(microsecond=0)),
+                          TaskFactory.get_task('new task',
+                                               date_to_finish=datetime.datetime.today().replace(microsecond=0))])
 
         response = ts.execute(CommandFactory.get_command('delete not_existing_task'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_delete_incorrect_name)
@@ -119,7 +138,7 @@ class TestTaskSupervisor(TestCase):
         response = ts.execute(CommandFactory.get_command("delete 'new task'"))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_delete_success)
         self.assertEqual(response.arguments, ['new task', '1'])
-        self.assertEqual(mock_save.call_count, 2)
+        self.assertEqual(mock_save.call_count, 3)
 
         response = ts.execute(CommandFactory.get_command('get xD'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_get_wrong_data)
@@ -128,17 +147,17 @@ class TestTaskSupervisor(TestCase):
         response = ts.execute(CommandFactory.get_command("edit 1 new"))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_edit_wrong_index)
         self.assertEqual(response.arguments, ['1'])
-        self.assertEqual(mock_save.call_count, 2)
+        self.assertEqual(mock_save.call_count, 3)
 
         response = ts.execute(CommandFactory.get_command("edit 0 new"))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_edit_ok)
         self.assertEqual(response.arguments, ['0'])
-        self.assertEqual(mock_save.call_count, 3)
+        self.assertEqual(mock_save.call_count, 4)
 
         response = ts.execute(CommandFactory.get_command("delete 0"))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_delete_success)
         self.assertEqual(response.arguments, ['0', '1'])
-        self.assertEqual(mock_save.call_count, 4)
+        self.assertEqual(mock_save.call_count, 5)
 
         response = ts.execute(CommandFactory.get_command('get'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_get)
@@ -147,5 +166,5 @@ class TestTaskSupervisor(TestCase):
         response = ts.execute(CommandFactory.get_command('help'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_help)
 
-        self.assertEqual(mock_save.call_count, 4)
+        self.assertEqual(mock_save.call_count, 5)
         self.assertEqual(mock_load.call_count, 1)

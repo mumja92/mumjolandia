@@ -24,6 +24,4 @@ class TaskFactory:
             raise IncorrectDateFormatException
         if date_added is None:
             date_added = datetime.datetime.today().replace(microsecond=0)
-        if date_to_finish is None:
-            date_to_finish = datetime.datetime.today().replace(microsecond=0)
         return Task(name, description, date_added, date_to_finish, priority, task_type, status)

@@ -129,12 +129,19 @@ class TaskSupervisor(MumjolandiaSupervisor):
             try:
                 day_amount = int(args[0])
             except ValueError:
-                return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get_wrong_data, arguments=args)
-            if int(args[0]) == 0:   # task get 0
+                if args[0] != 'x':
+                    return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get_wrong_data, arguments=args)
+            if args[0] == 'x':   # task get x  ### every task that has finish date not set
+                for i, t in enumerate(self.tasks):
+                    if t.date_to_finish is None:
+                        return_list.append(t)
+                        return_indexes.append(i)
+            elif int(args[0]) == 0:   # task get 0
                 for i, t in enumerate(self.tasks):
                     return_list.append(t)
                     return_indexes.append(i)
-            else:                   # task get x
+
+            else:                   # task get [number]
                 for i, t in enumerate(self.tasks):
                     temp = datetime.datetime.combine(datetime.datetime.today() + datetime.timedelta(days=day_amount),
                                                      datetime.datetime.min.time())
@@ -146,16 +153,19 @@ class TaskSupervisor(MumjolandiaSupervisor):
         else:       # task get
             for i, t in enumerate(self.tasks):
                 temp = datetime.datetime.today()    # first tasks for today
-                if t.date_to_finish.year == temp.year and \
-                        t.date_to_finish.month == temp.month and \
-                        t.date_to_finish.day == temp.day:
-                    return_list.append(t)
-                    return_indexes.append(i)
-                    continue
-                # now not finished tasks from previous days
-                if t.status == TaskStatus.not_done and t.date_to_finish <= temp:
-                    return_list.append(t)
-                    return_indexes.append(i)
+                if t.date_to_finish is not None:
+                    if t.date_to_finish.year == temp.year and \
+                            t.date_to_finish.month == temp.month and \
+                            t.date_to_finish.day == temp.day:
+                        return_list.append(t)
+                        return_indexes.append(i)
+                        continue
+                    # now not finished tasks from previous days
+                    if t.status == TaskStatus.not_done and t.date_to_finish <= temp:
+                        return_list.append(t)
+                        return_indexes.append(i)
+        if args and args[0] == 'x':
+            return MumjolandiaResponseObject(status=return_status, arguments=[return_indexes, return_list])
         tasks = PeriodicTasksGenerator(self.periodic_tasks_location).get_tasks(day_amount)
         for t in tasks:
             return_list.insert(0, t)
@@ -164,13 +174,14 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help,
-                                         arguments=['print\n'
-                                                    'print 0\n'
-                                                    'print [delta]\n'
+                                         arguments=['print (show today and previous uncompleted\n'
+                                                    'print 0 (show all tasks\n'
+                                                    'print x (show tasks without date)\n'
+                                                    'print [delta] (show tasks for given day)\n'
                                                     'add [name]\n'
                                                     'delete [name || id]\n'
                                                     'edit [id] [name]\n'
-                                                    'set [id] [delta_from_today]\n'
+                                                    'set [id] [delta_from_today/none]\n'
                                                     'done\n'
                                                     'undone\n'
                                                     'periodic\n'])
@@ -183,18 +194,28 @@ class TaskSupervisor(MumjolandiaSupervisor):
                                              arguments=['none'])
 
     def __command_edit(self, args):
-        return self.edit_task(int(args[0]), TaskFactory.get_task(name=args[1]))
+        try:
+            date_to_finish = self.tasks[int(args[0])].date_to_finish
+        except IndexError:
+            date_to_finish = None
+        return self.edit_task(int(args[0]), TaskFactory.get_task(name=args[1], date_to_finish=date_to_finish))
 
     def __command_set(self, args):
         try:
             if int(args[0]) > len(self.tasks) or int(args[0]) < 0:
                 raise IndexError
-            self.tasks[int(args[0])].date_to_finish = datetime.datetime.today().replace(microsecond=0) + \
-                                                      datetime.timedelta(days=int(args[1]))
+            if args[1].lower() == 'None'.lower():
+                self.tasks[int(args[0])].date_to_finish = None
+            else:
+                self.tasks[int(args[0])].date_to_finish = datetime.datetime.today().replace(microsecond=0) + \
+                                                          datetime.timedelta(days=int(args[1]))
             self.__save_if_allowed()
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_set_ok,
                                              arguments=[self.tasks[int(args[0])].name, args[1]])
         except IndexError:
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_set_incorrect_parameter,
+                                             arguments=args)
+        except ValueError:
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_set_incorrect_parameter,
                                              arguments=args)
 
