@@ -180,8 +180,11 @@ class MumjolandiaCliPrinter:
         print("")
 
     def view_fat_get_ok(self, return_value):
-        for i, t in enumerate(return_value.arguments):
-            print('[' + str(i) + '] ' + str(t))
+        try:
+            for i, t in enumerate(return_value.arguments):
+                print('[' + str(i) + '] ' + str(t))
+        except TypeError:
+            print('0 elements')
 
     def view_fat_delete_ok(self, return_value):
         print("Deleted " + return_value.arguments[1] + " element(s) using parameter: " + return_value.arguments[0])
