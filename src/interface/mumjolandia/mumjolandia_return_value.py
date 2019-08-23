@@ -44,9 +44,9 @@ class MumjolandiaReturnValue(Enum):
     game_get_ok = 27
     game_value_not_given = 28
     game_added = 29
+    game_exist = 38
     game_delete_success = 30
     game_delete_incorrect_index = 31
-    game_delete_incorrect_name = 38
     game_help = 46
     #note
     note_add_ok = 39

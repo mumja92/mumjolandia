@@ -51,7 +51,7 @@ class MumjolandiaThread(Thread):
         self.supervisors['task'] = TaskSupervisor(storage_type=task_storage_type)
         self.supervisors['food'] = FoodSupervisor('data/jedzonko.db')
         self.supervisors['fat'] = FatSupervisor('data/fat.pickle')
-        self.supervisors['game'] = GameSupervisor('data/games.xml')
+        self.supervisors['game'] = GameSupervisor('data/games.db')
         self.supervisors['note'] = NoteSupervisor('data/notes.pickle')
         self.supervisors['connection'] = ConnectionSupervisor()
         self.supervisors['event'] = EventSupervisor('data/events.xml')

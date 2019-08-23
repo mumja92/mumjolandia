@@ -54,9 +54,9 @@ class MumjolandiaCliPrinter:
 
         self.views[MumjolandiaReturnValue.game_value_not_given.name] = self.view_game_value_not_given
         self.views[MumjolandiaReturnValue.game_added.name] = self.view_game_added
+        self.views[MumjolandiaReturnValue.game_exist.name] = self.view_game_exist
         self.views[MumjolandiaReturnValue.game_delete_incorrect_index.name] = self.view_game_delete_incorrect_index
-        self.views[MumjolandiaReturnValue.game_delete_incorrect_name] = self.view_game_delete_incorrect_name
-        self.views[MumjolandiaReturnValue.game_delete_success.name] = self.view_game_delete_ok
+        self.views[MumjolandiaReturnValue.game_delete_success.name] = self.view_game_delete_success
         self.views[MumjolandiaReturnValue.game_get_ok.name] = self.view_game_get_ok
         self.views[MumjolandiaReturnValue.game_help.name] = self.view_game_help
 
@@ -201,23 +201,24 @@ class MumjolandiaCliPrinter:
     def view_fat_added(self, return_value):
         print('Added: ', return_value.arguments[0])
 
-    def view_game_delete_ok(self, return_value):
-        print("Deleted " + return_value.arguments[1] + " element(s) using parameter: " + return_value.arguments[0])
+    def view_game_delete_success(self, return_value):
+        print("Deleted " + str(return_value.arguments[0]) + " element(s) using parameter: " + str(return_value.arguments[1]))
 
     def view_game_delete_incorrect_index(self, return_value):
-        print("Can't delete - incorrect index value: " + return_value.arguments[0])
+        print("Incorrect name")
 
     def view_game_value_not_given(self, return_value):
         print("Value not given")
 
-    def view_game_delete_incorrect_name(self, return_value):
-        print("Can't delete - incorrect name: " + return_value.arguments[0])
-
     def view_game_added(self, return_value):
         print('Added: ', return_value.arguments[0])
 
+    def view_game_exist(self, return_value):
+        print('Game already exist: ', return_value.arguments[0])
+
     def view_game_get_ok(self, return_value):
-        print(return_value.arguments)
+        for g in return_value.arguments:
+            print(str(g))
 
     def view_game_help(self, return_value):
         print(return_value.arguments[0])
