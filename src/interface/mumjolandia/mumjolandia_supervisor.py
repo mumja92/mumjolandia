@@ -14,7 +14,7 @@ class MumjolandiaSupervisor:
         try:
             return self.command_parsers[command.arguments[0]](command.arguments[1:])
         except KeyError:
-            logging.warning('Unrecognized command: ' + str(command.arguments))
+            logging.info('Unrecognized command: ' + str(command.arguments))
             return self.command_parsers['unrecognized_command'](command.arguments)
         except IndexError:
             return self.command_parsers['null'](command.arguments)
