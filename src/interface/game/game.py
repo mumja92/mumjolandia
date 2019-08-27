@@ -7,4 +7,4 @@ class Game(PODTemplate):
         self.game_id = game_id
 
     def __str__(self):
-        return self.name
+        return self.name + '[' + str(self.game_id) + ']'

@@ -48,6 +48,9 @@ class MumjolandiaReturnValue(Enum):
     game_delete_success = 30
     game_delete_incorrect_index = 31
     game_help = 46
+    game_current_get = 55
+    game_set_ok = 56
+    game_set_wrong_id = 57
     #note
     note_add_ok = 39
     note_add_nook = 44
@@ -66,4 +69,4 @@ class MumjolandiaReturnValue(Enum):
     #weather
     weather_get_ok = 50
     weather_get_nook = 53
-    weather_help = 55
+    weather_help = 58
