@@ -89,7 +89,7 @@ class MumjolandiaCliPrinter:
             print('[' + str(i).rjust(max_width, ' ') + ']' + str(t))
 
     def view_task_added(self, return_value):
-        print('Added: ' + str(return_value.arguments[0]))
+        print('Added: ' + str(return_value.arguments[0]) + ' [' + str(return_value.arguments[1]) + ']')
 
     def view_exit(self, return_value):
         print('exiting')

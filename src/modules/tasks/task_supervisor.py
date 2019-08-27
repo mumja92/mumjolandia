@@ -36,7 +36,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_incorrect_date_format)
         logging.info("Added task '" + name + "'")
         self.__save_if_allowed()
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_added, arguments=[name])
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_added, arguments=[name, len(self.tasks)-1])
 
     def edit_task(self, task_id, new_task):
         try:
