@@ -67,10 +67,10 @@ class MumjolandiaThread(Thread):
         self.command_parsers['note'] = self.__command_note
         self.command_parsers['connection'] = self.__command_connection
         self.command_parsers['ssh'] = self.__command_connection
-        self.command_parsers['help'] = self.__command_help
         self.command_parsers['event'] = self.__command_event
         self.command_parsers['weather'] = self.__command_weather
         self.command_parsers['password'] = self.__command_password
+        self.command_parsers['help'] = self.__command_help              # has to be last to show all parsers
 
     def __execute_command(self, command):
         command_to_pass = copy.copy(command)
