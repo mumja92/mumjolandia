@@ -11,8 +11,12 @@ class GameDbAdapter:
         self.__init_database()
 
     def add_game(self, game):
-        conn = sqlite3.connect(self.db_location)
-        c = conn.cursor()
+        try:
+            conn = sqlite3.connect(self.db_location)
+            c = conn.cursor()
+        except sqlite3.OperationalError as e:
+            logging.warning(e.args[0])
+            return False
         try:
             c.execute('INSERT INTO game (name) VALUES (?)', (game.name, ))
         except (sqlite3.IntegrityError, sqlite3.DatabaseError) as e:
@@ -24,8 +28,12 @@ class GameDbAdapter:
         return True
 
     def get_games(self):
-        conn = sqlite3.connect(self.db_location)
-        c = conn.cursor()
+        try:
+            conn = sqlite3.connect(self.db_location)
+            c = conn.cursor()
+        except sqlite3.OperationalError as e:
+            logging.warning(e.args[0])
+            return []
         try:
             c.execute('''SELECT * FROM game''')
             games = c.fetchall()
@@ -39,8 +47,12 @@ class GameDbAdapter:
         return return_value
 
     def remove_game(self, game):
-        conn = sqlite3.connect(self.db_location)
-        c = conn.cursor()
+        try:
+            conn = sqlite3.connect(self.db_location)
+            c = conn.cursor()
+        except sqlite3.OperationalError as e:
+            logging.warning(e.args[0])
+            return 0
         return_value = 0
         try:
             c.execute('''DELETE FROM game WHERE game_id = ''' + str(game.game_id))
@@ -54,8 +66,12 @@ class GameDbAdapter:
             return return_value
 
     def __create_new_db(self):
-        conn = sqlite3.connect(self.db_location)
-        c = conn.cursor()
+        try:
+            conn = sqlite3.connect(self.db_location)
+            c = conn.cursor()
+        except sqlite3.OperationalError as e:
+            logging.warning(e.args[0])
+            return
         c.execute('''CREATE TABLE game
                      (game_id INTEGER PRIMARY KEY,
                      name varchar(50) NOT NULL UNIQUE)''')

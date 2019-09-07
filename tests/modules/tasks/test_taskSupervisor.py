@@ -2,6 +2,8 @@ import datetime
 from unittest import TestCase
 from unittest.mock import patch
 
+import logging
+
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.modules.command.command_factory import CommandFactory
 from src.modules.tasks.task_factory import TaskFactory
@@ -9,6 +11,10 @@ from src.modules.tasks.task_supervisor import TaskSupervisor
 
 
 class TestTaskSupervisor(TestCase):
+    def __init__(self, *args, **kwargs):
+        super(TestTaskSupervisor, self).__init__(*args, **kwargs)
+        logging.getLogger().disabled = True
+
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get', side_effect=[[], [TaskFactory.get_task('simple task')]])
     def test_get_tasks(self, mock):
         ts = TaskSupervisor()
@@ -90,21 +96,18 @@ class TestTaskSupervisor(TestCase):
            return_value=[TaskFactory.get_task('Task',
                                               date_to_finish=datetime.datetime.today().replace(microsecond=0))])
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
-    @patch('logging.warning', return_value=None)
-    def test_execute(self, mock_logging, mock_save, mock_load):
+    def test_execute(self, mock_save, mock_load):
         ts = TaskSupervisor()
 
         response = ts.execute(CommandFactory.get_command(''))
         self.assertEqual(response.status, MumjolandiaReturnValue.mumjolandia_unrecognized_parameters)
-        self.assertEqual(mock_logging.call_count, 1)
 
         response = ts.execute(CommandFactory.get_command('xD'))
         self.assertEqual(response.status, MumjolandiaReturnValue.mumjolandia_unrecognized_parameters)
-        self.assertEqual(mock_logging.call_count, 2)
 
         response = ts.execute(CommandFactory.get_command("add 'new task'"))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_added)
-        self.assertEqual(response.arguments, ['new task'])
+        self.assertEqual(response.arguments, ['new task', 1])
         self.assertEqual(mock_save.call_count, 1)
 
         response = ts.execute(CommandFactory.get_command('get'))

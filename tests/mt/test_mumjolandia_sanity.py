@@ -19,11 +19,12 @@ class TestMumjolandiaSanity(TestCase):
     def tearDown(self):
         shutil.rmtree(os.path.abspath(os.curdir) + '/data')
 
-    def test_translate(self):
+    def test_note_add(self):
         self.assertEqual(os.path.isfile('data/notes.pickle'), False)
         self.mumjolandia_starter.set_commands(["note add 'test note'", "note add 'second test note'", "exit"])
         with HiddenPrints():
-            self.mumjolandia_starter.run_cli()
+            with HiddenPrints():
+                self.mumjolandia_starter.run_cli()
         self.mumjolandia_starter.get_mumjolandia_thread().join()
         self.assertEqual(os.path.isfile('data/notes.pickle'), True)
         note = ObjectLoaderPickle('data/notes.pickle').get()
