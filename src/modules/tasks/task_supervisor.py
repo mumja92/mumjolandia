@@ -105,8 +105,9 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
     def __add_command_parsers(self):
         self.command_parsers['add'] = self.__command_add
+        self.command_parsers['ls'] = self.__command_get
         self.command_parsers['get'] = self.__command_get
-        self.command_parsers['delete'] = self.__command_delete
+        self.command_parsers['rm'] = self.__command_delete
         self.command_parsers['edit'] = self.__command_edit
         self.command_parsers['help'] = self.__command_help
         self.command_parsers['set'] = self.__command_set
@@ -175,12 +176,12 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help,
-                                         arguments=['print (show today and previous uncompleted\n'
-                                                    'print 0 (show all tasks\n'
-                                                    'print x (show tasks without date)\n'
-                                                    'print [delta] (show tasks for given day)\n'
+                                         arguments=['ls (show today and previous uncompleted\n'
+                                                    'ls 0 (show all tasks\n'
+                                                    'ls x (show tasks without date)\n'
+                                                    'ls [delta] (show tasks for given day)\n'
                                                     'add [name]\n'
-                                                    'delete [name || id]\n'
+                                                    'ls [name || id]\n'
                                                     'edit [id] [name]\n'
                                                     'set [id] [delta_from_today/none]\n'
                                                     'done\n'

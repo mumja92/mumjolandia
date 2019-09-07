@@ -1,5 +1,3 @@
-import itertools
-
 from src.interface.food.food_file_broken_exception import FoodFileBrokenException
 from src.interface.food.food_sql_enums import AmountType
 from src.interface.food.ingredient import Ingredient
@@ -69,7 +67,7 @@ class FoodSupervisor(MumjolandiaSupervisor):
         return meal_id
 
     def __add_command_parsers(self):
-        self.command_parsers['print'] = self.__command_print
+        self.command_parsers['ls'] = self.__command_print
         self.command_parsers['help'] = self.__command_help
         self.command_parsers['ingredients'] = self.__command_ingredient
         self.command_parsers['i'] = self.__command_ingredient

@@ -48,7 +48,7 @@ class NoteSupervisor(MumjolandiaSupervisor):
     def __add_command_parsers(self):
         self.command_parsers['add'] = self.__command_add
         self.command_parsers['get'] = self.__command_get
-        self.command_parsers['delete'] = self.__command_delete
+        self.command_parsers['rm'] = self.__command_delete
         self.command_parsers['help'] = self.__command_help
 
     def __command_add(self, args):
@@ -69,6 +69,6 @@ class NoteSupervisor(MumjolandiaSupervisor):
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.note_help,
-                                         arguments=['print\n'
+                                         arguments=['ls\n'
                                                     'add [name]\n'
-                                                    'delete [id]\n'])
+                                                    'rm [id]\n'])

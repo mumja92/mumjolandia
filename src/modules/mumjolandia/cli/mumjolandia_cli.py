@@ -51,7 +51,7 @@ class MumjolandiaCli(Thread):
             self.cli_printer.execute(return_value)
 
     def __prepare_command(self, command):
-        self.__shortcut_generator(command)
+        # self.__shortcut_generator(command)
 
         if command.arguments[0] == 'date':  # to delete later
             import datetime
@@ -62,11 +62,6 @@ class MumjolandiaCli(Thread):
             print('date.fromtimestamp(time.time())')
             print(date.fromtimestamp(time.time()))
             return False
-
-        # if command.arguments[0] == 'help':
-        #     print('Available commands:')
-        #     print('fat, task, food, game, mode, cls, path, date, c')
-        #     return False
 
         if command.arguments[0] == 'cls':
             self.__clear_screen()
@@ -144,38 +139,3 @@ class MumjolandiaCli(Thread):
             return 'mumjolandia>'
         else:
             return 'mumjolandia/' + self.mode.name + '>'
-
-    def __shortcut_generator(self, command):
-        try:
-            if self.mode is not MumjolandiaCliMode.none:
-                if command.arguments[0] == 'h':
-                    command.arguments[0] = 'help'
-                if command.arguments[0] == 'ls':
-                    command.arguments[0] = 'print'
-                if command.arguments[0] == 'rm':
-                    command.arguments[0] = 'delete'
-                if command.arguments[0] == 'h':
-                    command.arguments[0] = 'help'
-                if command.arguments[0] == 'i':
-                    command.arguments[0] = 'ingredient'
-        except IndexError:
-            pass
-        try:
-            if command.arguments[0] == 't':
-                command.arguments[0] = 'task'
-            if command.arguments[0] == 'fo':
-                command.arguments[0] = 'food'
-            if command.arguments[0] == 'fa':
-                command.arguments[0] = 'fat'
-            if command.arguments[0] == 'h':
-                command.arguments[0] = 'help'
-            if command.arguments[0] == 'n':
-                command.arguments[0] = 'note'
-            if command.arguments[1] == 'ls':
-                command.arguments[1] = 'print'
-            if command.arguments[1] == 'rm':
-                command.arguments[1] = 'delete'
-            if command.arguments[1] == 'h':
-                command.arguments[1] = 'help'
-        except IndexError:
-            pass

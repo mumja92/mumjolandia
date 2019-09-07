@@ -30,8 +30,8 @@ class PasswordSupervisor(MumjolandiaSupervisor):
         self.command_parsers['get'] = self.__command_get
         self.command_parsers['help'] = self.__command_help
         self.command_parsers['init'] = self.__command_init
-        self.command_parsers['list'] = self.__command_list
-        self.command_parsers['remove'] = self.__command_rm
+        self.command_parsers['ls'] = self.__command_list
+        self.command_parsers['rm'] = self.__command_rm
         self.command_parsers['set'] = self.__command_set
 
     def __command_add(self, args):
@@ -127,7 +127,6 @@ class PasswordSupervisor(MumjolandiaSupervisor):
         return False
 
     def __check_password_validation_string(self, password):
-        #decrypted_magic_word = str(PasswordFactory().get_decrypt_password(password, self.password_validation_string))
         decrypted_magic_word = str(PydesWrapper().decrypt(password, self.password_validation_string))
         if self.password_validation_magic_word == decrypted_magic_word:
             return True

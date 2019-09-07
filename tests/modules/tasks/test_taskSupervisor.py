@@ -130,15 +130,15 @@ class TestTaskSupervisor(TestCase):
                           TaskFactory.get_task('new task',
                                                date_to_finish=datetime.datetime.today().replace(microsecond=0))])
 
-        response = ts.execute(CommandFactory.get_command('delete not_existing_task'))
+        response = ts.execute(CommandFactory.get_command('rm not_existing_task'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_delete_incorrect_name)
         self.assertEqual(response.arguments, ['not_existing_task'])
 
-        response = ts.execute(CommandFactory.get_command("delete 7"))
+        response = ts.execute(CommandFactory.get_command("rm 7"))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_delete_incorrect_index)
         self.assertEqual(response.arguments, ['7'])
 
-        response = ts.execute(CommandFactory.get_command("delete 'new task'"))
+        response = ts.execute(CommandFactory.get_command("rm 'new task'"))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_delete_success)
         self.assertEqual(response.arguments, ['new task', '1'])
         self.assertEqual(mock_save.call_count, 3)
@@ -157,7 +157,7 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(response.arguments, ['0'])
         self.assertEqual(mock_save.call_count, 4)
 
-        response = ts.execute(CommandFactory.get_command("delete 0"))
+        response = ts.execute(CommandFactory.get_command("rm 0"))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_delete_success)
         self.assertEqual(response.arguments, ['0', '1'])
         self.assertEqual(mock_save.call_count, 5)

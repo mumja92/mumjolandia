@@ -24,9 +24,9 @@ class GameSupervisor(MumjolandiaSupervisor):
     def __add_command_parsers(self):
         self.command_parsers['add'] = self.__command_add
         self.command_parsers['current'] = self.__command_current
-        self.command_parsers['get'] = self.__command_get
+        self.command_parsers['ls'] = self.__command_get
         self.command_parsers['help'] = self.__command_help
-        self.command_parsers['remove'] = self.__command_remove
+        self.command_parsers['rm'] = self.__command_remove
         self.command_parsers['set'] = self.__command_set
 
     def __command_add(self, args):
@@ -61,7 +61,7 @@ class GameSupervisor(MumjolandiaSupervisor):
                                          arguments=['current\n'
                                                     'ls\n'
                                                     'add [name]\n'
-                                                    'remove [name]\n'
+                                                    'rm [name]\n'
                                                     'set [id/name]\n'
                                                     'help'])
 

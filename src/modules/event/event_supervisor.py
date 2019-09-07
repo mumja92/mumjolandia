@@ -17,7 +17,7 @@ class EventSupervisor(MumjolandiaSupervisor):
         self.events = self.event_loader.get()
 
     def __add_command_parsers(self):
-        self.command_parsers['get'] = self.__command_get
+        self.command_parsers['ls'] = self.__command_get
         self.command_parsers['help'] = self.__command_help
 
     def __command_get(self, args):

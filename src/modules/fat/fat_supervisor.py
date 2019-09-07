@@ -58,8 +58,8 @@ class FatSupervisor(MumjolandiaSupervisor):
 
     def __add_command_parsers(self):
         self.command_parsers['add'] = self.__command_add
-        self.command_parsers['get'] = self.__command_get
-        self.command_parsers['delete'] = self.__command_delete
+        self.command_parsers['ls'] = self.__command_get
+        self.command_parsers['rm'] = self.__command_delete
 
     def __command_add(self, args):
         if len(args) < 1:

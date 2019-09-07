@@ -1,6 +1,5 @@
 import logging
 import socket
-import ssl
 
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
@@ -32,7 +31,7 @@ class WeatherSupervisor(MumjolandiaSupervisor):
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.weather_help,
-                                         arguments=['print'])
+                                         arguments=['get'])
 
     def __get_weather_now(self):
         try:
