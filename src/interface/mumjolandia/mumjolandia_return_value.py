@@ -26,13 +26,13 @@ class MumjolandiaReturnValue(Enum):
     task_set_ok = 35
     task_done_ok = 36
     task_done_wrong_parameter = 37
-    #food
+    # food
     food_get_wrong_index = 16
     food_get_ok = 17
     food_help = 18
     food_file_broken = 19
     food_ingredient_ok = 32
-    #fat
+    # fat
     fat_incorrect_date_format = 20
     fat_delete_success = 21
     fat_delete_incorrect_index = 22
@@ -40,7 +40,7 @@ class MumjolandiaReturnValue(Enum):
     fat_value_not_given = 24
     fat_add_must_be_float = 25
     fat_added = 26
-    #game
+    # game
     game_get_ok = 27
     game_value_not_given = 28
     game_added = 29
@@ -51,22 +51,32 @@ class MumjolandiaReturnValue(Enum):
     game_current_get = 55
     game_set_ok = 56
     game_set_wrong_id = 57
-    #note
+    # note
     note_add_ok = 39
     note_add_nook = 44
     note_help = 40
     note_get_ok = 41
     note_delete_success = 42
     note_delete_incorrect_index = 43
-    #connection
+    # connection
     connection_help = 47
     connection_server_start = 52
     connection_client_send_ok = 51
     connection_failed = 54
-    #game
+    # game
     event_get_ok = 48
     event_help = 49
-    #weather
+    # weather
     weather_get_ok = 50
     weather_get_nook = 53
     weather_help = 58
+    # password
+    password_set_ok = 59
+    password_set_incorrect = 60
+    password_incorrect_value = 61
+    password_not_set = 62
+    password_get_ok = 63
+    password_list_ok = 64
+    password_help = 65
+    password_add_ok = 66
+    password_rm_ok = 67

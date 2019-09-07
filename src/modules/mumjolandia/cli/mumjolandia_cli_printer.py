@@ -82,6 +82,16 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.weather_get_nook.name] = self.view_weather_get_nook
         self.views[MumjolandiaReturnValue.weather_help.name] = self.view_weather_help
 
+        self.views[MumjolandiaReturnValue.password_set_ok.name] = self.view_password_set_ok
+        self.views[MumjolandiaReturnValue.password_set_incorrect.name] = self.view_password_set_incorrect
+        self.views[MumjolandiaReturnValue.password_incorrect_value.name] = self.view_password_incorrect_value
+        self.views[MumjolandiaReturnValue.password_not_set.name] = self.view_password_not_set
+        self.views[MumjolandiaReturnValue.password_help.name] = self.view_password_help
+        self.views[MumjolandiaReturnValue.password_add_ok.name] = self.view_password_add_ok
+        self.views[MumjolandiaReturnValue.password_rm_ok.name] = self.view_password_rm_ok
+        self.views[MumjolandiaReturnValue.password_get_ok.name] = self.view_password_get_ok
+        self.views[MumjolandiaReturnValue.password_list_ok.name] = self.view_password_list_ok
+
     def view_task_print(self, return_value):
         print(len(return_value.arguments[0]), 'items:')
         max_width = 0
@@ -280,4 +290,31 @@ class MumjolandiaCliPrinter:
         print(str(return_value.arguments[0]))
 
     def view_weather_help(self, return_value):
+        print(return_value.arguments[0])
+
+    def view_password_set_ok(self, return_value):
+        print('password set')
+
+    def view_password_set_incorrect(self, return_value):
+        print('incorrect password :(')
+
+    def view_password_incorrect_value(self, return_value):
+        print('incorrect parameter')
+
+    def view_password_not_set(self, return_value):
+        print('Password is not set! Please run "init" command first')
+
+    def view_password_get_ok(self, return_value):
+        print(str(return_value.arguments))
+
+    def view_password_list_ok(self, return_value):
+        print(str(return_value.arguments))
+
+    def view_password_help(self, return_value):
+        print(return_value.arguments[0])
+
+    def view_password_add_ok(self, return_value):
+        print(return_value.arguments[0])
+
+    def view_password_rm_ok(self, return_value):
         print(return_value.arguments[0])

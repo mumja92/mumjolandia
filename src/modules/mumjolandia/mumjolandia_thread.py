@@ -12,6 +12,7 @@ from src.modules.food.food_supervisor import FoodSupervisor
 from src.modules.game.game_supervisor import GameSupervisor
 from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.note.note_supervisor import NoteSupervisor
+from src.modules.password.password_supervisor import PasswordSupervisor
 from src.modules.tasks.task_supervisor import TaskSupervisor
 from src.modules.weather.weather_supervisor import WeatherSupervisor
 
@@ -56,6 +57,7 @@ class MumjolandiaThread(Thread):
         self.supervisors['connection'] = ConnectionSupervisor()
         self.supervisors['event'] = EventSupervisor('data/events.xml')
         self.supervisors['weather'] = WeatherSupervisor()
+        self.supervisors['password'] = PasswordSupervisor('data/passwords.pickle')
 
         self.command_parsers['exit'] = self.__command_exit
         self.command_parsers['task'] = self.__command_task
@@ -68,6 +70,7 @@ class MumjolandiaThread(Thread):
         self.command_parsers['help'] = self.__command_help
         self.command_parsers['event'] = self.__command_event
         self.command_parsers['weather'] = self.__command_weather
+        self.command_parsers['password'] = self.__command_password
 
     def __execute_command(self, command):
         command_to_pass = copy.copy(command)
@@ -126,3 +129,6 @@ class MumjolandiaThread(Thread):
 
     def __command_weather(self, command):
         return self.supervisors['weather'].execute(command)
+
+    def __command_password(self, command):
+        return self.supervisors['password'].execute(command)
