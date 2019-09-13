@@ -1,0 +1,137 @@
+### MT
+todo:
+    - all mt's
+
+### UT
+todo: 
+    - utils dir
+    - mumjolandia_starter
+    - mumjolandia_thread
+    - mumjolandia_data_passer
+    - config_loader
+    - mumjolandia_updater
+    - mumjolandia_cli
+    - factories
+
+Command
+    - get_ok
+    - get_value_not_given_no_ok
+    - get_value_wrong_type_no_ok
+    - get_value_is_string_ok
+    - get_value_is_list_ok
+    - get_recognize_words_ok
+
+Connection
+    - server_run_once_ok
+    - server_run_loop_ok
+    - server_receive_exit_command_ok
+    - server_receive_update_command_ok
+    - server_receive_get_file_command_ok
+    - client_send_msg_ok
+    - client_get_file_ok
+    - client_get_file_wrong_name_no_ok
+    - client_update_ok
+
+Console
+    - get_next_command_ok
+    - get_next_text_ok
+    - get_async_command_ok (mt?)
+
+Event
+    - get_ok
+    - get_file_does_not_exist_ok
+
+Fat
+    - get_ok
+    - get_file_does_not_exist_ok
+    - add_ok
+    - add_incorrect_parameter_no_ok
+    - add_no_parameter_no_ok
+    - delete_ok
+    - delete_wrong_index_no_ok
+    - delete_no_parameter_no_ok
+
+Food
+    - get_ok
+    - get_database_does_not_exist_ok
+    - get_wrong_argument_no_ok
+    - get_no_argument_no_ok
+    - get_ingredient_ok
+    - get_ingredient_no_argument_no_ok
+    - get_ingredient_wrong_argument_no_ok
+    - adding_recipes_via_file (?)
+
+Game
+    - current_ok
+    - current_when_not_set_ok
+    - add_with_multiple_words_ok
+    - add_wrong_name_no_ok
+    - add_no_name_no_ok
+    - add_check_captions_ok
+    - add_check_captions_no_ok
+    - get_ok
+    - get_file_does_not_exist_ok
+    - get_wrong_name_no_ok
+    - get_no_argument_no_ok
+
+Note
+    - add_multiple_words_ok
+    - add_no_argument_no_ok
+    - get_ok
+    - get_file_does_not_exist_ok
+    - get_no_notes_ok
+    - delete_ok
+    - delete_wrong_index
+
+Password
+    - init_ok
+    - init_no_argument_no_ok
+    - init_wrong_parameter_no_ok
+    - set_ok
+    - set_no_argument_no_ok
+    - set_wrong_password_no_ok
+    - add_without_password_set_no_ok
+    - add_ok
+    - add_wrong_parameters_no_ok
+    - add_no_parameters_no_ok
+    - get_ok
+    - get_wrong_name_no_ok
+    - get_without_password_set_no_ok
+    - delete_ok
+    - delete_wrong_parameter_no_ok
+    - delete_no_parameter_no_ok
+    - delete_without_password_set_no_ok
+
+Task
+    - add_ok
+    - add_no_parameter_no_ok
+    - add_multiple_parameters_ok
+    - add_task_exist_no_ok (?)
+    - edit_ok
+    - edit_task_does_not_exist_no_ok
+    - edit_wrong_parameter_no_ok
+    - remove_by_name_ok
+    - remove_by_id_ok
+    - remove_when_name_is_int_ok
+    - remove_no_parameters_no_ok
+    - remove_wrong_parameter_no_ok
+    - get_ok
+    - get_file_does_not_exist_ok
+    - get_for_other_day_ok
+    - get_x_ok
+    - get_0_ok
+    - set_ok
+    - set_wrong_name_no_ok
+    - set_wrong_amount_no_ok
+    - done_ok
+    - done_wrong_argument_no_ok
+    - done_no_argument_no_ok
+    - undone_ok
+    - undone_wrong_argument_no_ok
+    - undone_no_argument_no_ok
+    - periodic_ok
+    - periodic_file_does_not_exist_ok
+
+Weather
+    - get_ok
+
