@@ -247,7 +247,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
                 return_name = self.tasks[int(args[0])].name
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_ok,
                                              arguments=[return_name])
-        except IndexError:
+        except (IndexError, ValueError):
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_wrong_parameter,
                                              arguments=args)
 
