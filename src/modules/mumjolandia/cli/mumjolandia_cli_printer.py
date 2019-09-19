@@ -158,10 +158,10 @@ class MumjolandiaCliPrinter:
         print("Set '" + return_value.arguments[0] + "' to " + return_value.arguments[1] + " days ahead")
 
     def view_task_done(self, return_value):
-        print("Done - " + return_value.arguments[0])
+        print("Done: " + return_value.arguments[0])
 
     def view_task_undone(self, return_value):
-        print("Undone - " + return_value.arguments[0])
+        print("Undone: " + return_value.arguments[0])
 
     def view_task_done_wrong_parameter(self, return_value):
         print("Wrong parameters " + str(return_value.arguments))

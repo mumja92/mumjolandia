@@ -8,6 +8,7 @@ from src.interface.tasks.task_file_broken_exception import TaskFileBrokenExcepti
 from src.interface.mumjolandia.incorrect_date_format_exception import IncorrectDateFormatException
 from src.interface.tasks.task_status import TaskStatus
 from src.interface.tasks.task_storage_type import TaskStorageType
+from src.modules.tasks.periodic_task_progress_handler import PeriodicTaskProgressHandler
 from src.modules.tasks.periodic_tasks_generator import PeriodicTasksGenerator
 from src.modules.tasks.task_factory import TaskFactory
 from src.utils.object_loader_pickle import ObjectLoaderPickle
@@ -169,9 +170,14 @@ class TaskSupervisor(MumjolandiaSupervisor):
         if args and args[0] == 'x':
             return MumjolandiaResponseObject(status=return_status, arguments=[return_indexes, return_list])
         tasks = PeriodicTasksGenerator(self.periodic_tasks_location).get_tasks(day_amount)
-        for t in tasks:
+        for n, t in enumerate(tasks):
+            if PeriodicTaskProgressHandler(self.periodic_tasks_location).is_done(
+                    self.__translate_periodic_task_id(self.__translate_periodic_task_id(n))):
+                t.status = TaskStatus.done
+            else:
+                t.status = TaskStatus.not_done
             return_list.insert(0, t)
-            return_indexes.insert(0, -1)
+            return_indexes.insert(0, self.__translate_periodic_task_id(n))
         return MumjolandiaResponseObject(status=return_status, arguments=[return_indexes, return_list])
 
     def __command_help(self, args):
@@ -223,24 +229,46 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
     def __command_done(self, args):
         try:
-            if int(args[0]) > len(self.tasks) or int(args[0]) < 0:
+            if int(args[0]) > len(self.tasks):
                 raise IndexError
-            self.tasks[int(args[0])].status = TaskStatus.done
-            self.__save_if_allowed()
+            if int(args[0]) < 0:
+                return_value = PeriodicTaskProgressHandler(self.periodic_tasks_location).set_done(
+                    self.__translate_periodic_task_id(int(args[0])))
+                if return_value is not True:
+                    return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_wrong_parameter,
+                                                     arguments=args)
+                else:
+                    return_name = PeriodicTasksGenerator(
+                        self.periodic_tasks_location).get_tasks()[self.__translate_periodic_task_id(args[0])].name
+            else:
+                self.tasks[int(args[0])].status = TaskStatus.done
+                self.__save_if_allowed()
+                return_name = self.tasks[int(args[0])].name
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_ok,
-                                             arguments=[self.tasks[int(args[0])].name])
+                                             arguments=[return_name])
         except IndexError:
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_wrong_parameter,
                                              arguments=args)
 
     def __command_undone(self, args):
         try:
-            if int(args[0]) > len(self.tasks) or int(args[0]) < 0:
+            if int(args[0]) > len(self.tasks):
                 raise IndexError
-            self.tasks[int(args[0])].status = TaskStatus.not_done
-            self.__save_if_allowed()
+            if int(args[0]) < 0:
+                return_value = PeriodicTaskProgressHandler(self.periodic_tasks_location).set_undone(
+                    self.__translate_periodic_task_id(int(args[0])))
+                if return_value is None:
+                    return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_wrong_parameter,
+                                                     arguments=args)
+                else:
+                    return_name = PeriodicTasksGenerator(
+                        self.periodic_tasks_location).get_tasks()[self.__translate_periodic_task_id(args[0])].name
+            else:
+                self.tasks[int(args[0])].status = TaskStatus.not_done
+                self.__save_if_allowed()
+                return_name = self.tasks[int(args[0])].name
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_undone_ok,
-                                             arguments=[self.tasks[int(args[0])].name])
+                                             arguments=[return_name])
         except (IndexError, ValueError):
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_wrong_parameter,
                                              arguments=args)
@@ -249,7 +277,10 @@ class TaskSupervisor(MumjolandiaSupervisor):
         return_list = []
         return_indexes = []
         tasks = PeriodicTasksGenerator(self.periodic_tasks_location).get_list_next_occurrence()
-        for t in tasks:
+        for n, t in enumerate(tasks):
             return_list.append(t)
-            return_indexes.append(-1)
+            return_indexes.append(self.__translate_periodic_task_id(n))
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get, arguments=[return_indexes, return_list])
+
+    def __translate_periodic_task_id(self, task_id):
+        return -(int(task_id)+1)

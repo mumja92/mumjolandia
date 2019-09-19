@@ -16,13 +16,16 @@ class Task(PODTemplate):
     def __str__(self):
         status = 'error'
         if self.status == TaskStatus.done:
-            status = '+'
+            status = '++'
         if self.status == TaskStatus.not_done:
-            status = '-'
+            status = '--'
         if self.status == TaskStatus.unknown:
-            status = '?'
+            status = '??'
         if self.type == TaskType.periodic:
-            status = 'p'
+            if self.status == TaskStatus.done:
+                status = 'p+'
+            else:
+                status = 'p-'
         if self.date_to_finish is None:
             date_to_finish = '-'
         else:
