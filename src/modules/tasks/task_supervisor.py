@@ -136,8 +136,9 @@ class TaskSupervisor(MumjolandiaSupervisor):
             if args[0] == 'x':   # task get x  ### every task that has finish date not set
                 for i, t in enumerate(self.tasks):
                     if t.date_to_finish is None:
-                        return_list.append(t)
-                        return_indexes.append(i)
+                        if t.status is not TaskStatus.done:
+                            return_list.append(t)
+                            return_indexes.append(i)
             elif int(args[0]) == 0:   # task get 0
                 for i, t in enumerate(self.tasks):
                     return_list.append(t)
