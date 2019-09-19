@@ -25,6 +25,7 @@ class MumjolandiaReturnValue(Enum):
     task_set_incorrect_parameter = 34
     task_set_ok = 35
     task_done_ok = 36
+    task_undone_ok = 67
     task_done_wrong_parameter = 37
     # food
     food_get_wrong_index = 16
@@ -79,4 +80,4 @@ class MumjolandiaReturnValue(Enum):
     password_list_ok = 64
     password_help = 65
     password_add_ok = 66
-    password_rm_ok = 67
+    password_rm_ok = 68

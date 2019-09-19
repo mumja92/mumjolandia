@@ -37,6 +37,7 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.task_set_ok.name] = self.view_task_set_ok
         self.views[MumjolandiaReturnValue.task_set_incorrect_parameter.name] = self.view_task_set_incorrect_parameter
         self.views[MumjolandiaReturnValue.task_done_ok.name] = self.view_task_done
+        self.views[MumjolandiaReturnValue.task_undone_ok.name] = self.view_task_undone
         self.views[MumjolandiaReturnValue.task_done_wrong_parameter.name] = self.view_task_done_wrong_parameter
 
         self.views[MumjolandiaReturnValue.food_get_ok.name] = self.view_food_get_ok
@@ -157,7 +158,10 @@ class MumjolandiaCliPrinter:
         print("Set '" + return_value.arguments[0] + "' to " + return_value.arguments[1] + " days ahead")
 
     def view_task_done(self, return_value):
-        print("done")
+        print("Done - " + return_value.arguments[0])
+
+    def view_task_undone(self, return_value):
+        print("Undone - " + return_value.arguments[0])
 
     def view_task_done_wrong_parameter(self, return_value):
         print("Wrong parameters " + str(return_value.arguments))

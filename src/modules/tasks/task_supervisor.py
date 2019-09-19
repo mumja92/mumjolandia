@@ -228,7 +228,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
             self.tasks[int(args[0])].status = TaskStatus.done
             self.__save_if_allowed()
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_ok,
-                                             arguments=[self.tasks[int(args[0])].status.name])
+                                             arguments=[self.tasks[int(args[0])].name])
         except IndexError:
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_wrong_parameter,
                                              arguments=args)
@@ -239,9 +239,9 @@ class TaskSupervisor(MumjolandiaSupervisor):
                 raise IndexError
             self.tasks[int(args[0])].status = TaskStatus.not_done
             self.__save_if_allowed()
-            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_ok,
-                                             arguments=[self.tasks[int(args[0])].status.name])
-        except IndexError:
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_undone_ok,
+                                             arguments=[self.tasks[int(args[0])].name])
+        except (IndexError, ValueError):
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_wrong_parameter,
                                              arguments=args)
 
