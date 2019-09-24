@@ -1,9 +1,9 @@
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
-from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.modules.connection.socket_client import SocketClient
 from src.modules.connection.socket_server import SocketServer
 from src.modules.mumjolandia.config_loader import ConfigLoader
+from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.modules.mumjolandia.mumjolandia_updater import MumjolandiaUpdater
 
 

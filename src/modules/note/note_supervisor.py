@@ -1,6 +1,6 @@
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
-from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
+from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.modules.note.note_factory import NoteFactory
 from src.utils.object_loader_pickle import ObjectLoaderPickle
 

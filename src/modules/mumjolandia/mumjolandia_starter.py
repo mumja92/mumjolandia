@@ -8,7 +8,6 @@ from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.mumjolandia.mumjolandia_data_passer import MumjolandiaDataPasser
 from src.modules.mumjolandia.mumjolandia_thread import MumjolandiaThread
 from src.modules.mumjolandia.cli.mumjolandia_cli import MumjolandiaCli
-from src.modules.mumjolandia.gui.mumjolandia_gui import MumjolandiaGui
 
 
 class MumjolandiaStarter:
@@ -23,12 +22,6 @@ class MumjolandiaStarter:
         self.command_mutex = threading.Lock()
         self.mumjolandia_thread = None
         self.__run_init()
-
-    def run_gui(self):
-        logging.info('Starting GUI')
-        self.__run_mumjolandia()
-        gui = MumjolandiaGui(self.data_passer)  # not implemented yet
-        gui.run()
 
     def run_cli(self):
         logging.info('Starting CLI')

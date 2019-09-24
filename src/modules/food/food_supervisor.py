@@ -4,9 +4,9 @@ from src.interface.food.ingredient import Ingredient
 from src.interface.food.recipe_day import RecipeDay
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
-from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.modules.food.food_database_helper import FoodDatabaseHelper
 from src.modules.food.meal_factory import MealFactory
+from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 
 
 class FoodSupervisor(MumjolandiaSupervisor):

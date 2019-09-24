@@ -1,6 +1,6 @@
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
-from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
+from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.modules.password.password_factory import PasswordFactory
 from src.utils.object_loader_pickle import ObjectLoaderPickle
 from src.utils.pydes_wrapper import PydesWrapper

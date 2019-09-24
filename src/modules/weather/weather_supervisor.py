@@ -1,11 +1,11 @@
+import http.client
+import json
 import logging
 import socket
 
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
-from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
-import http.client
-import json
+from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 
 
 class WeatherSupervisor(MumjolandiaSupervisor):

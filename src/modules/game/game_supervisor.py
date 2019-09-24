@@ -2,9 +2,9 @@ import logging
 
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
-from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.modules.game.game_db_adapter import GameDbAdapter
 from src.modules.game.game_factory import GameFactory
+from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.utils.shared_preferences import SharedPreferences
 
 

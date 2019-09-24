@@ -3,7 +3,7 @@ import platform
 
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
-from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
+from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 
 
 class CliSupervisor(MumjolandiaSupervisor):

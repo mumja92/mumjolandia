@@ -4,8 +4,8 @@ from src.interface.mumjolandia.incorrect_date_format_exception import IncorrectD
 from src.interface.mumjolandia.incorrect_variable_type_exception import IncorrectVariableTypeException
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
-from src.interface.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.modules.fat.fat_factory import FatFactory
+from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.utils.object_loader_pickle import ObjectLoaderPickle
 
 
