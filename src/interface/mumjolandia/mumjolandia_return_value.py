@@ -81,3 +81,6 @@ class MumjolandiaReturnValue(Enum):
     password_help = 65
     password_add_ok = 66
     password_rm_ok = 68
+
+    cli_handled = 69
+    cli_mode = 70

@@ -5,9 +5,8 @@ from src.utils.polish_utf_to_ascii import PolishUtfToAscii
 
 
 class MumjolandiaCliPrinter:
-    def __init__(self, exit_flag):
+    def __init__(self):
         self.views = {}
-        self.exit_flag = exit_flag
         self.__init()
 
     def execute(self, return_value):
@@ -18,6 +17,7 @@ class MumjolandiaCliPrinter:
 
     def __init(self):
         self.views['unrecognized_status_response'] = self.view_unrecognized_status_response
+        self.views[MumjolandiaReturnValue.mumjolandia_none.name] = self.view_mumjolandia_none
         self.views[MumjolandiaReturnValue.mumjolandia_unrecognized_command.name] = self.view_unrecognized_command
         self.views[MumjolandiaReturnValue.mumjolandia_exit.name] = self.view_exit
         self.views[MumjolandiaReturnValue.mumjolandia_unrecognized_parameters.name] = \
@@ -93,6 +93,9 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.password_get_ok.name] = self.view_password_get_ok
         self.views[MumjolandiaReturnValue.password_list_ok.name] = self.view_password_list_ok
 
+    def view_mumjolandia_none(self, return_value):
+        pass
+
     def view_task_print(self, return_value):
         print(len(return_value.arguments[0]), 'items:')
         max_width = 0
@@ -107,7 +110,6 @@ class MumjolandiaCliPrinter:
 
     def view_exit(self, return_value):
         print('exiting')
-        self.exit_flag.change(True)
 
     def view_unrecognized_command(self, return_value):
         print('Unrecognized command: ', return_value.arguments, sep=' ', end='\n', file=sys.stdout, flush=False)
