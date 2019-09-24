@@ -110,7 +110,7 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(response.arguments, ['new task', 1])
         self.assertEqual(mock_save.call_count, 1)
 
-        response = ts.execute(CommandFactory.get_command('get'))
+        response = ts.execute(CommandFactory.get_command('ls'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_get)
         self.assertEqual(response.arguments[1],
                          [TaskFactory.get_task('Task',
@@ -122,7 +122,7 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(response.arguments[1], '0')
         self.assertEqual(mock_save.call_count, 2)
 
-        response = ts.execute(CommandFactory.get_command('get'))
+        response = ts.execute(CommandFactory.get_command('ls'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_get)
         self.assertEqual(response.arguments[1],
                          [TaskFactory.get_task('Task',
@@ -143,7 +143,7 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(response.arguments, ['new task', '1'])
         self.assertEqual(mock_save.call_count, 3)
 
-        response = ts.execute(CommandFactory.get_command('get xD'))
+        response = ts.execute(CommandFactory.get_command('ls xD'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_get_wrong_data)
         self.assertEqual(response.arguments, ['xD'])
 
@@ -162,7 +162,7 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(response.arguments, ['0', '1'])
         self.assertEqual(mock_save.call_count, 5)
 
-        response = ts.execute(CommandFactory.get_command('get'))
+        response = ts.execute(CommandFactory.get_command('ls'))
         self.assertEqual(response.status, MumjolandiaReturnValue.task_get)
         self.assertEqual(response.arguments, [[], []])
 
