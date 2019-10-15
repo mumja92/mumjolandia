@@ -9,3 +9,6 @@ class MumjolandiaCliMode(Enum):
     fat = 4
     note = 5
     connection = 6
+    ssh = 7
+    password = 8
+    weather = 9

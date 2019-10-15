@@ -76,41 +76,6 @@ class MumjolandiaCli(Thread):
 
         if self.mode != MumjolandiaCliMode.none:
             command.arguments.insert(0, self.mode.name)
-
-        if command.arguments[0:2] == ['fat', 'print']:
-            command.arguments[1] = 'get'
-
-        if command.arguments[0:2] == ['note', 'print']:
-            command.arguments[1] = 'get'
-
-        if command.arguments[0:2] == ['task', 'print']:
-            command.arguments[1] = 'get'
-
-        if command.arguments[0:2] == ['game', 'print']:
-            command.arguments[1] = 'get'
-
-        if command.arguments[0:2] == ['event', 'print']:
-            command.arguments[1] = 'get'
-
-        if command.arguments[0:2] == ['weather', 'print']:
-            command.arguments[1] = 'get'
-
-        if command.arguments[0:2] == ['task', 'edit']:
-            try:
-                int(command.arguments[2])
-            except (ValueError, IndexError):
-                print('id is not a number')
-                print('usage: "task edit [id] [name]')
-                return False
-            try:
-                if len(command.arguments[3]) < 1:
-                    print('Name should have at least 1 character')
-                    print('usage: "task edit [id] [name]')
-                    return False
-            except IndexError:
-                print('Name should have at least 1 character')
-                print('usage: "task edit [id] [name]')
-                return False
         return True
 
     def __get_prompt(self):
