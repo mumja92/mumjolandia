@@ -14,6 +14,7 @@ from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.note.note_supervisor import NoteSupervisor
 from src.modules.password.password_supervisor import PasswordSupervisor
 from src.modules.tasks.task_supervisor import TaskSupervisor
+from src.modules.utils.utils_supervisor import UtilsSupervisor
 from src.modules.weather.weather_supervisor import WeatherSupervisor
 
 
@@ -58,6 +59,7 @@ class MumjolandiaThread(Thread):
         self.supervisors['event'] = EventSupervisor('data/events.xml')
         self.supervisors['weather'] = WeatherSupervisor()
         self.supervisors['password'] = PasswordSupervisor('data/passwords.pickle')
+        self.supervisors['utils'] = UtilsSupervisor()
 
         self.command_parsers['exit'] = self.__command_exit
         self.command_parsers['task'] = self.__command_task
@@ -70,6 +72,7 @@ class MumjolandiaThread(Thread):
         self.command_parsers['event'] = self.__command_event
         self.command_parsers['weather'] = self.__command_weather
         self.command_parsers['password'] = self.__command_password
+        self.command_parsers['utils'] = self.__command_utils
         self.command_parsers['help'] = self.__command_help              # has to be last to show all parsers
 
     def __execute_command(self, command):
@@ -132,3 +135,6 @@ class MumjolandiaThread(Thread):
 
     def __command_password(self, command):
         return self.supervisors['password'].execute(command)
+
+    def __command_utils(self, command):
+        return self.supervisors['utils'].execute(command)

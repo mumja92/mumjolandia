@@ -93,6 +93,9 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.password_get_ok.name] = self.view_password_get_ok
         self.views[MumjolandiaReturnValue.password_list_ok.name] = self.view_password_list_ok
 
+        self.views[MumjolandiaReturnValue.utils_get.name] = self.view_utils_get_ok
+        self.views[MumjolandiaReturnValue.utils_help.name] = self.view_utils_help
+
     def view_mumjolandia_none(self, return_value):
         pass
 
@@ -323,4 +326,10 @@ class MumjolandiaCliPrinter:
         print(return_value.arguments[0])
 
     def view_password_rm_ok(self, return_value):
+        print(return_value.arguments[0])
+
+    def view_utils_get_ok(self, return_value):
+        print(str(return_value.arguments[0]))
+
+    def view_utils_help(self, return_value):
         print(return_value.arguments[0])

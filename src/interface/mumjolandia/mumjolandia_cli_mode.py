@@ -12,3 +12,4 @@ class MumjolandiaCliMode(Enum):
     ssh = 7
     password = 8
     weather = 9
+    utils = 10
