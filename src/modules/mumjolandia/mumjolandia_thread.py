@@ -50,29 +50,38 @@ class MumjolandiaThread(Thread):
         if task_storage_type is None:
             logging.error('Storage type: "' + self.config_object.task_io_method + '" is incorrect. Using xml instead. ')
             task_storage_type = TaskStorageType.xml
-        self.supervisors['task'] = TaskSupervisor(storage_type=task_storage_type)
-        self.supervisors['food'] = FoodSupervisor('data/jedzonko.db')
-        self.supervisors['fat'] = FatSupervisor('data/fat.pickle')
-        self.supervisors['game'] = GameSupervisor('data/games.db')
-        self.supervisors['note'] = NoteSupervisor('data/notes.pickle')
         self.supervisors['connection'] = ConnectionSupervisor()
         self.supervisors['event'] = EventSupervisor('data/events.xml')
-        self.supervisors['weather'] = WeatherSupervisor()
+        self.supervisors['fat'] = FatSupervisor('data/fat.pickle')
+        self.supervisors['food'] = FoodSupervisor('data/jedzonko.db')
+        self.supervisors['game'] = GameSupervisor('data/games.db')
+        self.supervisors['note'] = NoteSupervisor('data/notes.pickle')
         self.supervisors['password'] = PasswordSupervisor('data/passwords.pickle')
+        self.supervisors['task'] = TaskSupervisor(storage_type=task_storage_type)
         self.supervisors['utils'] = UtilsSupervisor()
+        self.supervisors['weather'] = WeatherSupervisor()
 
-        self.command_parsers['exit'] = self.__command_exit
-        self.command_parsers['task'] = self.__command_task
-        self.command_parsers['food'] = self.__command_food
-        self.command_parsers['fat'] = self.__command_fat
-        self.command_parsers['game'] = self.__command_game
-        self.command_parsers['note'] = self.__command_note
         self.command_parsers['connection'] = self.__command_connection
-        self.command_parsers['ssh'] = self.__command_connection
+        self.command_parsers['c'] = self.__command_connection
         self.command_parsers['event'] = self.__command_event
-        self.command_parsers['weather'] = self.__command_weather
+        self.command_parsers['e'] = self.__command_event
+        self.command_parsers['exit'] = self.__command_exit
+        self.command_parsers['fat'] = self.__command_fat
+        self.command_parsers['food'] = self.__command_food
+        self.command_parsers['f'] = self.__command_food
+        self.command_parsers['game'] = self.__command_game
+        self.command_parsers['g'] = self.__command_game
+        self.command_parsers['note'] = self.__command_note
+        self.command_parsers['n'] = self.__command_note
         self.command_parsers['password'] = self.__command_password
+        self.command_parsers['p'] = self.__command_password
+        self.command_parsers['ssh'] = self.__command_connection
+        self.command_parsers['task'] = self.__command_task
+        self.command_parsers['t'] = self.__command_task
         self.command_parsers['utils'] = self.__command_utils
+        self.command_parsers['u'] = self.__command_utils
+        self.command_parsers['weather'] = self.__command_weather
+        self.command_parsers['w'] = self.__command_weather
         self.command_parsers['help'] = self.__command_help              # has to be last to show all parsers
 
     def __execute_command(self, command):
