@@ -22,6 +22,7 @@ class CliSupervisor(MumjolandiaSupervisor):
         self.command_parsers['cls'] = self.__command_cls
         self.command_parsers['date'] = self.__command_date
         self.command_parsers['mode'] = self.__command_mode
+        self.command_parsers['m'] = self.__command_mode
         self.command_parsers['path'] = self.__command_path
 
     def __clear_screen(self):
