@@ -63,21 +63,6 @@ class MumjolandiaCli(Thread):
             if return_value.status == MumjolandiaReturnValue.mumjolandia_exit:
                 self.exit_flag = True
 
-    def __prepare_command(self, command):
-        if command.arguments[0] == 'mode' or command.arguments[0] == 'm':
-            if len(command.arguments) == 1:
-                self.mode = MumjolandiaCliMode.none
-                return False
-            try:
-                self.mode = MumjolandiaCliMode[command.arguments[1]]
-            except KeyError:
-                print('Unrecognized mode: ' + command.arguments[1])
-            return False
-
-        if self.mode != MumjolandiaCliMode.none:
-            command.arguments.insert(0, self.mode.name)
-        return True
-
     def __get_prompt(self):
         if self.mode == MumjolandiaCliMode.none:
             return 'mumjolandia>'
