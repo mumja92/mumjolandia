@@ -102,36 +102,6 @@ Password
     - delete_no_parameter_no_ok
     - delete_without_password_set_no_ok
 
-Task
-    - add_ok
-    - add_no_parameter_no_ok
-    - add_multiple_parameters_ok
-    - add_task_exist_no_ok (?)
-    - edit_ok
-    - edit_task_does_not_exist_no_ok
-    - edit_wrong_parameter_no_ok
-    - remove_by_name_ok
-    - remove_by_id_ok
-    - remove_when_name_is_int_ok
-    - remove_no_parameters_no_ok
-    - remove_wrong_parameter_no_ok
-    - get_ok
-    - get_file_does_not_exist_ok
-    - get_for_other_day_ok
-    - get_x_ok
-    - get_0_ok
-    - set_ok
-    - set_wrong_name_no_ok
-    - set_wrong_amount_no_ok
-    - done_ok
-    - done_wrong_argument_no_ok
-    - done_no_argument_no_ok
-    - undone_ok
-    - undone_wrong_argument_no_ok
-    - undone_no_argument_no_ok
-    - periodic_ok
-    - periodic_file_does_not_exist_ok
-
 Weather
     - get_ok
 
