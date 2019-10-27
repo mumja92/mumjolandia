@@ -99,6 +99,9 @@ class TaskSupervisor(MumjolandiaSupervisor):
             self.tasks = e.args[0]
             self.allowedToSaveTasks = False
 
+    def __get_today(self):
+        return datetime.datetime.today()
+
     def __save_if_allowed(self):
         if self.allowedToSaveTasks:
             logging.debug("saving tasks to: '" + self.task_file_location + "'")
@@ -145,7 +148,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
             else:                   # task get [number]
                 for i, t in enumerate(self.tasks):
-                    temp = datetime.datetime.combine(datetime.datetime.today() + datetime.timedelta(days=day_amount),
+                    temp = datetime.datetime.combine(self.__get_today() + datetime.timedelta(days=day_amount),
                                                      datetime.datetime.min.time())
                     if t.date_to_finish is not None:
                         if t.date_to_finish.year == temp.year and \
@@ -155,7 +158,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
                             return_indexes.append(i)
         else:       # task get
             for i, t in enumerate(self.tasks):
-                temp = datetime.datetime.today()    # first tasks for today
+                temp = self.__get_today()    # first tasks for today
                 if t.date_to_finish is not None:
                     if t.date_to_finish.year == temp.year and \
                             t.date_to_finish.month == temp.month and \
@@ -215,7 +218,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
             if args[1].lower() == 'None'.lower():
                 self.tasks[int(args[0])].date_to_finish = None
             else:
-                self.tasks[int(args[0])].date_to_finish = datetime.datetime.today().replace(microsecond=0) + \
+                self.tasks[int(args[0])].date_to_finish = self.__get_today().replace(microsecond=0) + \
                                                           datetime.timedelta(days=int(args[1]))
             self.__save_if_allowed()
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_set_ok,
