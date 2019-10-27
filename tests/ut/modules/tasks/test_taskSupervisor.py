@@ -754,7 +754,7 @@ class TestTaskSupervisor(TestCase):
                                                 ),
                          ])
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
-    def test_task_done_wrong_argument_no_ok(self, mock_save, mock_load):
+    def test_task_done_wrong_argument_type_no_ok(self, mock_save, mock_load):
         task_supervisor = TaskSupervisor()
         tasks = self.__get_tasks(task_supervisor)
         self.assertEqual(len(tasks), 4)
@@ -764,6 +764,41 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(tasks[3].status, TaskStatus.done)
 
         task_supervisor.execute(CommandFactory().get_command('done a'))
+        tasks = self.__get_tasks(task_supervisor)
+        self.assertEqual(len(tasks), 4)
+        self.assertEqual(tasks[0].status, TaskStatus.not_done)
+        self.assertEqual(tasks[1].status, TaskStatus.not_done)
+        self.assertEqual(tasks[2].status, TaskStatus.unknown)
+        self.assertEqual(tasks[3].status, TaskStatus.done)
+
+        self.assertEqual(mock_save.call_count, 0)
+        self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task1',
+                                                ),
+                         TaskFactory().get_task('task2',
+                                                status=TaskStatus.not_done,
+                                                ),
+                         TaskFactory().get_task('task3',
+                                                status=TaskStatus.unknown,
+                                                ),
+                         TaskFactory().get_task('task4',
+
+                                                status=TaskStatus.done,
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_done_wrong_argument_index_no_ok(self, mock_save, mock_load):
+        task_supervisor = TaskSupervisor()
+        tasks = self.__get_tasks(task_supervisor)
+        self.assertEqual(len(tasks), 4)
+        self.assertEqual(tasks[0].status, TaskStatus.not_done)
+        self.assertEqual(tasks[1].status, TaskStatus.not_done)
+        self.assertEqual(tasks[2].status, TaskStatus.unknown)
+        self.assertEqual(tasks[3].status, TaskStatus.done)
+
+        task_supervisor.execute(CommandFactory().get_command('done 5'))
         tasks = self.__get_tasks(task_supervisor)
         self.assertEqual(len(tasks), 4)
         self.assertEqual(tasks[0].status, TaskStatus.not_done)
@@ -861,7 +896,7 @@ class TestTaskSupervisor(TestCase):
                                                 ),
                          ])
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
-    def test_task_undone_wrong_argument_no_ok(self, mock_save, mock_load):
+    def test_task_undone_wrong_argument__type_no_ok(self, mock_save, mock_load):
         task_supervisor = TaskSupervisor()
         tasks = self.__get_tasks(task_supervisor)
         self.assertEqual(len(tasks), 4)
@@ -871,6 +906,41 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(tasks[3].status, TaskStatus.done)
 
         task_supervisor.execute(CommandFactory().get_command('undone a'))
+        tasks = self.__get_tasks(task_supervisor)
+        self.assertEqual(len(tasks), 4)
+        self.assertEqual(tasks[0].status, TaskStatus.not_done)
+        self.assertEqual(tasks[1].status, TaskStatus.not_done)
+        self.assertEqual(tasks[2].status, TaskStatus.unknown)
+        self.assertEqual(tasks[3].status, TaskStatus.done)
+
+        self.assertEqual(mock_save.call_count, 0)
+        self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task1',
+                                                ),
+                         TaskFactory().get_task('task2',
+                                                status=TaskStatus.not_done,
+                                                ),
+                         TaskFactory().get_task('task3',
+                                                status=TaskStatus.unknown,
+                                                ),
+                         TaskFactory().get_task('task4',
+
+                                                status=TaskStatus.done,
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_undone_wrong_argument_index_no_ok(self, mock_save, mock_load):
+        task_supervisor = TaskSupervisor()
+        tasks = self.__get_tasks(task_supervisor)
+        self.assertEqual(len(tasks), 4)
+        self.assertEqual(tasks[0].status, TaskStatus.not_done)
+        self.assertEqual(tasks[1].status, TaskStatus.not_done)
+        self.assertEqual(tasks[2].status, TaskStatus.unknown)
+        self.assertEqual(tasks[3].status, TaskStatus.done)
+
+        task_supervisor.execute(CommandFactory().get_command('undone 5'))
         tasks = self.__get_tasks(task_supervisor)
         self.assertEqual(len(tasks), 4)
         self.assertEqual(tasks[0].status, TaskStatus.not_done)
