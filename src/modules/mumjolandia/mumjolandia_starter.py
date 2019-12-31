@@ -13,6 +13,8 @@ from src.modules.mumjolandia.cli.mumjolandia_cli import MumjolandiaCli
 class MumjolandiaStarter:
     def __init__(self, commands=None):
         self.commands = CommandFactory().get_command(commands)
+        if self.commands is not None:
+            self.commands.append(CommandFactory().get_command('exit'))
         self.config = ConfigLoader.get_config()
         self.log_location = 'data/log.log'
         self.command_queue_request = Queue()

@@ -40,6 +40,8 @@ class MumjolandiaCli(Thread):
                     break
         else:
             for c in self.commands:
+                if self.exit_flag:
+                    break
                 self.__handle_command(c)
 
     def __handle_command(self, command):
