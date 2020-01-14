@@ -7,6 +7,7 @@ from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturn
 from src.interface.tasks.task_file_broken_exception import TaskFileBrokenException
 from src.interface.tasks.task_status import TaskStatus
 from src.interface.tasks.task_storage_type import TaskStorageType
+from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.modules.tasks.periodic_task_progress_handler import PeriodicTaskProgressHandler
 from src.modules.tasks.periodic_tasks_generator import PeriodicTasksGenerator
@@ -19,8 +20,8 @@ class TaskSupervisor(MumjolandiaSupervisor):
     def __init__(self, storage_type=TaskStorageType.xml):
         super().__init__()
         self.storage_type = storage_type
-        self.periodic_tasks_location = "data/periodic_tasks.xml"
-        self.task_file_location = "data/tasks." + self.storage_type.name.lower()
+        self.periodic_tasks_location = ConfigLoader.get_mumjolandia_location() + "data/periodic_tasks.xml"
+        self.task_file_location = ConfigLoader.get_mumjolandia_location() + "data/tasks." + self.storage_type.name.lower()
         self.allowedToSaveTasks = True  # if loaded tasks are broken they wont be overwritten to not loose them
         self.task_loader = None
         self.tasks = None

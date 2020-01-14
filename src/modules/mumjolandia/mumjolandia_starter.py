@@ -3,20 +3,22 @@ import os
 import threading
 from queue import Queue
 
+import sys
+
+
 from src.modules.command.command_factory import CommandFactory
-from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.mumjolandia.mumjolandia_data_passer import MumjolandiaDataPasser
 from src.modules.mumjolandia.mumjolandia_thread import MumjolandiaThread
 from src.modules.mumjolandia.cli.mumjolandia_cli import MumjolandiaCli
+from src.modules.mumjolandia.config_loader import ConfigLoader
 
 
 class MumjolandiaStarter:
-    def __init__(self, commands=None):
-        self.commands = CommandFactory().get_command(commands)
-        if self.commands is not None:
-            self.commands.append(CommandFactory().get_command('exit'))
+    def __init__(self, sysargs):
+        self.commands = None
+        self.__init_commands(sysargs[1:])       # rest of arguments are user passed commands
         self.config = ConfigLoader.get_config()
-        self.log_location = 'data/log.log'
+        self.log_location = ConfigLoader.get_mumjolandia_location() + 'data/log.log'
         self.command_queue_request = Queue()
         self.command_queue_response = Queue()
         self.command_responded_event = threading.Event()
@@ -32,11 +34,12 @@ class MumjolandiaStarter:
         cli.setName('cli thread')
         cli.start()
 
-    def set_commands(self, commands):
-        self.commands = CommandFactory().get_command(commands)
-
     def get_mumjolandia_thread(self):
         return self.mumjolandia_thread
+
+    def set_commands(self, commands):
+        self.commands = CommandFactory().get_command(commands)
+        self.commands.append(CommandFactory().get_command('exit'))
 
     def __run_mumjolandia(self):
         logging.info('Starting mumjolandia')
@@ -47,9 +50,9 @@ class MumjolandiaStarter:
         self.mumjolandia_thread.start()
 
     def __run_init(self):
-        if not os.path.isdir("data"):
+        if not os.path.isdir(ConfigLoader.get_mumjolandia_location() + "data"):
             try:
-                os.mkdir("data")
+                os.mkdir(ConfigLoader.get_mumjolandia_location() + "data")
             except OSError as e:
                 pass
         try:
@@ -74,3 +77,10 @@ class MumjolandiaStarter:
                                                  self.command_queue_response,
                                                  self.command_mutex,
                                                  self.command_responded_event)
+
+    def __init_commands(self, commands):
+        self.commands = CommandFactory().get_command(commands)
+        if not len(self.commands):
+            self.commands = None
+        if self.commands is not None:
+            self.commands.append(CommandFactory().get_command('exit'))

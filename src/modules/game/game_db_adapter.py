@@ -3,10 +3,11 @@ import sqlite3
 from pathlib import Path
 
 from src.modules.game.game_factory import GameFactory
+from src.modules.mumjolandia.config_loader import ConfigLoader
 
 
 class GameDbAdapter:
-    def __init__(self, db_location='data/games.db'):
+    def __init__(self, db_location=ConfigLoader.get_mumjolandia_location() + 'data/games.db'):
         self.db_location = db_location
         self.__init_database()
 

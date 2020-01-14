@@ -1,6 +1,9 @@
 import ipaddress
 import logging
+import pathlib
 import xml
+import sys
+
 from enum import Enum
 from pathlib import Path
 
@@ -11,7 +14,23 @@ from src.external.xmltodict import xmltodict
 
 
 class ConfigLoader:
+    mumjolandiaLocation = str(pathlib.Path(sys.argv[0]).parent.absolute()) + '/'
+    if not sys.argv[0].endswith('/main.py'):
+        logging.critical("Please run mumjolandia via main.py")
+
     @staticmethod
+    def set_mumjolandia_location(location):
+        ConfigLoader.mumjolandiaLocation = str(location)
+        if not location.endswith('/'):
+            ConfigLoader.mumjolandiaLocation += '/'
+
+    @staticmethod
+    def get_mumjolandia_location():
+        return str(ConfigLoader.mumjolandiaLocation)
+
+    @staticmethod
+    # todo: add method of adding new config values and enums by a method
+    # todo: ie. add_config('config_name', value, check_function)
     def get_config(config_location='data/config.xml'):
         file = Path(config_location)
         config_values = {'log_level': 'WARNING',
@@ -20,7 +39,7 @@ class ConfigLoader:
                          'task_io_method': 'xml',
                          'server_address': '127.0.0.1',
                          'server_port': '3333',
-                         'shared_preferences_location': 'data/shared_preferences.pickle'}
+                         'shared_preferences_location': ConfigLoader.get_mumjolandia_location() + 'data/shared_preferences.pickle'}
         config_enums = {'log_level': MumjolandiaLogLevel,
                         'log_to_display': MumjolandiaConfigBool,
                         'log_to_file': MumjolandiaConfigBool,

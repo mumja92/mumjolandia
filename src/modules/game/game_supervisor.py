@@ -4,12 +4,13 @@ from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaRes
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.modules.game.game_db_adapter import GameDbAdapter
 from src.modules.game.game_factory import GameFactory
+from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.utils.shared_preferences import SharedPreferences
 
 
 class GameSupervisor(MumjolandiaSupervisor):
-    def __init__(self, file_location='data/games.db'):
+    def __init__(self, file_location=ConfigLoader.get_mumjolandia_location() + 'data/games.db'):
         super().__init__()
         self.game_file_location = file_location
         self.games_loader = GameDbAdapter(self.game_file_location)

@@ -9,6 +9,7 @@ class TestConfigLoader(TestCase):
     def __init__(self, *args, **kwargs):
         super(TestConfigLoader, self).__init__(*args, **kwargs)
         logging.getLogger().disabled = True
+        ConfigLoader.set_mumjolandia_location(os.path.abspath(os.curdir))
 
     def test_get_config_correct_file_non_default_values(self):
         with open("configLoader.xml", "w+") as f:
@@ -96,7 +97,7 @@ class TestConfigLoader(TestCase):
         self.assertEqual(config.task_io_method.lower(), 'xml')
         self.assertEqual(config.server_address.lower(), '127.0.0.1')
         self.assertEqual(config.server_port.lower(), '3333')
-        self.assertEqual(config.shared_preferences_location.lower(), 'data/shared_preferences.pickle')
+        self.assertEqual(config.shared_preferences_location, ConfigLoader.get_mumjolandia_location() + 'data/shared_preferences.pickle')
         os.remove("configLoader.xml")
 
     def test_get_config_values_incorrect_server_values(self):
@@ -135,3 +136,4 @@ class TestConfigLoader(TestCase):
         self.assertEqual(config.server_address.lower(), '127.0.0.1')
         self.assertEqual(config.server_port.lower(), '3333')
         os.remove("configLoader.xml")
+

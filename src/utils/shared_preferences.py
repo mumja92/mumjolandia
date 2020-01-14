@@ -1,10 +1,11 @@
 import logging
 
+from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.utils.object_loader_pickle import ObjectLoaderPickle
 
 
 class SharedPreferences:
-    def __init__(self, filename='data/shared_preferences.pickle'):
+    def __init__(self, filename=ConfigLoader.get_mumjolandia_location() + 'data/shared_preferences.pickle'):
         self.filename = filename
         self.object_loader = ObjectLoaderPickle(self.filename)
 
