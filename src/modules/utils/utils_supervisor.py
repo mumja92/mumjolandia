@@ -18,12 +18,23 @@ class UtilsSupervisor(MumjolandiaSupervisor):
     def __add_command_parsers(self):
 
         self.command_parsers['help'] = self.__command_help
+        self.command_parsers['ip'] = self.__command_ip
         self.command_parsers['p'] = self.__command_pompejanka
         self.command_parsers['pompejanka'] = self.__command_pompejanka
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_help,
                                          arguments=['[p]ompejanka\n'])
+
+    def __command_ip(self, args):
+        # todo: use 'with' statement and handle exceptions
+        import socket
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip_address = s.getsockname()[0]
+        s.close()
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_get,
+                                         arguments=[str(ip_address)])
 
     def __command_pompejanka(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_get,
