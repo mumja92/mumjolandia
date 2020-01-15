@@ -3,6 +3,7 @@ import textwrap
 
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
+from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.utils.polish_utf_to_ascii import PolishUtfToAscii
 
@@ -19,12 +20,17 @@ class UtilsSupervisor(MumjolandiaSupervisor):
 
         self.command_parsers['help'] = self.__command_help
         self.command_parsers['ip'] = self.__command_ip
-        self.command_parsers['p'] = self.__command_pompejanka
+        self.command_parsers['location'] = self.__command_location
+        self.command_parsers['l'] = self.__command_location
         self.command_parsers['pompejanka'] = self.__command_pompejanka
+        self.command_parsers['p'] = self.__command_pompejanka
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_help,
-                                         arguments=['[p]ompejanka\n'])
+                                         arguments=['ip\n'
+                                                    '[l]ocation\n'
+                                                    '[p]ompejanka\n'
+                                                    ])
 
     def __command_ip(self, args):
         # todo: use 'with' statement and handle exceptions
@@ -35,6 +41,10 @@ class UtilsSupervisor(MumjolandiaSupervisor):
         s.close()
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_get,
                                          arguments=[str(ip_address)])
+
+    def __command_location(self, args):
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_get,
+                                         arguments=[ConfigLoader.get_mumjolandia_location()])
 
     def __command_pompejanka(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_get,
