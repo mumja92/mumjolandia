@@ -13,3 +13,4 @@ class MumjolandiaCliMode(Enum):
     password = 8
     weather = 9
     utils = 10
+    pompejanka = 11
