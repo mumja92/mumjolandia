@@ -133,6 +133,14 @@ class TaskSupervisor(MumjolandiaSupervisor):
                     if t.status == TaskStatus.not_done and t.date_to_finish <= temp:
                         return_list.append(t)
                         return_indexes.append(i)
+                # tasks from previous days and finished today
+                if t.date_finished is not None:
+                    if t.status == TaskStatus.done:
+                        if t.date_finished.year == temp.year and \
+                                t.date_finished.month == temp.month and \
+                                t.date_finished.day == temp.day:
+                            return_list.append(t)
+                            return_indexes.append(i)
         if args and args[0] == 'x':
             return MumjolandiaResponseObject(status=return_status, arguments=[return_indexes, return_list])
         tasks = PeriodicTasksGenerator(self.periodic_tasks_location).get_tasks(day_amount)
@@ -243,6 +251,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
                         self.periodic_tasks_location).get_tasks()[self.__translate_periodic_task_id(args[0])].name
             else:
                 self.tasks[int(args[0])].status = TaskStatus.done
+                self.tasks[int(args[0])].date_finished = self.__get_today()
                 self.__save_if_allowed()
                 return_name = self.tasks[int(args[0])].name
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_done_ok,

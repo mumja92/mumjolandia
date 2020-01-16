@@ -1060,3 +1060,44 @@ class TestTaskSupervisor(TestCase):
         task_supervisor.execute(CommandFactory().get_command('bump 4'))
         self.assertEqual(mock_save.call_count, 0)
         self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task1',
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(1),
+                                                ),
+                         TaskFactory().get_task('task2',
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                ),
+                         TaskFactory().get_task('task3',
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-2),
+                                                ),
+                         TaskFactory().get_task('task4',
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(0),
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_show_with_tasks_from_previous_days_done_today(self, mock_save, mock_load):
+        # when ie. task was set to be done yesterday, but is done today, it is expected to be still shown today, but
+        # marked as 'done'
+        # WARNING: pay attention to indexes of returned_tasks shifting during operations
+        with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
+                               return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
+                               ):
+            task_supervisor = TaskSupervisor()
+            returned_tasks = task_supervisor.execute(
+                CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
+            # task1 is for tomorrow, so it doesn't appear in list for today
+            self.assertEqual(len(returned_tasks), 3)
+            self.assertEqual(returned_tasks[1].status, TaskStatus.not_done)
+            self.assertEqual(returned_tasks[1].name, 'task3')
+
+            # task2 is set to 'done'
+            task_supervisor.execute(CommandFactory().get_command('done 2'))
+            returned_tasks = task_supervisor.execute(
+                CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
+            # task2 is still visible in tasks for today
+            self.assertEqual(len(returned_tasks), 3)
+            self.assertEqual(returned_tasks[1].status, TaskStatus.done)
+            self.assertEqual(returned_tasks[1].name, 'task3')
+            self.assertEqual(mock_save.call_count, 1)
+            self.assertEqual(mock_load.call_count, 1)

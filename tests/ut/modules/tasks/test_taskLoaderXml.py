@@ -7,7 +7,6 @@ from src.modules.tasks.task_loader_xml import TaskLoaderXml
 
 
 class TestTaskLoaderXml(TestCase):
-
     def test_task_file_not_exist(self):
         t = TaskLoaderXml('this_file_does_not_exist.xml')
         with self.assertRaises(FileNotFoundError):
@@ -68,7 +67,7 @@ class TestTaskLoaderXml(TestCase):
         self.assertEqual(len(returned_list), 2)
         self.assertTrue(t1 == returned_list[0])
         self.assertTrue(t2 == returned_list[1])
-        
+
         try:
             os.remove(test_file)
         except OSError as e:
@@ -76,11 +75,11 @@ class TestTaskLoaderXml(TestCase):
 
     def test_save_two_tasks(self):
         test_file = "test_tasks.xml"
-        expected_string = '<tasks><task date_added="2018-10-25 00:00:00" date_to_finish="2018-10-25 00:00:00" ' \
-                          'description="unknown" name="task1" priority="unknown" status="not_done" type="unknown">' \
-                          'none</task><task date_added="2018-10-25 00:00:00" date_to_finish="2018-10-25 00:00:00" ' \
-                          'description="unknown" name="task drugi" priority="unknown" status="not_done" ' \
-                          'type="unknown">none</task></tasks>'
+        expected_string = '<tasks><task date_added="2018-10-25 00:00:00" date_finished="None" ' \
+                          'date_to_finish="2018-10-25 00:00:00" description="unknown" name="task1" priority="unknown" ' \
+                          'status="not_done" type="unknown">none</task><task date_added="2018-10-25 00:00:00" ' \
+                          'date_finished="None" date_to_finish="2018-10-25 00:00:00" description="unknown" name="task ' \
+                          'drugi" priority="unknown" status="not_done" type="unknown">none</task></tasks>'
         t = TaskLoaderXml(test_file)
 
         if os.path.isfile(test_file):
@@ -93,8 +92,8 @@ class TestTaskLoaderXml(TestCase):
                                      date_added="2018-10-25 00:00:00",
                                      date_to_finish="2018-10-25 00:00:00"),
                 TaskFactory.get_task(name='task drugi',
-                                           date_added="2018-10-25 00:00:00",
-                                           date_to_finish="2018-10-25 00:00:00")])
+                                     date_added="2018-10-25 00:00:00",
+                                     date_to_finish="2018-10-25 00:00:00")])
         with open(test_file, 'r') as file:
             data = file.read()
             self.assertEqual(expected_string, data)

@@ -12,6 +12,7 @@ class TaskFactory:
                  description='unknown',
                  date_added=None,
                  date_to_finish=None,
+                 date_finished=None,
                  priority=TaskPriority.unknown,
                  task_type=TaskType.unknown,
                  status=TaskStatus.not_done):
@@ -20,8 +21,10 @@ class TaskFactory:
                 date_added = datetime.datetime.strptime(date_added, '%Y-%m-%d %H:%M:%S')
             if isinstance(date_to_finish, str):
                 date_to_finish = datetime.datetime.strptime(date_to_finish, '%Y-%m-%d %H:%M:%S')
+            if isinstance(date_finished, str):
+                date_finished = datetime.datetime.strptime(date_finished, '%Y-%m-%d %H:%M:%S')
         except ValueError:
             raise IncorrectDateFormatException
         if date_added is None:
             date_added = datetime.datetime.today().replace(microsecond=0)
-        return Task(name, description, date_added, date_to_finish, priority, task_type, status)
+        return Task(name, description, date_added, date_to_finish, date_finished, priority, task_type, status)

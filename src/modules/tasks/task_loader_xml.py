@@ -28,6 +28,12 @@ class TaskLoaderXml:
                     date_to_finish = None
                 else:
                     date_to_finish = datetime.datetime.strptime(child.get('date_to_finish'), '%Y-%m-%d %H:%M:%S')
+                # 'date finished' is added to interface, so additional check for None is included (because file does not
+                # contain 'date_finished' in it's tree)
+                if child.get('date_finished') == 'None' or child.get('date_finished') is None:
+                    date_finished = None
+                else:
+                    date_finished = datetime.datetime.strptime(child.get('date_finished'), '%Y-%m-%d %H:%M:%S')
                 priority = TaskPriority[child.get('priority')]
                 task_type = TaskType[child.get('type')]
                 status = TaskStatus[child.get('status')]
@@ -49,8 +55,8 @@ class TaskLoaderXml:
                 if status is None:
                     broken_file_flag = True
                     status = TaskStatus.unknown
-                tasks.append(self.task_factory.get_task(name, description, date_added, date_to_finish, priority,
-                                                        task_type, status))
+                tasks.append(self.task_factory.get_task(name, description, date_added, date_to_finish, date_finished,
+                                                        priority, task_type, status))
         except FileNotFoundError:
             raise FileNotFoundError
         except ET.ParseError:
@@ -66,12 +72,17 @@ class TaskLoaderXml:
                 date_to_finish = 'None'
             else:
                 date_to_finish = t.date_to_finish.strftime("%Y-%m-%d %H:%M:%S")
+            if t.date_finished is None:
+                date_finished = 'None'
+            else:
+                date_finished = t.date_finished.strftime("%Y-%m-%d %H:%M:%S")
             ET.SubElement(root_element,
                           "task",
                           name=t.name,
                           description=t.description,
                           date_added=t.date_added.strftime("%Y-%m-%d %H:%M:%S"),
                           date_to_finish=date_to_finish,
+                          date_finished=date_finished,
                           priority=str(t.priority.name),
                           type=str(t.type.name),
                           status=str(t.status.name)
