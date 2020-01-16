@@ -61,14 +61,16 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
     def __add_command_parsers(self):
         self.command_parsers['add'] = self.__command_add
-        self.command_parsers['ls'] = self.__command_get
-        self.command_parsers['rm'] = self.__command_delete
+        self.command_parsers['bump'] = self.__command_bump
+        self.command_parsers['b'] = self.__command_bump
+        self.command_parsers['done'] = self.__command_done
         self.command_parsers['edit'] = self.__command_edit
         self.command_parsers['help'] = self.__command_help
-        self.command_parsers['set'] = self.__command_set
-        self.command_parsers['done'] = self.__command_done
-        self.command_parsers['undone'] = self.__command_undone
+        self.command_parsers['ls'] = self.__command_get
         self.command_parsers['periodic'] = self.__command_periodic
+        self.command_parsers['rm'] = self.__command_delete
+        self.command_parsers['set'] = self.__command_set
+        self.command_parsers['undone'] = self.__command_undone
 
     def __command_add(self, args):
         if len(args) < 1:
@@ -146,17 +148,19 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_help,
-                                         arguments=['ls (show today and previous uncompleted\n'
+                                         arguments=['add [name]\n'
+                                                    '[b]ump\n'
+                                                    'done\n'
+                                                    'edit [id] [name]\n'
+                                                    'ls (show today and previous uncompleted\n'
                                                     'ls 0 (show all tasks\n'
                                                     'ls x (show tasks without date)\n'
                                                     'ls [delta] (show tasks for given day)\n'
-                                                    'add [name]\n'
                                                     'ls [name || id]\n'
-                                                    'edit [id] [name]\n'
+                                                    'periodic\n'
                                                     'set [id] [delta_from_today/none]\n'
-                                                    'done\n'
                                                     'undone\n'
-                                                    'periodic\n'])
+                                                    ])
 
     def __command_delete(self, args):
         try:
@@ -278,6 +282,18 @@ class TaskSupervisor(MumjolandiaSupervisor):
             return_list.append(t)
             return_indexes.append(self.__translate_periodic_task_id(n))
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_get, arguments=[return_indexes, return_list])
+
+    def __command_bump(self, args):
+        try:
+            if int(args[0]) > len(self.tasks) or int(args[0]) < 0:
+                raise IndexError
+            self.tasks.append(self.tasks.pop(int(args[0])))
+            self.__save_if_allowed()
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_bump_ok,
+                                             arguments=[str(len(self.tasks) - 1), self.tasks[-1].name])
+        except (IndexError, ValueError):
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_bump_nook,
+                                             arguments=args)
 
     def __translate_periodic_task_id(self, task_id):
         return -(int(task_id)+1)

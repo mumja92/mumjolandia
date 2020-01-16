@@ -1010,3 +1010,53 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(mock_save.call_count, 0)
         self.assertEqual(mock_load.call_count, 1)
         self.assertEqual(mock_periodic.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task1',
+                                                ),
+                         TaskFactory().get_task('task2',
+                                                ),
+                         TaskFactory().get_task('task3',
+                                                ),
+                         TaskFactory().get_task('task4',
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_bump_ok(self, mock_save, mock_load):
+        task_supervisor = TaskSupervisor()
+        task_supervisor.execute(CommandFactory().get_command('bump 0'))
+        task_supervisor.execute(CommandFactory().get_command('bump 1'))
+        returned_tasks = task_supervisor.execute(
+            CommandFactory().get_command('ls 0')).arguments[1]  # arg[0] are indexes
+        self.assertEqual(len(returned_tasks), 4)
+        self.assertEqual(returned_tasks[0].name, 'task2')
+        self.assertEqual(returned_tasks[1].name, 'task4')
+        self.assertEqual(returned_tasks[2].name, 'task1')
+        self.assertEqual(returned_tasks[3].name, 'task3')
+        self.assertEqual(mock_save.call_count, 2)
+        self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get', return_value=[])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_bump_out_of_range_negative_index_no_ok(self, mock_save, mock_load):
+        task_supervisor = TaskSupervisor()
+        task_supervisor.execute(CommandFactory().get_command('bump -1'))
+        self.assertEqual(mock_save.call_count, 0)
+        self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task1',
+                                                ),
+                         TaskFactory().get_task('task2',
+                                                ),
+                         TaskFactory().get_task('task3',
+                                                ),
+                         TaskFactory().get_task('task4',
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_bump_out_of_range_index_too_big_no_ok(self, mock_save, mock_load):
+        task_supervisor = TaskSupervisor()
+        task_supervisor.execute(CommandFactory().get_command('bump 4'))
+        self.assertEqual(mock_save.call_count, 0)
+        self.assertEqual(mock_load.call_count, 1)

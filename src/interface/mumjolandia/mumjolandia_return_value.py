@@ -27,6 +27,8 @@ class MumjolandiaReturnValue(Enum):
     task_done_ok = 36
     task_undone_ok = 67
     task_done_wrong_parameter = 37
+    task_bump_ok = 73
+    task_bump_nook = 74
     # food
     food_get_wrong_index = 16
     food_get_ok = 17
@@ -88,4 +90,4 @@ class MumjolandiaReturnValue(Enum):
     cli_mode = 72
 
     utils_help = 70
-    utils_get = 73
+    utils_get = 75

@@ -39,6 +39,8 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.task_done_ok.name] = self.view_task_done
         self.views[MumjolandiaReturnValue.task_undone_ok.name] = self.view_task_undone
         self.views[MumjolandiaReturnValue.task_done_wrong_parameter.name] = self.view_task_done_wrong_parameter
+        self.views[MumjolandiaReturnValue.task_bump_ok.name] = self.view_task_bump_ok
+        self.views[MumjolandiaReturnValue.task_bump_nook.name] = self.view_task_bump_nook
 
         self.views[MumjolandiaReturnValue.food_get_ok.name] = self.view_food_get_ok
         self.views[MumjolandiaReturnValue.food_get_wrong_index.name] = self.view_food_get_wrong_index
@@ -171,6 +173,12 @@ class MumjolandiaCliPrinter:
         print("Undone: " + return_value.arguments[0])
 
     def view_task_done_wrong_parameter(self, return_value):
+        print("Wrong parameters " + str(return_value.arguments))
+
+    def view_task_bump_ok(self, return_value):
+        print("'" + return_value.arguments[1] + "' bumped to id: " + return_value.arguments[0])
+
+    def view_task_bump_nook(self, return_value):
         print("Wrong parameters " + str(return_value.arguments))
 
     def view_food_get_ok(self, return_value):
