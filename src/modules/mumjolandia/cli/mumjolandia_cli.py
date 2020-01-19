@@ -1,14 +1,9 @@
 import logging
-import os
 import platform
+
 from threading import Thread
-
-import time
-
 from src.interface.mumjolandia.mumjolandia_cli_mode import MumjolandiaCliMode
-from src.interface.mumjolandia.mumjolandia_immutable_type_wrapper import MumjolandiaImmutableTypeWrapper
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
-from src.modules.command.command_factory import CommandFactory
 from src.modules.console.console import Console
 from src.modules.mumjolandia.cli.cli_supervisor import CliSupervisor
 from src.modules.mumjolandia.cli.mumjolandia_cli_printer import MumjolandiaCliPrinter
@@ -66,7 +61,14 @@ class MumjolandiaCli(Thread):
                 self.exit_flag = True
 
     def __get_prompt(self):
+        prompt = ""
+        if platform.system() != 'Windows':
+            prompt += "\033[92m"
         if self.mode == MumjolandiaCliMode.none:
-            return 'mumjolandia>'
+            prompt += 'mumjolandia>'
         else:
-            return 'mumjolandia/' + self.mode.name + '>'
+            prompt += 'mumjolandia/' + self.mode.name + '>'
+
+        if platform.system() != 'Windows':
+            prompt += "\033[0m"
+        return prompt
