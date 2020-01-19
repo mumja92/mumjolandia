@@ -1080,6 +1080,7 @@ class TestTaskSupervisor(TestCase):
         # when ie. task was set to be done yesterday, but is done today, it is expected to be still shown today, but
         # marked as 'done'
         # WARNING: pay attention to indexes of returned_tasks shifting during operations
+        # WARNING: sorting affects results!
         with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
                                return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
                                ):
@@ -1088,8 +1089,8 @@ class TestTaskSupervisor(TestCase):
                 CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
             # task1 is for tomorrow, so it doesn't appear in list for today
             self.assertEqual(len(returned_tasks), 3)
-            self.assertEqual(returned_tasks[1].status, TaskStatus.not_done)
-            self.assertEqual(returned_tasks[1].name, 'task3')
+            self.assertEqual(returned_tasks[0].status, TaskStatus.not_done)
+            self.assertEqual(returned_tasks[0].name, 'task3')
 
             # task2 is set to 'done'
             task_supervisor.execute(CommandFactory().get_command('done 2'))
@@ -1097,7 +1098,7 @@ class TestTaskSupervisor(TestCase):
                 CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
             # task2 is still visible in tasks for today
             self.assertEqual(len(returned_tasks), 3)
-            self.assertEqual(returned_tasks[1].status, TaskStatus.done)
-            self.assertEqual(returned_tasks[1].name, 'task3')
+            self.assertEqual(returned_tasks[0].status, TaskStatus.done)
+            self.assertEqual(returned_tasks[0].name, 'task3')
             self.assertEqual(mock_save.call_count, 1)
             self.assertEqual(mock_load.call_count, 1)

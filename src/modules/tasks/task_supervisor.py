@@ -141,6 +141,11 @@ class TaskSupervisor(MumjolandiaSupervisor):
                                 t.date_finished.day == temp.day:
                             return_list.append(t)
                             return_indexes.append(i)
+            try:
+                return_indexes, return_list = zip(*self.__sort_ls(list(zip(return_indexes, return_list))))
+            except ValueError:
+                # it occurs when lists are empty: ValueError: not enough values to unpack (expected 2, got 0)
+                pass
         if args and args[0] == 'x':
             return MumjolandiaResponseObject(status=return_status, arguments=[return_indexes, return_list])
         tasks = PeriodicTasksGenerator(self.periodic_tasks_location).get_tasks(day_amount)
@@ -306,3 +311,21 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
     def __translate_periodic_task_id(self, task_id):
         return -(int(task_id)+1)
+
+    def __sort_ls(self, tasks_tuple):
+        try:
+            tasks_tuple.sort(key=lambda tup: tup[1].date_to_finish)
+        except TypeError:
+            # This error occurs if task is set to today, then marked as done, and then 'set none' command is excuted, so
+            # it stays visible in 'task ls', but has no date_to_finish
+            # todo: handle such a case gently
+            logging.error('Object has on date_to_finish set, but is sorted!')
+        return_tuple = []
+        for obj in tasks_tuple:
+            if obj[1].status == TaskStatus.done:
+                return_tuple.append(obj)
+        for obj in tasks_tuple:
+
+            if obj[1].status != TaskStatus.done:
+                return_tuple.append(obj)
+        return return_tuple
