@@ -314,7 +314,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
     def __sort_ls(self, tasks_tuple):
         try:
-            tasks_tuple.sort(key=lambda tup: tup[1].date_to_finish)
+            tasks_tuple.sort(key=lambda tup: tup[1].date_to_finish, reverse=True)
         except TypeError:
             # This error occurs if task is set to today, then marked as done, and then 'set none' command is excuted, so
             # it stays visible in 'task ls', but has no date_to_finish

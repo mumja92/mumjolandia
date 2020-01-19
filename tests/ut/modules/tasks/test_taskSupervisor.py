@@ -333,8 +333,8 @@ class TestTaskSupervisor(TestCase):
             returned_tasks = task_supervisor.execute(
                 CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
             self.assertEqual(len(returned_tasks), 2)
-            self.assertEqual(returned_tasks[0].name, 'task1')
-            self.assertEqual(returned_tasks[1].name, 'task3')
+            self.assertEqual(returned_tasks[0].name, 'task3')
+            self.assertEqual(returned_tasks[1].name, 'task1')
             self.assertEqual(mock_save.call_count, 0)
             self.assertEqual(mock_load.call_count, 1)
 
@@ -1089,8 +1089,8 @@ class TestTaskSupervisor(TestCase):
                 CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
             # task1 is for tomorrow, so it doesn't appear in list for today
             self.assertEqual(len(returned_tasks), 3)
-            self.assertEqual(returned_tasks[0].status, TaskStatus.not_done)
-            self.assertEqual(returned_tasks[0].name, 'task3')
+            self.assertEqual(returned_tasks[2].status, TaskStatus.not_done)
+            self.assertEqual(returned_tasks[2].name, 'task3')
 
             # task2 is set to 'done'
             task_supervisor.execute(CommandFactory().get_command('done 2'))
