@@ -143,6 +143,9 @@ class TaskSupervisor(MumjolandiaSupervisor):
                             return_indexes.append(i)
             try:
                 return_indexes, return_list = zip(*self.__sort_ls(list(zip(return_indexes, return_list))))
+                # zip returned tuples
+                return_list = list(return_list)
+                return_indexes = list(return_indexes)
             except ValueError:
                 # it occurs when lists are empty: ValueError: not enough values to unpack (expected 2, got 0)
                 pass
