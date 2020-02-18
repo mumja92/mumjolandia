@@ -5,6 +5,7 @@ from src.interface.tasks.task_priority import TaskPriority
 from src.interface.tasks.task_status import TaskStatus
 from src.interface.tasks.task_type import TaskType
 from src.modules.tasks.task_factory import TaskFactory
+from src.utils.helpers import DateHelper
 
 
 class TestTaskFactory(TestCase):
@@ -12,12 +13,13 @@ class TestTaskFactory(TestCase):
         t = TaskFactory.get_task()
         self.assertEqual(t.name, 'unknown')
         self.assertEqual(t.description, 'unknown')
-        self.assertEqual(t.date_added, datetime.datetime.today().replace(microsecond=0))
+        self.assertEqual(t.date_added, DateHelper.get_today_long())
         self.assertEqual(t.date_to_finish, None)
         self.assertEqual(t.date_finished, None)
         self.assertEqual(t.priority, TaskPriority['unknown'])
         self.assertEqual(t.type, TaskType['unknown'])
         self.assertEqual(t.status, TaskStatus['not_done'])
+        self.assertEqual(t.reminder, 0)
 
     def test_get_task_with_parameters(self):
         test_date_added = datetime.datetime.strptime("2018-10-25 00:00:00", '%Y-%m-%d %H:%M:%S')
@@ -30,7 +32,9 @@ class TestTaskFactory(TestCase):
                                  date_finished="2015-10-27 00:00:00",
                                  priority=TaskPriority.ez,
                                  task_type=TaskType.normal,
-                                 status=TaskStatus.not_done)
+                                 status=TaskStatus.not_done,
+                                 reminder=5,
+                                 )
         self.assertEqual(t.name, 'żółć xD')
         self.assertEqual(t.description, 'brak')
         self.assertEqual(t.date_added, test_date_added)
@@ -39,6 +43,7 @@ class TestTaskFactory(TestCase):
         self.assertEqual(t.priority, TaskPriority.ez)
         self.assertEqual(t.type, TaskType.normal)
         self.assertEqual(t.status, TaskStatus.not_done)
+        self.assertEqual(t.reminder, 5)
 
     def test_incorrect_date_format_exception_raised(self):
         with self.assertRaises(IncorrectDateFormatException):

@@ -4,7 +4,17 @@ from src.interface.tasks.task_type import TaskType
 
 
 class Task(PODTemplate):
-    def __init__(self, name, description, date_added, date_to_finish, date_finished, priority, task_type, status):
+    def __init__(self,
+                 name,
+                 description,
+                 date_added,
+                 date_to_finish,
+                 date_finished,
+                 priority,
+                 task_type,
+                 status,
+                 reminder,
+                 ):
         self.name = name
         self.description = description
         self.date_added = date_added
@@ -13,6 +23,7 @@ class Task(PODTemplate):
         self.priority = priority
         self.type = task_type
         self.status = status
+        self.reminder = reminder
 
     def __str__(self):
         status = 'error'

@@ -5,6 +5,8 @@ from src.interface.tasks.task_status import TaskStatus
 from src.interface.tasks.task_type import TaskType
 import datetime
 
+from src.utils.helpers import DateHelper
+
 
 class TaskFactory:
     @staticmethod
@@ -15,7 +17,9 @@ class TaskFactory:
                  date_finished=None,
                  priority=TaskPriority.unknown,
                  task_type=TaskType.unknown,
-                 status=TaskStatus.not_done):
+                 status=TaskStatus.not_done,
+                 reminder=0,
+                 ):
         try:
             if isinstance(date_added, str):
                 date_added = datetime.datetime.strptime(date_added, '%Y-%m-%d %H:%M:%S')
@@ -26,5 +30,6 @@ class TaskFactory:
         except ValueError:
             raise IncorrectDateFormatException
         if date_added is None:
-            date_added = datetime.datetime.today().replace(microsecond=0)
-        return Task(name, description, date_added, date_to_finish, date_finished, priority, task_type, status)
+            date_added = DateHelper.get_today_long()
+        return Task(name, description, date_added, date_to_finish,
+                    date_finished, priority, task_type, status, int(reminder))

@@ -7,20 +7,11 @@ import logging
 from unittest import mock
 from unittest.mock import patch
 
-import datetime
-
 from src.interface.tasks.task_status import TaskStatus
 from src.modules.command.command_factory import CommandFactory
 from src.modules.tasks.task_factory import TaskFactory
 from src.modules.tasks.task_supervisor import TaskSupervisor
-
-
-class DateTimeHelper:
-    fixed_date_today = datetime.datetime(2018, 4, 13)
-
-    @staticmethod
-    def get_fixed_datetime_shifted(day_amount):
-        return DateTimeHelper.fixed_date_today + datetime.timedelta(days=day_amount)
+from tests.ut.helpers.helpers import DateTimeHelper
 
 
 class TestTaskSupervisor(TestCase):
@@ -299,7 +290,7 @@ class TestTaskSupervisor(TestCase):
         # after adding tasks they are not set for 'today' so they will not be shown in simple 'ls' command
         with mock.patch.object(TaskSupervisor,
                                '_TaskSupervisor__get_today',
-                               return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
                                ):
             task_supervisor = TaskSupervisor()
             self.assertEqual(len(self.__get_tasks(task_supervisor)), 3)
@@ -312,12 +303,12 @@ class TestTaskSupervisor(TestCase):
 
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
            return_value=[TaskFactory().get_task('task1',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task2',
                                                 ),
                          TaskFactory().get_task('task3',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(0),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(0),
                                                 ),
                          ])
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
@@ -325,7 +316,7 @@ class TestTaskSupervisor(TestCase):
         # after 'set 0 0' and 'set 0 -1' command, 2 tasks will match 'ls' command (as 'task1' was not completed in
         # previous day)
         with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
-                               return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
                                ):
             task_supervisor = TaskSupervisor()
             self.assertEqual(len(self.__get_tasks(task_supervisor)), 3)
@@ -340,12 +331,12 @@ class TestTaskSupervisor(TestCase):
 
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
            return_value=[TaskFactory().get_task('task1',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(0),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(0),
                                                 ),
                          TaskFactory().get_task('task2',
                                                 ),
                          TaskFactory().get_task('task3',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 status=TaskStatus.done,
                                                 ),
                          ])
@@ -354,7 +345,7 @@ class TestTaskSupervisor(TestCase):
         # after 'set 0 0' and 'set 0 -1' command 2 tasks will match 'ls' command, but 'task3' has 'done' status so won't
         # be listed
         with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
-                               return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
                                ):
             task_supervisor = TaskSupervisor()
             self.assertEqual(len(self.__get_tasks(task_supervisor)), 3)
@@ -373,7 +364,7 @@ class TestTaskSupervisor(TestCase):
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     def test_task_get_for_other_day_empty_ok(self, mock_save, mock_load):
         with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
-                               return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
                                ):
             task_supervisor = TaskSupervisor()
             self.assertEqual(len(self.__get_tasks(task_supervisor)), 3)
@@ -388,7 +379,7 @@ class TestTaskSupervisor(TestCase):
            return_value=[TaskFactory().get_task('task1',
                                                 ),
                          TaskFactory().get_task('task2',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task3',
                                                 ),
@@ -396,7 +387,7 @@ class TestTaskSupervisor(TestCase):
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     def test_task_get_for_other_day_found_ok(self, mock_save, mock_load):
         with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
-                               return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
                                ):
             task_supervisor = TaskSupervisor()
             self.assertEqual(len(self.__get_tasks(task_supervisor)), 3)
@@ -413,18 +404,18 @@ class TestTaskSupervisor(TestCase):
                                                 status=TaskStatus.done,
                                                 ),
                          TaskFactory().get_task('task2',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 status=TaskStatus.not_done,
                                                 ),
                          TaskFactory().get_task('task3',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(0),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(0),
                                                 status=TaskStatus.done,
                                                 ),
                          TaskFactory().get_task('task4',
                                                 status=TaskStatus.not_done,
                                                 ),
                          TaskFactory().get_task('task5',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(1),
                                                 status=TaskStatus.done,
                                                 ),
                          TaskFactory().get_task('task6',
@@ -456,18 +447,18 @@ class TestTaskSupervisor(TestCase):
                                                 status=TaskStatus.done,
                                                 ),
                          TaskFactory().get_task('task2',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 status=TaskStatus.not_done,
                                                 ),
                          TaskFactory().get_task('task3',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(0),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(0),
                                                 status=TaskStatus.done,
                                                 ),
                          TaskFactory().get_task('task4',
                                                 status=TaskStatus.not_done,
                                                 ),
                          TaskFactory().get_task('task5',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(1),
                                                 status=TaskStatus.done,
                                                 ),
                          TaskFactory().get_task('task6',
@@ -505,39 +496,39 @@ class TestTaskSupervisor(TestCase):
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
            return_value=[TaskFactory().get_task('task1',
                                                 status=TaskStatus.done,
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task2',
                                                 status=TaskStatus.not_done,
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task3',
                                                 status=TaskStatus.unknown,
                                                 ),
                          TaskFactory().get_task('task4',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(1),
                                                 ),
                          ])
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     def test_task_set_ok(self, mock_save, mock_load):
         with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
-                               return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
                                ):
             task_supervisor = TaskSupervisor()
             tasks = self.__get_tasks(task_supervisor)
             self.assertEqual(len(tasks), 4)
-            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
-            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
+            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
+            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
             self.assertEqual(tasks[2].date_to_finish, None)
-            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(1))
+            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime(1))
 
             task_supervisor.execute(CommandFactory().get_command('set 0 3'))
             tasks = self.__get_tasks(task_supervisor)
             self.assertEqual(len(tasks), 4)
-            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(3))
-            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
+            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime(3))
+            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
             self.assertEqual(tasks[2].date_to_finish, None)
-            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(1))
+            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime(1))
 
             self.assertEqual(mock_save.call_count, 1)
             self.assertEqual(mock_load.call_count, 1)
@@ -545,39 +536,39 @@ class TestTaskSupervisor(TestCase):
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
            return_value=[TaskFactory().get_task('task1',
                                                 status=TaskStatus.done,
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task2',
                                                 status=TaskStatus.not_done,
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task3',
                                                 status=TaskStatus.unknown,
                                                 ),
                          TaskFactory().get_task('task4',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(1),
                                                 ),
                          ])
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     def test_task_set_none_ok(self, mock_save, mock_load):
         with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
-                               return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
                                ):
             task_supervisor = TaskSupervisor()
             tasks = self.__get_tasks(task_supervisor)
             self.assertEqual(len(tasks), 4)
-            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
-            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
+            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
+            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
             self.assertEqual(tasks[2].date_to_finish, None)
-            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(1))
+            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime(1))
 
             task_supervisor.execute(CommandFactory().get_command('set 0 none'))
             tasks = self.__get_tasks(task_supervisor)
             self.assertEqual(len(tasks), 4)
             self.assertEqual(tasks[0].date_to_finish, None)
-            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
+            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
             self.assertEqual(tasks[2].date_to_finish, None)
-            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(1))
+            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime(1))
 
             self.assertEqual(mock_save.call_count, 1)
             self.assertEqual(mock_load.call_count, 1)
@@ -585,39 +576,39 @@ class TestTaskSupervisor(TestCase):
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
            return_value=[TaskFactory().get_task('task1',
                                                 status=TaskStatus.done,
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task2',
                                                 status=TaskStatus.not_done,
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task3',
                                                 status=TaskStatus.unknown,
                                                 ),
                          TaskFactory().get_task('task4',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(1),
                                                 ),
                          ])
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     def test_task_set_wrong_index_no_ok(self, mock_save, mock_load):
         with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
-                               return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
                                ):
             task_supervisor = TaskSupervisor()
             tasks = self.__get_tasks(task_supervisor)
             self.assertEqual(len(tasks), 4)
-            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
-            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
+            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
+            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
             self.assertEqual(tasks[2].date_to_finish, None)
-            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(1))
+            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime(1))
 
             task_supervisor.execute(CommandFactory().get_command('set 4 3'))
             tasks = self.__get_tasks(task_supervisor)
             self.assertEqual(len(tasks), 4)
-            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
-            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
+            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
+            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
             self.assertEqual(tasks[2].date_to_finish, None)
-            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(1))
+            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime(1))
 
             self.assertEqual(mock_save.call_count, 0)
             self.assertEqual(mock_load.call_count, 1)
@@ -625,39 +616,39 @@ class TestTaskSupervisor(TestCase):
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
            return_value=[TaskFactory().get_task('task1',
                                                 status=TaskStatus.done,
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task2',
                                                 status=TaskStatus.not_done,
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task3',
                                                 status=TaskStatus.unknown,
                                                 ),
                          TaskFactory().get_task('task4',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(1),
                                                 ),
                          ])
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     def test_task_set_wrong_value_no_ok(self, mock_save, mock_load):
         with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
-                               return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
                                ):
             task_supervisor = TaskSupervisor()
             tasks = self.__get_tasks(task_supervisor)
             self.assertEqual(len(tasks), 4)
-            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
-            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
+            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
+            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
             self.assertEqual(tasks[2].date_to_finish, None)
-            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(1))
+            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime(1))
 
             task_supervisor.execute(CommandFactory().get_command('set 0 a'))
             tasks = self.__get_tasks(task_supervisor)
             self.assertEqual(len(tasks), 4)
-            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
-            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
+            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
+            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
             self.assertEqual(tasks[2].date_to_finish, None)
-            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(1))
+            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime(1))
 
             self.assertEqual(mock_save.call_count, 0)
             self.assertEqual(mock_load.call_count, 1)
@@ -665,41 +656,41 @@ class TestTaskSupervisor(TestCase):
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
            return_value=[TaskFactory().get_task('task1',
                                                 status=TaskStatus.done,
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task2',
                                                 status=TaskStatus.not_done,
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task3',
                                                 status=TaskStatus.unknown,
                                                 ),
                          TaskFactory().get_task('task4',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(1),
                                                 ),
                          ])
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     def test_task_set_no_value_no_ok(self, mock_save, mock_load):
         with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
-                               return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
                                ):
             task_supervisor = TaskSupervisor()
             tasks = self.__get_tasks(task_supervisor)
             self.assertEqual(len(tasks), 4)
-            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
-            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
+            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
+            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
             self.assertEqual(tasks[2].date_to_finish, None)
-            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(1))
+            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime(1))
 
             task_supervisor.execute(CommandFactory().get_command('set 0'))
             task_supervisor.execute(CommandFactory().get_command('set 0 '))
             task_supervisor.execute(CommandFactory().get_command("set 0 ' '"))
             tasks = self.__get_tasks(task_supervisor)
             self.assertEqual(len(tasks), 4)
-            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
-            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(-1))
+            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
+            self.assertEqual(tasks[1].date_to_finish, DateTimeHelper.get_fixed_datetime(-1))
             self.assertEqual(tasks[2].date_to_finish, None)
-            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime_shifted(1))
+            self.assertEqual(tasks[3].date_to_finish, DateTimeHelper.get_fixed_datetime(1))
 
             self.assertEqual(mock_save.call_count, 0)
             self.assertEqual(mock_load.call_count, 1)
@@ -988,7 +979,7 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(mock_save.call_count, 0)
         self.assertEqual(mock_load.call_count, 1)
 
-    @patch('src.modules.tasks.periodic_tasks_generator.PeriodicTasksGenerator.get_list_next_occurrence',
+    @patch('src.modules.tasks.periodic.periodic_task_generator.PeriodicTaskGenerator.get_list_next_occurrence',
            return_value=[TaskFactory.get_task('task1'),
                          TaskFactory.get_task('task2'),
                          ])
@@ -1063,16 +1054,16 @@ class TestTaskSupervisor(TestCase):
 
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
            return_value=[TaskFactory().get_task('task1',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(1),
                                                 ),
                          TaskFactory().get_task('task2',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-1),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 ),
                          TaskFactory().get_task('task3',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(-2),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(-2),
                                                 ),
                          TaskFactory().get_task('task4',
-                                                date_to_finish=DateTimeHelper.get_fixed_datetime_shifted(0),
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(0),
                                                 ),
                          ])
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
@@ -1082,7 +1073,7 @@ class TestTaskSupervisor(TestCase):
         # WARNING: pay attention to indexes of returned_tasks shifting during operations
         # WARNING: sorting affects results!
         with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
-                               return_value=DateTimeHelper.get_fixed_datetime_shifted(0),
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
                                ):
             task_supervisor = TaskSupervisor()
             returned_tasks = task_supervisor.execute(

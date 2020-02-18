@@ -7,7 +7,7 @@ from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturn
 from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.utils.polish_utf_to_ascii import PolishUtfToAscii
 from src.utils.shared_preferences import SharedPreferences
-from src.utils.util_helpers import get_today_short
+from src.utils.helpers import DateHelper
 
 
 class PompejankaSupervisor(MumjolandiaSupervisor):
@@ -57,10 +57,10 @@ class PompejankaSupervisor(MumjolandiaSupervisor):
         if int(args[0]) > 0:
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.pompejanka_message,
                                              arguments=['Value has to be <= 0'])
-        self.start_date = get_today_short(args[0])
+        self.start_date = DateHelper.get_today_short(args[0])
         SharedPreferences().put(self.start_date_string, str(self.start_date))
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.pompejanka_message,
-                                         arguments=['Set to: ' + str(get_today_short(args[0]))])
+                                         arguments=['Set to: ' + str(DateHelper.get_today_short(args[0]))])
 
     def __command_clear(self, args):
         self.start_date = None
@@ -70,7 +70,7 @@ class PompejankaSupervisor(MumjolandiaSupervisor):
     def __get_current_pompejanka_day(self):
         if self.start_date is None:
             return -1
-        day = int((get_today_short() - self.start_date).days) + 1
+        day = int((DateHelper.get_today_short() - self.start_date).days) + 1
         if day > 54:
             return 0
         return day

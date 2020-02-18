@@ -1,6 +1,7 @@
 import datetime
 
-from src.modules.tasks.periodic_tasks_generator import PeriodicTasksGenerator
+from src.modules.tasks.periodic.periodic_task_generator import PeriodicTaskGenerator
+from src.utils.helpers import DateHelper
 from src.utils.shared_preferences import SharedPreferences
 
 
@@ -10,16 +11,16 @@ from src.utils.shared_preferences import SharedPreferences
 class PeriodicTaskProgressHandler:
     def __init__(self, filename):
         self.file = filename
-        self.tasks_date_string = 'periodic_tasks_date_today'
         self.tasks_prefix = 'periodic_tasks_data_'
 
     def set_done(self, task_id):
         return_value = False
         self.__handle_date_progression()
-        tasks = PeriodicTasksGenerator(self.file).get_tasks()
+        tasks = PeriodicTaskGenerator(self.file).get_tasks()
         try:
             if 0 <= task_id < len(tasks):
-                return_value = SharedPreferences().put(self.__generate_preference_string(task_id), 'true')
+                return_value = SharedPreferences().put(self.__generate_preference_string(task_id),
+                                                       str(tasks[task_id].date_to_finish))
         except TypeError:   # len(tasks) is Null
             pass
         return return_value
@@ -27,7 +28,7 @@ class PeriodicTaskProgressHandler:
     def set_undone(self, task_id):
         return_value = None
         self.__handle_date_progression()
-        tasks = PeriodicTasksGenerator(self.file).get_tasks()
+        tasks = PeriodicTaskGenerator(self.file).get_tasks()
         try:
             if 0 <= task_id < len(tasks):
                 return_value = SharedPreferences().clear_key(self.__generate_preference_string(task_id))
@@ -38,10 +39,10 @@ class PeriodicTaskProgressHandler:
     def is_done(self, task_id):
         return_value = False
         self.__handle_date_progression()
-        tasks = PeriodicTasksGenerator(self.file).get_tasks()
+        tasks = PeriodicTaskGenerator(self.file).get_tasks()
         try:
             if 0 <= task_id < len(tasks):
-                if SharedPreferences().get(self.__generate_preference_string(task_id)) == 'true':
+                if SharedPreferences().get(self.__generate_preference_string(task_id)):
                     return_value = True
         except TypeError:  # len(tasks) is Null
             pass
@@ -49,20 +50,14 @@ class PeriodicTaskProgressHandler:
 
     def reset(self):
         SharedPreferences().clear_starting_pattern(self.tasks_prefix)
-        SharedPreferences().clear_key(self.tasks_date_string)
 
     def __handle_date_progression(self):
-        sp = SharedPreferences()
-        date_today = datetime.date.today()
-        try:
-            date_preferences = datetime.datetime.strptime(sp.get(self.tasks_date_string), '%Y-%m-%d').date()
-        except TypeError:
-            date_preferences = None
-        if date_preferences is None:
-            sp.put(self.tasks_date_string, str(date_today))
-        elif date_today > date_preferences:
-            sp.clear_starting_pattern(self.tasks_prefix)
-            sp.put(self.tasks_date_string, str(date_today))
+        tasks = PeriodicTaskGenerator(self.file).get_tasks()
+        for task_id, task in enumerate(tasks):
+            saved_value = SharedPreferences().get(self.__generate_preference_string(task_id))
+            if saved_value is not None:
+                if task.date_to_finish > datetime.datetime.strptime(saved_value[:], '%Y-%m-%d').date():
+                    SharedPreferences().clear_key(self.__generate_preference_string(task_id))
 
     def __generate_preference_string(self, value):
         return self.tasks_prefix + str(value)

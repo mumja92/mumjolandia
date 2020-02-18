@@ -24,7 +24,7 @@ class TestMumjolandiaSanity(TestCase):
         shutil.rmtree(ConfigLoader.get_mumjolandia_location() + 'data')
 
     def test_note_add(self):
-        self.assertEqual(os.path.isfile(ConfigLoader.get_mumjolandia_location() + 'notes.pickle'), False)
+        self.assertEqual(os.path.isfile(ConfigLoader.get_mumjolandia_location() + 'data/notes.pickle'), False)
         self.mumjolandia_starter.set_commands(["note add 'test note'", "note add 'second test note'"])
         with HiddenPrints():
             self.mumjolandia_starter.run_cli()
