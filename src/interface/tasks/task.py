@@ -39,7 +39,7 @@ class Task(PODTemplate):
             else:
                 status = 'p-'
         if self.date_to_finish is None:
-            date_to_finish = '-'
+            date_to_finish = '------'
         else:
             date_to_finish = str(self.date_to_finish.strftime('%d %b'))
         return '[' + status + ']' + '(' + date_to_finish + ') ' + self.name
