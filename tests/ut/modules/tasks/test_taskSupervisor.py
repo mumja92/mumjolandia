@@ -174,7 +174,7 @@ class TestTaskSupervisor(TestCase):
         task_supervisor.execute(CommandFactory().get_command('edit 0 '))
         task_supervisor.execute(CommandFactory().get_command('edit'))
         self.assertEqual(len(self.__get_tasks(task_supervisor)), 1)
-        self.assertEqual(self.__get_tasks(task_supervisor)[0].name, 'task1')
+        self.assertEqual('task1', self.__get_tasks(task_supervisor)[0].name)
         self.assertEqual(mock_save.call_count, 0)
 
         self.assertEqual(mock_load.call_count, 1)
@@ -191,6 +191,20 @@ class TestTaskSupervisor(TestCase):
         self.assertEqual(len(self.__get_tasks(task_supervisor)), 1)
         self.assertEqual(self.__get_tasks(task_supervisor)[0].name, 'task1')
         self.assertEqual(mock_save.call_count, 0)
+
+        self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get', return_value=[TaskFactory().get_task('task1')])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_edit_multi_word_ok(self, mock_save, mock_load):
+        task_supervisor = TaskSupervisor()
+        self.assertEqual(len(self.__get_tasks(task_supervisor)), 1)
+        self.assertEqual(self.__get_tasks(task_supervisor)[0].name, 'task1')
+
+        task_supervisor.execute(CommandFactory().get_command('edit 0 multi word name'))
+        self.assertEqual(1, len(self.__get_tasks(task_supervisor)))
+        self.assertEqual('multi word name', self.__get_tasks(task_supervisor)[0].name)
+        self.assertEqual(mock_save.call_count, 1)
 
         self.assertEqual(mock_load.call_count, 1)
 

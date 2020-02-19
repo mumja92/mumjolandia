@@ -217,7 +217,9 @@ class TaskSupervisor(MumjolandiaSupervisor):
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_edit_wrong_index,
                                              arguments=['None'])
         try:
-            new_task = TaskFactory.get_task(name=args[1], date_to_finish=self.tasks[int(args[0])].date_to_finish)
+            if len(args) < 2:
+                raise IndexError
+            new_task = TaskFactory.get_task(name=' '.join(args[1:]), date_to_finish=self.tasks[int(args[0])].date_to_finish)
             self.tasks[task_id] = new_task
             self.__save_if_allowed()
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_edit_ok,
