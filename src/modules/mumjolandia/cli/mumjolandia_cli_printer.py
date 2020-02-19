@@ -99,6 +99,7 @@ class MumjolandiaCliPrinter:
 
         self.views[MumjolandiaReturnValue.utils_get.name] = self.view_utils_get_ok
         self.views[MumjolandiaReturnValue.utils_help.name] = self.view_utils_help
+        self.views[MumjolandiaReturnValue.utils_shared_preferences_get.name] = self.view_utils_shared_preferences_get
 
     def view_mumjolandia_none(self, return_value):
         pass
@@ -346,3 +347,8 @@ class MumjolandiaCliPrinter:
 
     def view_utils_help(self, return_value):
         print(return_value.arguments[0])
+
+    def view_utils_shared_preferences_get(self, return_value):
+        print(str(len(return_value.arguments[0])) + ' items stored: ')
+        for key, value in return_value.arguments[0].items():
+            print(key + " " + value)

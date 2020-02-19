@@ -20,6 +20,9 @@ class SharedPreferences:
                 return_value = None
         return return_value
 
+    def get_all(self):
+        return self.__get_dict()
+
     def put(self, name, value):
         dictionary = self.__get_dict()
         if dictionary is None:

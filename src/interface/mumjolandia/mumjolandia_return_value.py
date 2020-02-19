@@ -91,3 +91,4 @@ class MumjolandiaReturnValue(Enum):
 
     utils_help = 70
     utils_get = 75
+    utils_shared_preferences_get = 76
