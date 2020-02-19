@@ -56,6 +56,11 @@ class MumjolandiaCli(Thread):
                 if command.arguments[0] != 'exit':
                     command.arguments.insert(0, self.mode.name)
             return_value = self.data_passer.pass_command(command)
+            if self.mode != MumjolandiaCliMode.none and return_value.status == MumjolandiaReturnValue.mumjolandia_unrecognized_parameters:
+                del(command.arguments[0])
+                mode_none_return_value = self.data_passer.pass_command(command)
+                if mode_none_return_value != MumjolandiaReturnValue.mumjolandia_unrecognized_command:
+                    return_value = mode_none_return_value
             self.cli_printer.execute(return_value)
             if return_value.status == MumjolandiaReturnValue.mumjolandia_exit:
                 self.exit_flag = True
