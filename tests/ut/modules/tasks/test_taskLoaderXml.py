@@ -51,9 +51,9 @@ class TestTaskLoaderXml(TestCase):
                 print("Error: %s - %s." % (e.filename, e.strerror))
         with open(test_file, 'w') as file:
             file.write('<tasks><task date_added="2018-10-25 00:00:00" date_to_finish="2018-10-25 00:00:00" '
-                       'description="unknown" name="task1" priority="unknown" status="not_done" type="unknown">'
+                       'description="unknown" name="task1" priority="unknown" reminder="0" status="not_done" type="unknown">'
                        'none</task><task date_added="2018-10-26 00:00:00" date_to_finish="2018-10-26 00:00:00" '
-                       'description="unknown" name="task drugi" priority="unknown" status="not_done" type="unknown">'
+                       'description="unknown" name="task drugi" priority="unknown" reminder="0" status="not_done" type="unknown">'
                        'none</task></tasks>')
 
         t = TaskLoaderXml(test_file)
@@ -77,9 +77,9 @@ class TestTaskLoaderXml(TestCase):
         test_file = "test_tasks.xml"
         expected_string = '<tasks><task date_added="2018-10-25 00:00:00" date_finished="None" ' \
                           'date_to_finish="2018-10-25 00:00:00" description="unknown" name="task1" priority="unknown" ' \
-                          'status="not_done" type="unknown">none</task><task date_added="2018-10-25 00:00:00" ' \
+                          'reminder="0" status="not_done" type="unknown">none</task><task date_added="2018-10-25 00:00:00" ' \
                           'date_finished="None" date_to_finish="2018-10-25 00:00:00" description="unknown" name="task ' \
-                          'drugi" priority="unknown" status="not_done" type="unknown">none</task></tasks>'
+                          'drugi" priority="unknown" reminder="0" status="not_done" type="unknown">none</task></tasks>'
         t = TaskLoaderXml(test_file)
 
         if os.path.isfile(test_file):
@@ -96,7 +96,7 @@ class TestTaskLoaderXml(TestCase):
                                      date_to_finish="2018-10-25 00:00:00")])
         with open(test_file, 'r') as file:
             data = file.read()
-            self.assertEqual(expected_string, data)
+            self.assertEqual(''.join(expected_string.split()), ''.join(data.split()))
 
         try:
             os.remove(test_file)
