@@ -37,6 +37,10 @@ class TaskLoaderXml:
                 priority = TaskPriority[child.get('priority')]
                 task_type = TaskType[child.get('type')]
                 status = TaskStatus[child.get('status')]
+                try:
+                    reminder = child.get('reminder')
+                except KeyError:
+                    reminder = 0
                 if name is None:
                     broken_file_flag = True
                     name = 'error'
@@ -56,7 +60,7 @@ class TaskLoaderXml:
                     broken_file_flag = True
                     status = TaskStatus.unknown
                 tasks.append(self.task_factory.get_task(name, description, date_added, date_to_finish, date_finished,
-                                                        priority, task_type, status))
+                                                        priority, task_type, status, reminder))
         except FileNotFoundError:
             raise FileNotFoundError
         except ET.ParseError:
@@ -85,7 +89,8 @@ class TaskLoaderXml:
                           date_finished=date_finished,
                           priority=str(t.priority.name),
                           type=str(t.type.name),
-                          status=str(t.status.name)
+                          status=str(t.status.name),
+                          reminder=str(t.reminder),
                           ).text = "none"
 
         tree = ET.ElementTree(root_element)

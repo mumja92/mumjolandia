@@ -352,11 +352,12 @@ class TestTaskSupervisor(TestCase):
                          TaskFactory().get_task('task3',
                                                 date_to_finish=DateTimeHelper.get_fixed_datetime(-1),
                                                 status=TaskStatus.done,
+                                                date_finished=DateTimeHelper.get_fixed_datetime(-1)
                                                 ),
                          ])
     @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
     def test_task_get_two_task_set_one_done_ok(self, mock_save, mock_load):
-        # after 'set 0 0' and 'set 0 -1' command 2 tasks will match 'ls' command, but 'task3' has 'done' status so won't
+        # after 'set 0 0' and 'set 2 -1' command 2 tasks will match 'ls' command, but 'task3' has 'done' status so won't
         # be listed
         with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
                                return_value=DateTimeHelper.get_fixed_datetime(0),
@@ -1105,5 +1106,184 @@ class TestTaskSupervisor(TestCase):
             self.assertEqual(len(returned_tasks), 3)
             self.assertEqual(returned_tasks[0].status, TaskStatus.done)
             self.assertEqual(returned_tasks[0].name, 'task3')
+            self.assertEqual(mock_save.call_count, 1)
+            self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task',
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(2),
+                                                reminder=1,
+                                                status=TaskStatus.not_done,
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_show_reminder_day_before_ok(self, mock_save, mock_load):
+        with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
+                               ):
+            task_supervisor = TaskSupervisor()
+            returned_tasks = task_supervisor.execute(
+                CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
+            self.assertEqual(len(returned_tasks), 0)
+            self.assertEqual(mock_save.call_count, 0)
+            self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task',
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(2),
+                                                reminder=1,
+                                                status=TaskStatus.not_done,
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_show_reminder_should_be_reminded_ok(self, mock_save, mock_load):
+        with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
+                               return_value=DateTimeHelper.get_fixed_datetime(1),
+                               ):
+            task_supervisor = TaskSupervisor()
+            returned_tasks = task_supervisor.execute(
+                CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
+            self.assertEqual(len(returned_tasks), 1)
+            self.assertEqual(mock_save.call_count, 0)
+            self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task',
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(2),
+                                                reminder=1,
+                                                status=TaskStatus.not_done,
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_show_reminder_day_of_task_ok(self, mock_save, mock_load):
+        with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
+                               return_value=DateTimeHelper.get_fixed_datetime(2),
+                               ):
+            task_supervisor = TaskSupervisor()
+            returned_tasks = task_supervisor.execute(
+                CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
+            self.assertEqual(len(returned_tasks), 1)
+            self.assertEqual(mock_save.call_count, 0)
+            self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task',
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(2),
+                                                reminder=1,
+                                                status=TaskStatus.not_done,
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_show_reminder_day_after_ok(self, mock_save, mock_load):
+        with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
+                               return_value=DateTimeHelper.get_fixed_datetime(3),
+                               ):
+            task_supervisor = TaskSupervisor()
+            returned_tasks = task_supervisor.execute(
+                CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
+            self.assertEqual(len(returned_tasks), 1)
+            self.assertEqual(mock_save.call_count, 0)
+            self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task',
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(2),
+                                                reminder=1,
+                                                status=TaskStatus.done,
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_show_reminder_day_before_status_done_ok(self, mock_save, mock_load):
+        with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
+                               ):
+            task_supervisor = TaskSupervisor()
+            returned_tasks = task_supervisor.execute(
+                CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
+            self.assertEqual(len(returned_tasks), 0)
+            self.assertEqual(mock_save.call_count, 0)
+            self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task',
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(2),
+                                                reminder=1,
+                                                status=TaskStatus.done,
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_show_reminder_status_done_should_be_reminded_ok(self, mock_save, mock_load):
+        with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
+                               return_value=DateTimeHelper.get_fixed_datetime(1),
+                               ):
+            task_supervisor = TaskSupervisor()
+            returned_tasks = task_supervisor.execute(
+                CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
+            self.assertEqual(len(returned_tasks), 0)
+            self.assertEqual(mock_save.call_count, 0)
+            self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task',
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(2),
+                                                reminder=1,
+                                                status=TaskStatus.done,
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_show_reminder_status_done_day_of_task_ok(self, mock_save, mock_load):
+        with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
+                               return_value=DateTimeHelper.get_fixed_datetime(2),
+                               ):
+            task_supervisor = TaskSupervisor()
+            returned_tasks = task_supervisor.execute(
+                CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
+            self.assertEqual(len(returned_tasks), 0)
+            self.assertEqual(mock_save.call_count, 0)
+            self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task',
+                                                date_to_finish=DateTimeHelper.get_fixed_datetime(2),
+                                                reminder=1,
+                                                status=TaskStatus.done,
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_show_reminder_status_done_day_after_ok(self, mock_save, mock_load):
+        with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
+                               return_value=DateTimeHelper.get_fixed_datetime(3),
+                               ):
+            task_supervisor = TaskSupervisor()
+            returned_tasks = task_supervisor.execute(
+                CommandFactory().get_command('ls')).arguments[1]  # arg[0] are indexes
+            self.assertEqual(len(returned_tasks), 0)
+            self.assertEqual(mock_save.call_count, 0)
+            self.assertEqual(mock_load.call_count, 1)
+
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.get',
+           return_value=[TaskFactory().get_task('task',
+                                                date_to_finish=None,
+                                                reminder=0,
+                                                ),
+                         ])
+    @patch('src.modules.tasks.task_supervisor.TaskLoaderXml.save', return_value=None)
+    def test_task_set_with_reminder_ok(self, mock_save, mock_load):
+        with mock.patch.object(TaskSupervisor, '_TaskSupervisor__get_today',
+                               return_value=DateTimeHelper.get_fixed_datetime(0),
+                               ):
+            task_supervisor = TaskSupervisor()
+
+            tasks = self.__get_tasks(task_supervisor)
+            self.assertEqual(len(tasks), 1)
+            self.assertEqual(tasks[0].reminder, 0)
+            self.assertEqual(tasks[0].date_to_finish, None)
+
+            task_supervisor.execute(CommandFactory().get_command('set 0 2 1'))
+
+            tasks = self.__get_tasks(task_supervisor)
+            self.assertEqual(len(tasks), 1)
+            self.assertEqual(tasks[0].reminder, 1)
+            self.assertEqual(tasks[0].date_to_finish, DateTimeHelper.get_fixed_datetime(2))
             self.assertEqual(mock_save.call_count, 1)
             self.assertEqual(mock_load.call_count, 1)

@@ -123,10 +123,8 @@ class TaskSupervisor(MumjolandiaSupervisor):
         else:       # task get
             for i, t in enumerate(self.tasks):
                 temp = self.__get_today()    # first tasks for today
-                if t.date_to_finish is not None:
-                    if t.date_to_finish.year == temp.year and \
-                            t.date_to_finish.month == temp.month and \
-                            t.date_to_finish.day == temp.day:
+                if t.date_to_finish is not None and t.status is not TaskStatus.done:
+                    if (t.date_to_finish - temp).days * 24 + (t.date_to_finish - temp).seconds // 3600 <= t.reminder*24:
                         return_list.append(t)
                         return_indexes.append(i)
                         continue
@@ -232,11 +230,15 @@ class TaskSupervisor(MumjolandiaSupervisor):
         try:
             if int(args[0]) > len(self.tasks) or int(args[0]) < 0:
                 raise IndexError
+            # parsing first argument
             if args[1].lower() == 'None'.lower():
                 self.tasks[int(args[0])].date_to_finish = None
             else:
                 self.tasks[int(args[0])].date_to_finish = self.__get_today().replace(microsecond=0) + \
                                                           datetime.timedelta(days=int(args[1]))
+            # parsing second argument
+            if len(args) > 2:
+                self.tasks[int(args[0])].reminder = int(args[2])
             self.__save_if_allowed()
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_set_ok,
                                              arguments=[self.tasks[int(args[0])].name, args[1]])
