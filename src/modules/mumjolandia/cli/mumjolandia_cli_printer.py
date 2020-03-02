@@ -41,6 +41,7 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.task_done_wrong_parameter.name] = self.view_task_done_wrong_parameter
         self.views[MumjolandiaReturnValue.task_bump_ok.name] = self.view_task_bump_ok
         self.views[MumjolandiaReturnValue.task_bump_nook.name] = self.view_task_bump_nook
+        self.views[MumjolandiaReturnValue.task_find.name] = self.view_task_search
 
         self.views[MumjolandiaReturnValue.food_get_ok.name] = self.view_food_get_ok
         self.views[MumjolandiaReturnValue.food_get_wrong_index.name] = self.view_food_get_wrong_index
@@ -181,6 +182,15 @@ class MumjolandiaCliPrinter:
 
     def view_task_bump_nook(self, return_value):
         print("Wrong parameters " + str(return_value.arguments))
+
+    def view_task_search(self, return_value):
+        print(len(return_value.arguments[0]), 'items found:')
+        max_width = 0
+        for i in return_value.arguments[0]:
+            if len(str(i)) > max_width:
+                max_width = len(str(i))
+        for i, t in zip(return_value.arguments[0], return_value.arguments[1]):
+            print('[' + str(i).rjust(max_width, ' ') + ']' + str(t))
 
     def view_food_get_ok(self, return_value):
         print(PolishUtfToAscii.translate(return_value.arguments[0]))

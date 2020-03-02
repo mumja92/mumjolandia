@@ -66,6 +66,8 @@ class TaskSupervisor(MumjolandiaSupervisor):
         self.command_parsers['b'] = self.__command_bump
         self.command_parsers['done'] = self.__command_done
         self.command_parsers['edit'] = self.__command_edit
+        self.command_parsers['find'] = self.__command_find
+        self.command_parsers['f'] = self.__command_find
         self.command_parsers['help'] = self.__command_help
         self.command_parsers['ls'] = self.__command_get
         self.command_parsers['periodic'] = self.__command_periodic
@@ -167,6 +169,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
                                                     '[b]ump\n'
                                                     'done\n'
                                                     'edit [id] [name]\n'
+                                                    '[f]ind] [str]\n'
                                                     'ls (show today and previous uncompleted\n'
                                                     'ls 0 (show all tasks\n'
                                                     'ls x (show tasks without date)\n'
@@ -316,6 +319,18 @@ class TaskSupervisor(MumjolandiaSupervisor):
         except (IndexError, ValueError):
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_bump_nook,
                                              arguments=args)
+
+    # todo: add ut
+    def __command_find(self, args):
+        return_indexes = []
+        return_list = []
+        if len(args) > 0:
+            for i, t in enumerate(self.tasks):
+                if str(args[0]).lower() in t.name.lower():
+                    return_list.append(t)
+                    return_indexes.append(i)
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_find,
+                                         arguments=[return_indexes, return_list])
 
     def __translate_periodic_task_id(self, task_id):
         return -(int(task_id)+1)
