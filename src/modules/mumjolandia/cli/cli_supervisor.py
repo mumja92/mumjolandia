@@ -4,6 +4,7 @@ import platform
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
+from src.utils.helpers import RandomUtils
 
 
 class CliSupervisor(MumjolandiaSupervisor):
@@ -26,10 +27,7 @@ class CliSupervisor(MumjolandiaSupervisor):
         self.command_parsers['path'] = self.__command_path
 
     def __clear_screen(self):
-        if platform.system() == 'Windows':
-            os.system('cls')
-        else:
-            os.system('clear')
+        RandomUtils.clear_screen()
 
     def __command_c(self, args):
         self.permanent_cls = not self.permanent_cls

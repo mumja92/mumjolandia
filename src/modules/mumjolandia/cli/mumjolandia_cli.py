@@ -7,6 +7,8 @@ from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturn
 from src.modules.console.console import Console
 from src.modules.mumjolandia.cli.cli_supervisor import CliSupervisor
 from src.modules.mumjolandia.cli.mumjolandia_cli_printer import MumjolandiaCliPrinter
+from src.modules.mumjolandia.cli.mumjolandia_homepage import MumjolandiaHomepage
+from src.utils.helpers import RandomUtils
 
 
 class MumjolandiaCli(Thread):
@@ -20,17 +22,27 @@ class MumjolandiaCli(Thread):
         self.data_passer = data_passer
         self.mode = MumjolandiaCliMode.none
         self.permanent_cls = False
+        self.mumjolandia_homepage = MumjolandiaHomepage(self.data_passer)
 
     def __del__(self):
         logging.info('mumjolandia cli exiting')
 
     def run(self):
         logging.info('mumjolandia cli started')
+        if not self.mumjolandia_homepage.is_printable():
+            logging.warning("Console doesn't meet homepage requirements")
         if self.commands is None:
+            if self.mumjolandia_homepage.is_printable():
+                RandomUtils.clear_screen()
+                self.mumjolandia_homepage.print()
             while True:
                 print(self.__get_prompt(), end='')
                 command = self.console.get_next_command()
-                self.__handle_command(command)
+                if command.arguments[0] == "" and self.mode == MumjolandiaCliMode.none:
+                    RandomUtils.clear_screen()
+                    self.mumjolandia_homepage.print()
+                else:
+                    self.__handle_command(command)
                 if self.exit_flag:
                     break
         else:
