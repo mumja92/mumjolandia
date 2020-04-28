@@ -2,6 +2,8 @@ import os
 import shutil
 import zipfile
 import urllib.request
+import ssl
+
 from pathlib import Path
 from distutils.dir_util import copy_tree
 from urllib.error import HTTPError
@@ -59,13 +61,14 @@ class UtilsSupervisor(MumjolandiaSupervisor):
                                          arguments=[SharedPreferences().get_all()])
 
     def __command_update(self, args):
-        mumjolandia_path = "https://github.com/mumja92/mumjolandia/archive/master.zi"
-        update_dir = "./update_dir/"
+        mumjolandia_path = "https://github.com/mumja92/mumjolandia/archive/master.zip"
+        update_dir = ConfigLoader.get_mumjolandia_location() + "update_dir/"
         file_name = "mumjolandia.zip"
         if os.path.exists(update_dir):
             shutil.rmtree(update_dir)
         Path(update_dir).mkdir(exist_ok=True)
         try:
+            ssl._create_default_https_context = ssl._create_unverified_context  # SSL: CERTIFICATE_VERIFY_FAILED on qpython
             urllib.request.urlretrieve(mumjolandia_path, update_dir + file_name)
         except (urllib.error.HTTPError, urllib.error.URLError) as e:
             shutil.rmtree(update_dir)
@@ -78,12 +81,12 @@ class UtilsSupervisor(MumjolandiaSupervisor):
                 if file.startswith('mumjolandia-master/src/'):
                     archive.extract(file, update_dir)
 
-        shutil.rmtree('src')
+        shutil.rmtree(ConfigLoader.get_mumjolandia_location() + 'src')
         try:
-            os.remove('main.py')
+            os.remove(ConfigLoader.get_mumjolandia_location() + 'main.py')
         except OSError:
             pass
-        copy_tree(update_dir + 'mumjolandia-master', '.')
+        copy_tree(update_dir + 'mumjolandia-master', ConfigLoader.get_mumjolandia_location())
         shutil.rmtree(update_dir)
 
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_update_ok,
