@@ -84,12 +84,14 @@ class MumjolandiaReturnValue(Enum):
     password_help = 65
     password_add_ok = 66
     password_rm_ok = 68
-
+    # pompejanka
     pompejanka_message = 71
-
+    # cli
     cli_handled = 69
     cli_mode = 72
-
+    # utils
     utils_help = 70
     utils_get = 75
     utils_shared_preferences_get = 77
+    utils_update_ok = 78
+    utils_update_fail = 79
