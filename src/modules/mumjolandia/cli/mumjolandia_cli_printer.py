@@ -366,7 +366,8 @@ class MumjolandiaCliPrinter:
             print(key + " " + value)
 
     def view_utils_update_ok(self, return_value):
-        print("Update done")
+        print("Updated with branch '" + return_value.arguments[0] + "'")
 
     def view_utils_update_fail(self, return_value):
         print("Update failed")
+        print(return_value.arguments[0])

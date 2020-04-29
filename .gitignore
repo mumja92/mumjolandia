@@ -9,6 +9,7 @@ data/tasks.*
 data/fat.*
 data/games.*
 data/periodic_tasks.xml
+data/passwords.pickle
 data/shared_preferences.pickle
 data/notes.*
 data/events.xml

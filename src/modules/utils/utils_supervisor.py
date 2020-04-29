@@ -36,11 +36,12 @@ class UtilsSupervisor(MumjolandiaSupervisor):
 
     def __command_help(self, args):
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_help,
-                                         arguments=['ip\n'
-                                                    '[l]ocation\n'
-                                                    '[p]references\n'
-                                                    '[u]pdate\n'
-                                                    ])
+                                         arguments=[
+                                             'ip\n'
+                                             '[l]ocation\n'
+                                             '[p]references\n'
+                                             '[u]pdate {branch}\n'
+                                         ])
 
     def __command_ip(self, args):
         # todo: use 'with' statement and handle exceptions
@@ -61,7 +62,10 @@ class UtilsSupervisor(MumjolandiaSupervisor):
                                          arguments=[SharedPreferences().get_all()])
 
     def __command_update(self, args):
-        mumjolandia_path = "https://github.com/mumja92/mumjolandia/archive/master.zip"
+        branch = "master"
+        if len(args):
+            branch = args[0]
+        mumjolandia_path = "https://github.com/mumja92/mumjolandia/archive/" + branch + ".zip"
         update_dir = ConfigLoader.get_mumjolandia_location() + "update_dir/"
         file_name = "mumjolandia.zip"
         if os.path.exists(update_dir):
@@ -73,7 +77,7 @@ class UtilsSupervisor(MumjolandiaSupervisor):
         except (urllib.error.HTTPError, urllib.error.URLError) as e:
             shutil.rmtree(update_dir)
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_update_fail,
-                                             arguments=['Error during downloading'])
+                                             arguments=[str(e)])
 
         with zipfile.ZipFile(update_dir + file_name, 'r') as archive:
             archive.extract(member='mumjolandia-master/main.py', path=update_dir)
@@ -90,4 +94,4 @@ class UtilsSupervisor(MumjolandiaSupervisor):
         shutil.rmtree(update_dir)
 
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_update_ok,
-                                         arguments=[])
+                                         arguments=[branch])
