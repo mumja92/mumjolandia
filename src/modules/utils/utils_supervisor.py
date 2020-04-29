@@ -90,7 +90,7 @@ class UtilsSupervisor(MumjolandiaSupervisor):
             os.remove(ConfigLoader.get_mumjolandia_location() + 'main.py')
         except OSError:
             pass
-        copy_tree(update_dir + 'mumjolandia-master', ConfigLoader.get_mumjolandia_location())
+        copy_tree(update_dir + 'mumjolandia-' + branch, ConfigLoader.get_mumjolandia_location())
         shutil.rmtree(update_dir)
 
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_update_ok,
