@@ -80,9 +80,9 @@ class UtilsSupervisor(MumjolandiaSupervisor):
                                              arguments=[str(e)])
 
         with zipfile.ZipFile(update_dir + file_name, 'r') as archive:
-            archive.extract(member='mumjolandia-master/main.py', path=update_dir)
+            archive.extract(member='mumjolandia-' + branch + '/main.py', path=update_dir)
             for file in archive.namelist():
-                if file.startswith('mumjolandia-master/src/'):
+                if file.startswith('mumjolandia-' + branch + '/src/'):
                     archive.extract(file, update_dir)
 
         shutil.rmtree(ConfigLoader.get_mumjolandia_location() + 'src')
