@@ -126,6 +126,8 @@ class TaskSupervisor(MumjolandiaSupervisor):
         else:       # task get
             for i, t in enumerate(self.tasks):
                 temp = self.__get_today()    # first tasks for today
+                # won't show task for today if it's 7 am and task was added at ie. 9 am
+                # this is expected behaviour so "task set x" sets hour and minute to 00:00, so everything is showed
                 if t.date_to_finish is not None and t.status is not TaskStatus.done:
                     if (t.date_to_finish - temp).days * 24 + (t.date_to_finish - temp).seconds // 3600 <= t.reminder*24:
                         return_list.append(t)
@@ -237,8 +239,11 @@ class TaskSupervisor(MumjolandiaSupervisor):
             # parsing first argument
             if args[1].lower() == 'None'.lower():
                 self.tasks[int(args[0])].date_to_finish = None
-            else:
-                self.tasks[int(args[0])].date_to_finish = self.__get_today().replace(microsecond=0) + \
+            else:       # set is for day not hour so part of date is removed
+                self.tasks[int(args[0])].date_to_finish = self.__get_today().replace(microsecond=0,
+                                                                                     second=0,
+                                                                                     minute=0,
+                                                                                     hour=0) + \
                                                           datetime.timedelta(days=int(args[1]))
             # parsing second argument
             if len(args) > 2:
