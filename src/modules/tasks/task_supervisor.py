@@ -66,6 +66,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
         self.command_parsers['b'] = self.__command_bump
         self.command_parsers['done'] = self.__command_done
         self.command_parsers['edit'] = self.__command_edit
+        self.command_parsers['e'] = self.__command_edit
         self.command_parsers['find'] = self.__command_find
         self.command_parsers['f'] = self.__command_find
         self.command_parsers['help'] = self.__command_help
