@@ -1,9 +1,11 @@
 import logging
 import platform
+import time
 
 from threading import Thread
 from src.interface.mumjolandia.mumjolandia_cli_mode import MumjolandiaCliMode
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
+from src.modules.command.command_factory import CommandFactory
 from src.modules.console.console import Console
 from src.modules.mumjolandia.cli.cli_supervisor import CliSupervisor
 from src.modules.mumjolandia.cli.mumjolandia_cli_printer import MumjolandiaCliPrinter
@@ -74,6 +76,8 @@ class MumjolandiaCli(Thread):
                 if mode_none_return_value != MumjolandiaReturnValue.mumjolandia_unrecognized_command:
                     return_value = mode_none_return_value
             self.cli_printer.execute(return_value)
+            if return_value.status == MumjolandiaReturnValue.utils_update_ok:
+                self.__call_shutdown()
             if return_value.status == MumjolandiaReturnValue.mumjolandia_exit:
                 self.exit_flag = True
 
@@ -89,3 +93,9 @@ class MumjolandiaCli(Thread):
         if platform.system() != 'Windows':
             prompt += "\033[0m"
         return prompt
+
+    def __call_shutdown(self):
+        print('Exiting...')
+        time.sleep(2)
+        self.data_passer.pass_command(CommandFactory().get_command("exit"))
+        self.exit_flag = True
