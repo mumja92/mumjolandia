@@ -363,7 +363,7 @@ class MumjolandiaCliPrinter:
     def view_utils_shared_preferences_get(self, return_value):
         print(str(len(return_value.arguments[0])) + ' items stored: ')
         for key, value in return_value.arguments[0].items():
-            print(key + " " + value)
+            print(str(key) + " " + str(value))
 
     def view_utils_update_ok(self, return_value):
         print("Updated with branch '" + return_value.arguments[0] + "'")
