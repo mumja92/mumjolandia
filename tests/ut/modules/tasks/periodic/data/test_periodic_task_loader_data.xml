@@ -1,0 +1,10 @@
+<events>
+    <event>
+        <name>event1</name>
+        <date>12-05</date>
+    </event>
+    <event>
+        <name>event2</name>
+        <date>10-01</date>
+    </event>
+</events>

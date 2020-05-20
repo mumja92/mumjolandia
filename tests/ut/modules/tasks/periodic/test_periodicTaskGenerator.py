@@ -56,6 +56,16 @@ class TestPeriodicTaskGenerator(TestCase):
         ),
     ]
 
+    test_data_events = [
+        PeriodicTaskFactory().get_periodic_task(
+            name='task1',
+            occurrence_type=PeriodicTaskOccurrenceType.year,
+            occurrence=1,
+            reminder=3,
+            start=DateTimeHelper.get_fixed_date(1),
+        ),
+    ]
+
     @patch.object(PeriodicTaskLoader, 'get', return_value=test_data)
     def test_get_list_next_occurrence_ok(self, mock_load):
         ptg = PeriodicTaskGenerator('test')
@@ -73,7 +83,7 @@ class TestPeriodicTaskGenerator(TestCase):
 
     @patch.object(PeriodicTaskLoader, 'get', return_value=test_data)
     def test_get_tasks_without_shift_ok(self, mock_load):
-        ptg = PeriodicTaskGenerator('test')
+        ptg = PeriodicTaskGenerator('test', 'test2')
         returned_tasks = ptg.get_tasks()
 
         self.assertEqual(mock_load.call_count, 1)
@@ -131,3 +141,13 @@ class TestPeriodicTaskGenerator(TestCase):
         self.assertEqual(len(returned_tasks), 1)
 
         self.assertEqual(returned_tasks[0].name, 'task2')
+
+    @patch.object(PeriodicTaskLoader, 'get', return_value=test_data_events)
+    def test_get_events_without_shift_ok(self, mock_load):
+        ptg = PeriodicTaskGenerator('test')
+        returned_tasks = ptg.get_tasks(0)
+
+        self.assertTrue(self.mock_date_short.called)
+        self.assertTrue(self.mock_date_long.called)
+        self.assertEqual(mock_load.call_count, 1)
+        self.assertEqual(len(returned_tasks), 1)

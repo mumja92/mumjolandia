@@ -6,7 +6,6 @@ from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaRes
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.interface.tasks.task_storage_type import TaskStorageType
 from src.modules.connection.connection_supervisor import ConnectionSupervisor
-from src.modules.event.event_supervisor import EventSupervisor
 from src.modules.fat.fat_supervisor import FatSupervisor
 from src.modules.food.food_supervisor import FoodSupervisor
 from src.modules.game.game_supervisor import GameSupervisor
@@ -52,7 +51,6 @@ class MumjolandiaThread(Thread):
             logging.error('Storage type: "' + self.config_object.task_io_method + '" is incorrect. Using xml instead. ')
             task_storage_type = TaskStorageType.xml
         self.supervisors['connection'] = ConnectionSupervisor()
-        self.supervisors['event'] = EventSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/events.xml')
         self.supervisors['fat'] = FatSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/fat.pickle')
         self.supervisors['food'] = FoodSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/jedzonko.db')
         self.supervisors['game'] = GameSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/games.db')
@@ -65,8 +63,6 @@ class MumjolandiaThread(Thread):
 
         self.command_parsers['connection'] = self.__command_connection
         self.command_parsers['c'] = self.__command_connection
-        self.command_parsers['event'] = self.__command_event
-        self.command_parsers['e'] = self.__command_event
         self.command_parsers['exit'] = self.__command_exit
         self.command_parsers['fat'] = self.__command_fat
         self.command_parsers['food'] = self.__command_food

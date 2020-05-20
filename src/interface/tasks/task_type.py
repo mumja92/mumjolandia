@@ -6,3 +6,4 @@ class TaskType(Enum):
     normal = 1
     should_have = 2
     periodic = 3
+    event = 4
