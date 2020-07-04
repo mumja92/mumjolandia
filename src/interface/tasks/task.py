@@ -38,6 +38,11 @@ class Task(PODTemplate):
                 status = 'p+'
             else:
                 status = 'p-'
+        if self.type == TaskType.event:
+            if self.status == TaskStatus.done:
+                status = 'e+'
+            else:
+                status = 'e-'
         if self.date_to_finish is None:
             date_to_finish = '------'
         else:
