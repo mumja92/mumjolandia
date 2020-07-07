@@ -14,13 +14,11 @@ class PeriodicTaskLoader:
         self.periodic_file = periodic_filename
         self.event_file = event_filename
         self.event_reminder = event_reminder
+        self.tasks = self.__get_tasks_events() + self.__get_tasks_periodic()
 
     def get(self):
         # todo: add check if there isn't the same name in periodic tasks and events
-        tasks = []
-        tasks.extend(self.__get_tasks_periodic())
-        tasks.extend(self.__get_tasks_events())
-        return tasks
+        return self.tasks
 
     def __get_tasks_periodic(self):
         tasks = []

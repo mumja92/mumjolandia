@@ -68,7 +68,7 @@ class TestPeriodicTaskGenerator(TestCase):
 
     @patch.object(PeriodicTaskLoader, 'get', return_value=test_data)
     def test_get_list_next_occurrence_ok(self, mock_load):
-        ptg = PeriodicTaskGenerator('test')
+        ptg = PeriodicTaskGenerator('test', 'test2')
         returned_tasks = ptg.get_list_next_occurrence()
 
         self.assertTrue(self.mock_date_short.called)
@@ -91,7 +91,7 @@ class TestPeriodicTaskGenerator(TestCase):
 
     @patch.object(PeriodicTaskLoader, 'get', return_value=test_data)
     def test_get_tasks_with_shift_7_ok(self, mock_load):
-        ptg = PeriodicTaskGenerator('test')
+        ptg = PeriodicTaskGenerator('test', 'test2')
         returned_tasks = ptg.get_tasks(7)
 
         self.assertTrue(self.mock_date_short.called)
@@ -104,7 +104,7 @@ class TestPeriodicTaskGenerator(TestCase):
 
     @patch.object(PeriodicTaskLoader, 'get', return_value=test_data)
     def test_get_tasks_with_shift_8_ok(self, mock_load):
-        ptg = PeriodicTaskGenerator('test')
+        ptg = PeriodicTaskGenerator('test', 'test2')
         returned_tasks = ptg.get_tasks(8)
 
         self.assertTrue(self.mock_date_short.called)
@@ -118,7 +118,7 @@ class TestPeriodicTaskGenerator(TestCase):
 
     @patch.object(PeriodicTaskLoader, 'get', return_value=test_data)
     def test_get_tasks_with_shift_9_ok(self, mock_load):
-        ptg = PeriodicTaskGenerator('test')
+        ptg = PeriodicTaskGenerator('test', 'test2')
         returned_tasks = ptg.get_tasks(9)
 
         self.assertTrue(self.mock_date_short.called)
@@ -132,7 +132,7 @@ class TestPeriodicTaskGenerator(TestCase):
 
     @patch.object(PeriodicTaskLoader, 'get', return_value=test_data)
     def test_get_tasks_with_shift_10_ok(self, mock_load):
-        ptg = PeriodicTaskGenerator('test')
+        ptg = PeriodicTaskGenerator('test', 'test2')
         returned_tasks = ptg.get_tasks(10)
 
         self.assertTrue(self.mock_date_short.called)
@@ -144,7 +144,7 @@ class TestPeriodicTaskGenerator(TestCase):
 
     @patch.object(PeriodicTaskLoader, 'get', return_value=test_data_events)
     def test_get_events_without_shift_ok(self, mock_load):
-        ptg = PeriodicTaskGenerator('test')
+        ptg = PeriodicTaskGenerator('test', 'test2')
         returned_tasks = ptg.get_tasks(0)
 
         self.assertTrue(self.mock_date_short.called)

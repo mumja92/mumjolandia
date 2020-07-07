@@ -14,11 +14,12 @@ class PeriodicTaskProgressHandler:
         self.periodic_file = periodic_filename
         self.event_filename = event_filename
         self.tasks_prefix = 'periodic_tasks_data_'
+        self.periodic_task_generator = PeriodicTaskGenerator(self.periodic_file, self.event_filename)
 
     def set_done(self, task_id):
         return_value = False
         self.__handle_date_progression()
-        tasks = PeriodicTaskGenerator(self.periodic_file, self.event_filename).get_tasks()
+        tasks = self.periodic_task_generator.get_tasks()
         try:
             if 0 <= task_id < len(tasks):
                 return_value = SharedPreferences().put(self.__generate_preference_string(tasks[task_id].name),
@@ -30,7 +31,7 @@ class PeriodicTaskProgressHandler:
     def set_undone(self, task_id):
         return_value = None
         self.__handle_date_progression()
-        tasks = PeriodicTaskGenerator(self.periodic_file, self.event_filename).get_tasks()
+        tasks = self.periodic_task_generator.get_tasks()
         try:
             if 0 <= task_id < len(tasks):
                 return_value = SharedPreferences().clear_key(self.__generate_preference_string(tasks[task_id].name))
@@ -41,7 +42,7 @@ class PeriodicTaskProgressHandler:
     def is_done(self, task_id):
         return_value = False
         self.__handle_date_progression()
-        tasks = PeriodicTaskGenerator(self.periodic_file, self.event_filename).get_tasks()
+        tasks = self.periodic_task_generator.get_tasks()
         try:
             if 0 <= task_id < len(tasks):
                 if SharedPreferences().get(self.__generate_preference_string(tasks[task_id].name)):
@@ -54,7 +55,7 @@ class PeriodicTaskProgressHandler:
         SharedPreferences().clear_starting_pattern(self.tasks_prefix)
 
     def __handle_date_progression(self):
-        tasks = PeriodicTaskGenerator(self.periodic_file, self.event_filename).get_tasks()
+        tasks = self.periodic_task_generator.get_tasks()
         for task_id, task in enumerate(tasks):
             saved_value = SharedPreferences().get(self.__generate_preference_string(task.name))
             if saved_value is not None:
