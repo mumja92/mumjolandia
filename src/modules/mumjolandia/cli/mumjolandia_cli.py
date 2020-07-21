@@ -32,7 +32,7 @@ class MumjolandiaCli(Thread):
     def run(self):
         logging.info('mumjolandia cli started')
         if not self.mumjolandia_homepage.is_printable():
-            logging.warning("Console doesn't meet homepage requirements")
+            logging.info("Console doesn't meet homepage requirements")
         if self.commands is None:
             if self.mumjolandia_homepage.is_printable():
                 RandomUtils.clear_screen()
