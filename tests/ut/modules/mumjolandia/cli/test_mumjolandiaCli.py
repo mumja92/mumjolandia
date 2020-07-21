@@ -113,7 +113,7 @@ class TestMumjolandiaCli(TestCase):
     def test_pass_random_command(self, mock_command, mock_passer):
         with HiddenPrints():
             self.cli.run()
-            self.assertEqual(mock_passer.call_args[0][0], CommandFactory.get_command('task ls'))
+            self.assertEqual(mock_passer.call_args[0][0], CommandFactory.get_command('task task ls'))
             self.assertEqual(mock_command.call_count, 1)
             self.assertEqual(mock_passer.call_count, 1)
 

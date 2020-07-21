@@ -22,7 +22,7 @@ class MumjolandiaCli(Thread):
         self.commands = commands
         self.console = Console()
         self.data_passer = data_passer
-        self.mode = MumjolandiaCliMode.none
+        self.mode = MumjolandiaCliMode.task
         self.permanent_cls = False
         self.mumjolandia_homepage = MumjolandiaHomepage(self.data_passer)
 
