@@ -25,14 +25,17 @@ class MumjolandiaStarter:
         self.data_passer = None
         self.command_mutex = threading.Lock()
         self.mumjolandia_thread = None
+        self.started_threads = []
         self.__run_init()
 
     def run_cli(self):
         logging.info('Starting CLI')
-        self.__run_mumjolandia()
+        self.started_threads.append(self.__run_mumjolandia())
         cli = MumjolandiaCli(self.data_passer, self.commands)
         cli.setName('cli thread')
         cli.start()
+        self.started_threads.append(cli)
+        self.__join_threads()
 
     def get_mumjolandia_thread(self):
         return self.mumjolandia_thread
