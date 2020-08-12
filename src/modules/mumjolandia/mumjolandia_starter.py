@@ -11,6 +11,7 @@ from src.modules.mumjolandia.mumjolandia_data_passer import MumjolandiaDataPasse
 from src.modules.mumjolandia.mumjolandia_thread import MumjolandiaThread
 from src.modules.mumjolandia.cli.mumjolandia_cli import MumjolandiaCli
 from src.modules.mumjolandia.config_loader import ConfigLoader
+from src.utils.notificator import Notificator
 
 
 class MumjolandiaStarter:

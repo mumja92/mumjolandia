@@ -1,4 +1,5 @@
 import datetime
+import logging
 import platform
 import os
 
@@ -24,3 +25,25 @@ class RandomUtils:
             os.system('cls')
         else:
             os.system('clear')
+
+    @staticmethod
+    def get_platform():
+        """
+        returns:
+        'windows'
+        'linux'
+        'android'
+        'unrecognized'
+        """
+        # On Android sys.platform returns 'linux2', so prefer to check the
+        # presence of python-for-android environment variables (ANDROID_ARGUMENT
+        # or ANDROID_PRIVATE).
+        if 'ANDROID_ARGUMENT' in os.environ:
+            return 'android'
+        elif platform.system() == 'Windows':
+            return 'windows'
+        elif platform.system() == 'Linux':
+            return 'linux'
+        else:
+            logging.warning('Unrecognized platform: ' + platform.system())
+            return 'unrecognized'
