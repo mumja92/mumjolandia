@@ -103,6 +103,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
         return_indexes = []
         return_status = MumjolandiaReturnValue.task_get
         day_amount = 0
+        today = self.__get_today()
         if args:
             try:
                 day_amount = int(args[0])
@@ -122,34 +123,34 @@ class TaskSupervisor(MumjolandiaSupervisor):
 
             else:                   # task get [number]
                 for i, t in enumerate(self.tasks):
-                    temp = datetime.datetime.combine(self.__get_today() + datetime.timedelta(days=day_amount),
+                    target = datetime.datetime.combine(self.__get_today() + datetime.timedelta(days=day_amount),
                                                      datetime.datetime.min.time())
                     if t.date_to_finish is not None:
-                        if t.date_to_finish.year == temp.year and \
-                                t.date_to_finish.month == temp.month and \
-                                t.date_to_finish.day == temp.day:
+                        if t.date_to_finish.year == target.year and \
+                                t.date_to_finish.month == target.month and \
+                                t.date_to_finish.day == target.day:
                             return_list.append(t)
                             return_indexes.append(i)
         else:       # task get
             for i, t in enumerate(self.tasks):
-                temp = self.__get_today()    # first tasks for today
+                # first tasks for today
                 # won't show task for today if it's 7 am and task was added at ie. 9 am
                 # this is expected behaviour so "task set x" sets hour and minute to 00:00, so everything is showed
                 if t.date_to_finish is not None and t.status is not TaskStatus.done:
-                    if (t.date_to_finish - temp).days * 24 + (t.date_to_finish - temp).seconds // 3600 <= t.reminder*24:
+                    if (t.date_to_finish - today).days * 24 + (t.date_to_finish - today).seconds // 3600 <= t.reminder*24:
                         return_list.append(t)
                         return_indexes.append(i)
                         continue
                     # now not finished tasks from previous days
-                    if t.status == TaskStatus.not_done and t.date_to_finish <= temp:
+                    if t.status == TaskStatus.not_done and t.date_to_finish <= today:
                         return_list.append(t)
                         return_indexes.append(i)
                 # tasks from previous days and finished today
                 if t.date_finished is not None:
                     if t.status == TaskStatus.done:
-                        if t.date_finished.year == temp.year and \
-                                t.date_finished.month == temp.month and \
-                                t.date_finished.day == temp.day:
+                        if t.date_finished.year == today.year and \
+                                t.date_finished.month == today.month and \
+                                t.date_finished.day == today.day:
                             return_list.append(t)
                             return_indexes.append(i)
             try:
@@ -173,7 +174,13 @@ class TaskSupervisor(MumjolandiaSupervisor):
                 t.status = TaskStatus.not_done
             a = t.status
             b = t.date_to_finish > DateHelper.get_today_short()
-            if not (t.status == TaskStatus.done and t.date_to_finish < DateHelper.get_today_short()):
+
+            # todo: below part requires date_finished to be stored. Can be uncommented after
+            # if not (t.status == TaskStatus.done and t.date_to_finish < DateHelper.get_today_short()):
+            #     if t.date_finished is not None and t.date_finished.replace(hour=0, minute=0, second=0) < today.replace(hour=0, minute=0, second=0):
+            #         continue    # don't show task if it is done in previous days
+            # temporary workaround (not showing if task is done today, but works as intended otherwise)
+            if not t.status == TaskStatus.done:
                 return_list.insert(0, t)
                 return_indexes.insert(0, self.__translate_periodic_task_id(n))
         return MumjolandiaResponseObject(status=return_status, arguments=[return_indexes, return_list])
