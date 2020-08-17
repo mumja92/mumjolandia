@@ -2,6 +2,7 @@ import os
 import socket
 
 from src.modules.connection.message_factory import MessageFactory
+from src.modules.connection.remote_command_executor import RemoteCommandExecutor
 from src.modules.mumjolandia.mumjolandia_updater import MumjolandiaUpdater
 
 
@@ -10,6 +11,7 @@ class SocketServer:
         self.port_server = port
         self.address_server = address
         self.socket_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.remote_command_executor = RemoteCommandExecutor()
 
         self.socket_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket_server.bind((self.address_server, self.port_server))
@@ -58,7 +60,7 @@ class SocketServer:
             else:
                 msg_return = MessageFactory().get('')
         else:
-            msg_return = MessageFactory().get(message.get_string())
+            msg_return = MessageFactory().get(self.remote_command_executor.execute(message.get_string()))
         return msg_return
 
     def __send_message_object(self, message, connection, address):
