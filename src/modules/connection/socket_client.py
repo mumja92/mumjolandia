@@ -14,6 +14,8 @@ class SocketClient:
         self.socket_client = None
 
     def send_message(self, message):    # message = bytes or str
+        print('Sending from: ' + str(self.address_client) + ':' + str(self.port_client))
+        print('Sending to  : ' + str(ConfigLoader.get_config().server_address) + ':' + str(ConfigLoader.get_config().server_port))
         return_value = 'not known error'
         try:
             self.socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -23,12 +25,12 @@ class SocketClient:
             m_to_send = MessageFactory().get(message)
             self.socket_client.send(m_to_send.get())
             return_value = MessageFactory.get(self.__receive_message()).get_string()
-        except ConnectionResetError:
-            return_value = 'connection broken'
-        except ConnectionRefusedError:
-            return_value = 'connection refused'
-        except socket.timeout:
-            return_value = 'connection timeout'
+        except ConnectionResetError as e:
+            return_value = str(e)
+        except ConnectionRefusedError as e:
+            return_value = str(e)
+        except socket.timeout as e:
+            return_value = 'connection timeout - ' + str(e)
         finally:
             self.socket_client.close()
             return return_value

@@ -17,6 +17,7 @@ class SocketServer:
         self.socket_server.bind((self.address_server, self.port_server))
 
     def run_once(self):
+        print('Server up: ' + str(self.address_server) + ':' + str(self.port_server))
         self.socket_server.listen(1)
         connect, address = self.socket_server.accept()
         print("Connection Address:" + str(address))
@@ -27,6 +28,7 @@ class SocketServer:
         connect.close()
 
     def run(self):
+        print('Server up: ' + str(self.address_server) + ':' + str(self.port_server))
         while True:
             self.socket_server.listen(1)
             connect, address = self.socket_server.accept()
@@ -42,7 +44,7 @@ class SocketServer:
                     msg_return = self.__parse_message(received_message)
                     self.__send_message_object(msg_return, connect, address)
             except socket.error as e:
-                print("Socket broken")
+                print(str(e))
             connect.close()
 
     def __parse_message(self, message):
