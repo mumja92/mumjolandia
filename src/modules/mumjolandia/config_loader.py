@@ -31,7 +31,9 @@ class ConfigLoader:
     @staticmethod
     # todo: add method of adding new config values and enums by a method
     # todo: ie. add_config('config_name', value, check_function)
-    def get_config(config_location='data/config.xml'):
+    def get_config(config_location=None):
+        if config_location is None:
+            config_location = ConfigLoader.get_mumjolandia_location() + 'data/config.xml'
         file = Path(config_location)
         config_values = {'log_level': 'WARNING',
                          'log_to_display': 'True',
@@ -68,6 +70,9 @@ class ConfigLoader:
                     pass
                 except AttributeError:  # value is empty
                     pass
+        else:
+            if file is not None:
+                logging.error('Incorrect config.xml path: ' + str(file))
         return MumjolandiaConfigObject(**config_values)
 
     @staticmethod
