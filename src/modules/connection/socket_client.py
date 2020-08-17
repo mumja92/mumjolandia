@@ -9,13 +9,12 @@ from src.modules.mumjolandia.config_loader import ConfigLoader
 
 class SocketClient:
     def __init__(self, address, port):
-        self.address_client = address
+        self.address_client = address   # this is actually server address monkaS
         self.port_client = port
         self.socket_client = None
 
     def send_message(self, message):    # message = bytes or str
-        print('Sending from: ' + str(self.address_client) + ':' + str(self.port_client))
-        print('Sending to  : ' + str(ConfigLoader.get_config().server_address) + ':' + str(ConfigLoader.get_config().server_port))
+        print('Sending to: ' + str(self.address_client) + ':' + str(self.port_client))
         return_value = 'not known error'
         try:
             self.socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
