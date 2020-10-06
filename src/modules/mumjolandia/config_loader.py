@@ -41,6 +41,8 @@ class ConfigLoader:
                          'task_io_method': 'xml',
                          'server_address': '127.0.0.1',
                          'server_port': '3333',
+                         'background_server': 'True',
+                         'background_server_port': '3334',
                          'shared_preferences_location': ConfigLoader.get_mumjolandia_location() + 'data/shared_preferences.pickle'}
         config_enums = {'log_level': MumjolandiaLogLevel,
                         'log_to_display': MumjolandiaConfigBool,
@@ -48,6 +50,8 @@ class ConfigLoader:
                         'task_io_method': TaskStorageType,
                         'server_address': 'ip',
                         'server_port': 'port',
+                        'background_server': MumjolandiaConfigBool,
+                        'background_server_port': 'port',
                         'shared_preferences_location': 'string'}
         if file.is_file():
             with open(config_location, 'r') as my_file:

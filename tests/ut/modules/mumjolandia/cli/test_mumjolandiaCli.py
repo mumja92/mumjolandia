@@ -8,8 +8,8 @@ from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaRes
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.modules.command.command_factory import CommandFactory
 from src.modules.mumjolandia.mumjolandia_data_passer import MumjolandiaDataPasser
-from src.modules.mumjolandia.cli.mumjolandia_cli import MumjolandiaCli
-from src.modules.mumjolandia.cli.mumjolandia_cli_printer import MumjolandiaCliPrinter
+from src.modules.mumjolandia.ui.cli.mumjolandia_cli import MumjolandiaCli
+from src.modules.mumjolandia.ui.cli.mumjolandia_cli_printer import MumjolandiaCliPrinter
 from src.utils.hidden_prints import HiddenPrints
 
 

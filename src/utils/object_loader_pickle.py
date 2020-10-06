@@ -11,7 +11,7 @@ class ObjectLoaderPickle:
             with open(self.file, 'rb') as fi:
                 data = pickle.load(fi)
         except FileNotFoundError:
-            logging.info(self.file + " - file doesn't exist")
+            logging.debug(self.file + " - file doesn't exist")
             data = None
         return data
 

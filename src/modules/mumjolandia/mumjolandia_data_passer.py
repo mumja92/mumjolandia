@@ -5,6 +5,7 @@ class MumjolandiaDataPasser:
         self.mutex = mutex
         self.event = event
 
+    # command - Command type
     def pass_command(self, command):
         self.mutex.acquire()
         return_value = None

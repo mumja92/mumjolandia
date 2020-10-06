@@ -22,7 +22,7 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.mumjolandia_exit.name] = self.view_exit
         self.views[MumjolandiaReturnValue.mumjolandia_unrecognized_parameters.name] = \
             self.view_unrecognized_parameters
-        self.views[MumjolandiaReturnValue.mumjolandia_help.name] = self.view_help
+        self.views[MumjolandiaReturnValue.mumjolandia_help.name] = self.view_default_response
 
         self.views[MumjolandiaReturnValue.task_get.name] = self.view_task_print
         self.views[MumjolandiaReturnValue.task_added.name] = self.view_task_added
@@ -31,7 +31,7 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.task_delete_incorrect_name.name] = self.view_task_delete_incorrect_name
         self.views[MumjolandiaReturnValue.task_edit_ok.name] = self.view_task_edit_ok
         self.views[MumjolandiaReturnValue.task_edit_wrong_index.name] = self.view_task_edit_wrong_index
-        self.views[MumjolandiaReturnValue.task_help.name] = self.view_task_help
+        self.views[MumjolandiaReturnValue.task_help.name] = self.view_default_response
         self.views[MumjolandiaReturnValue.task_name_not_given.name] = self.view_task_name_not_given
         self.views[MumjolandiaReturnValue.task_get_wrong_data.name] = self.view_task_get_wrong_data
         self.views[MumjolandiaReturnValue.task_set_ok.name] = self.view_task_set_ok
@@ -45,7 +45,7 @@ class MumjolandiaCliPrinter:
 
         self.views[MumjolandiaReturnValue.food_get_ok.name] = self.view_food_get_ok
         self.views[MumjolandiaReturnValue.food_get_wrong_index.name] = self.view_food_get_wrong_index
-        self.views[MumjolandiaReturnValue.food_help.name] = self.view_food_help
+        self.views[MumjolandiaReturnValue.food_help.name] = self.view_default_response
         self.views[MumjolandiaReturnValue.food_file_broken.name] = self.view_food_file_broken
         self.views[MumjolandiaReturnValue.food_ingredient_ok.name] = self.view_food_ingredient_ok
 
@@ -62,8 +62,8 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.game_delete_incorrect_index.name] = self.view_game_delete_incorrect_index
         self.views[MumjolandiaReturnValue.game_delete_success.name] = self.view_game_delete_success
         self.views[MumjolandiaReturnValue.game_get_ok.name] = self.view_game_get_ok
-        self.views[MumjolandiaReturnValue.game_help.name] = self.view_game_help
-        self.views[MumjolandiaReturnValue.game_current_get.name] = self.view_game_current_get
+        self.views[MumjolandiaReturnValue.game_help.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.game_current_get.name] = self.view_default_response
         self.views[MumjolandiaReturnValue.game_set_ok.name] = self.view_game_set_ok
         self.views[MumjolandiaReturnValue.game_set_wrong_id.name] = self.view_game_set_wrong_id
 
@@ -72,34 +72,35 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.note_delete_incorrect_index.name] = self.view_note_delete_incorrect_index
         self.views[MumjolandiaReturnValue.note_add_nook.name] = self.view_note_add_nook
         self.views[MumjolandiaReturnValue.note_add_ok.name] = self.view_note_add_ok
-        self.views[MumjolandiaReturnValue.note_help.name] = self.view_note_help
+        self.views[MumjolandiaReturnValue.note_help.name] = self.view_default_response
 
-        self.views[MumjolandiaReturnValue.connection_help.name] = self.view_connection_help
-        self.views[MumjolandiaReturnValue.connection_server_start.name] = self.view_connection_server_start
-        self.views[MumjolandiaReturnValue.connection_client_send_ok.name] = self.view_connection_client_send_ok
-        self.views[MumjolandiaReturnValue.connection_failed.name] = self.view_connection_failed
+        self.views[MumjolandiaReturnValue.connection_help.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.connection_server_start.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.connection_server_start_fail.name] = self.view_connection_server_start_fail
+        self.views[MumjolandiaReturnValue.connection_client_send_ok.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.connection_failed.name] = self.view_default_response
 
         self.views[MumjolandiaReturnValue.event_get_ok.name] = self.view_event_get_ok
-        self.views[MumjolandiaReturnValue.event_help.name] = self.view_event_help
+        self.views[MumjolandiaReturnValue.event_help.name] = self.view_default_response
 
-        self.views[MumjolandiaReturnValue.weather_get_ok.name] = self.view_weather_get_ok
-        self.views[MumjolandiaReturnValue.weather_get_nook.name] = self.view_weather_get_nook
-        self.views[MumjolandiaReturnValue.weather_help.name] = self.view_weather_help
+        self.views[MumjolandiaReturnValue.weather_get_ok.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.weather_get_nook.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.weather_help.name] = self.view_default_response
 
         self.views[MumjolandiaReturnValue.password_set_ok.name] = self.view_password_set_ok
         self.views[MumjolandiaReturnValue.password_set_incorrect.name] = self.view_password_set_incorrect
         self.views[MumjolandiaReturnValue.password_incorrect_value.name] = self.view_password_incorrect_value
         self.views[MumjolandiaReturnValue.password_not_set.name] = self.view_password_not_set
-        self.views[MumjolandiaReturnValue.password_help.name] = self.view_password_help
-        self.views[MumjolandiaReturnValue.password_add_ok.name] = self.view_password_add_ok
-        self.views[MumjolandiaReturnValue.password_rm_ok.name] = self.view_password_rm_ok
-        self.views[MumjolandiaReturnValue.password_get_ok.name] = self.view_password_get_ok
-        self.views[MumjolandiaReturnValue.password_list_ok.name] = self.view_password_list_ok
+        self.views[MumjolandiaReturnValue.password_help.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.password_add_ok.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.password_rm_ok.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.password_get_ok.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.password_list_ok.name] = self.view_default_response
 
-        self.views[MumjolandiaReturnValue.pompejanka_message.name] = self.view_pompejanka_message
+        self.views[MumjolandiaReturnValue.pompejanka_message.name] = self.view_default_response
 
-        self.views[MumjolandiaReturnValue.utils_get.name] = self.view_utils_get_ok
-        self.views[MumjolandiaReturnValue.utils_help.name] = self.view_utils_help
+        self.views[MumjolandiaReturnValue.utils_get.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.utils_help.name] = self.view_default_response
         self.views[MumjolandiaReturnValue.utils_shared_preferences_get.name] = self.view_utils_shared_preferences_get
         self.views[MumjolandiaReturnValue.utils_update_ok.name] = self.view_utils_update_ok
         self.views[MumjolandiaReturnValue.utils_update_fail.name] = self.view_utils_update_fail
@@ -120,7 +121,10 @@ class MumjolandiaCliPrinter:
         print('Added: ' + str(return_value.arguments[0]) + ' [' + str(return_value.arguments[1]) + ']')
 
     def view_exit(self, return_value):
-        print('exiting')
+        pass
+
+    def view_default_response(self, return_value):
+        print(str(return_value.arguments[0]))
 
     def view_unrecognized_command(self, return_value):
         print('Unrecognized command: ', return_value.arguments, sep=' ', end='\n', file=sys.stdout, flush=False)
@@ -137,9 +141,6 @@ class MumjolandiaCliPrinter:
               file=sys.stdout,
               flush=False)
 
-    def view_help(self, return_value):
-        print(return_value.arguments)
-
     def view_task_delete_success(self, return_value):
         print("Deleted " + return_value.arguments[1] + " element(s) using parameter: " + return_value.arguments[0])
 
@@ -154,9 +155,6 @@ class MumjolandiaCliPrinter:
 
     def view_task_edit_wrong_index(self, return_value):
         print("Edit aborted - wrong index: " + return_value.arguments[0])
-
-    def view_task_help(self, return_value):
-        print(return_value.arguments[0])
 
     def view_task_name_not_given(self, return_value):
         print("Task name not given")
@@ -196,9 +194,6 @@ class MumjolandiaCliPrinter:
 
     def view_food_get_ok(self, return_value):
         print(PolishUtfToAscii.translate(return_value.arguments[0]))
-
-    def view_food_help(self, return_value):
-        print(return_value.arguments[0])
 
     def view_food_get_wrong_index(self, return_value):
         print('Wrong recipe index: '+return_value.arguments[0])
@@ -265,12 +260,6 @@ class MumjolandiaCliPrinter:
         for g in return_value.arguments:
             print(str(g))
 
-    def view_game_help(self, return_value):
-        print(return_value.arguments[0])
-
-    def view_game_current_get(self, return_value):
-        print(str(return_value.arguments[0]))
-
     def view_game_set_ok(self, return_value):
         print('Done')
 
@@ -293,36 +282,15 @@ class MumjolandiaCliPrinter:
     def view_note_add_ok(self, return_value):
         print('Added: ', return_value.arguments[0])
 
-    def view_note_help(self, return_value):
-        print(return_value.arguments[0])
-
-    def view_connection_help(self, return_value):
-        print(return_value.arguments[0])
-
-    def view_connection_server_start(self, return_value):
-        print(return_value.arguments[0])
-
-    def view_connection_client_send_ok(self, return_value):
-        print(return_value.arguments[0])
-
-    def view_connection_failed(self, return_value):
-        print(return_value.arguments[0])
+    def view_connection_server_start_fail(self, return_value):
+        if "Errno 98" in return_value.arguments[0]:
+            print("Server already up (is mumjonadia set to run background server by default?)")
+        else:
+            print(return_value.arguments[0])
 
     def view_event_get_ok(self, return_value):
         for e in return_value.arguments[0]:
             print(str(e))
-
-    def view_event_help(self, return_value):
-        print(return_value.arguments[0])
-
-    def view_weather_get_ok(self, return_value):
-        print(str(return_value.arguments[0]))
-
-    def view_weather_get_nook(self, return_value):
-        print(str(return_value.arguments[0]))
-
-    def view_weather_help(self, return_value):
-        print(return_value.arguments[0])
 
     def view_password_set_ok(self, return_value):
         print('password set')
@@ -335,30 +303,6 @@ class MumjolandiaCliPrinter:
 
     def view_password_not_set(self, return_value):
         print('Password is not set! Please run "init" command first')
-
-    def view_password_get_ok(self, return_value):
-        print(str(return_value.arguments))
-
-    def view_password_list_ok(self, return_value):
-        print(str(return_value.arguments))
-
-    def view_password_help(self, return_value):
-        print(return_value.arguments[0])
-
-    def view_password_add_ok(self, return_value):
-        print(return_value.arguments[0])
-
-    def view_password_rm_ok(self, return_value):
-        print(return_value.arguments[0])
-
-    def view_pompejanka_message(self, return_value):
-        print(return_value.arguments[0])
-
-    def view_utils_get_ok(self, return_value):
-        print(str(return_value.arguments[0]))
-
-    def view_utils_help(self, return_value):
-        print(return_value.arguments[0])
 
     def view_utils_shared_preferences_get(self, return_value):
         print(str(len(return_value.arguments[0])) + ' items stored: ')

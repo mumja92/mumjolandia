@@ -1,15 +1,17 @@
 import logging
 import platform
 import time
-
 from threading import Thread
+
 from src.interface.mumjolandia.mumjolandia_cli_mode import MumjolandiaCliMode
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.modules.command.command_factory import CommandFactory
+from src.modules.connection.mumjolandia_connection_handler import MumjolandiaConnectionHandler
 from src.modules.console.console import Console
-from src.modules.mumjolandia.cli.cli_supervisor import CliSupervisor
-from src.modules.mumjolandia.cli.mumjolandia_cli_printer import MumjolandiaCliPrinter
-from src.modules.mumjolandia.cli.mumjolandia_homepage import MumjolandiaHomepage
+from src.modules.mumjolandia.config_loader import ConfigLoader
+from src.modules.mumjolandia.ui.cli.cli_supervisor import CliSupervisor
+from src.modules.mumjolandia.ui.cli.mumjolandia_cli_printer import MumjolandiaCliPrinter
+from src.modules.mumjolandia.ui.cli.mumjolandia_homepage import MumjolandiaHomepage
 from src.utils.helpers import RandomUtils
 
 
@@ -27,12 +29,13 @@ class MumjolandiaCli(Thread):
         self.mumjolandia_homepage = MumjolandiaHomepage(self.data_passer)
 
     def __del__(self):
-        logging.info('mumjolandia cli exiting')
+        logging.info('Cli exited')
 
     def run(self):
-        logging.info('mumjolandia cli started')
+        logging.info('Cli started')
+        time.sleep(0.01)    # log takes longer than printing console
         if not self.mumjolandia_homepage.is_printable():
-            logging.info("Console doesn't meet homepage requirements")
+            logging.debug("Console doesn't meet homepage requirements")
         if self.commands is None:
             if self.mumjolandia_homepage.is_printable():
                 RandomUtils.clear_screen()
@@ -46,10 +49,12 @@ class MumjolandiaCli(Thread):
                 else:
                     self.__handle_command(command)
                 if self.exit_flag:
+                    self.__shutdown_server()
                     break
         else:
             for c in self.commands:
                 if self.exit_flag:
+                    self.__shutdown_server()
                     break
                 self.__handle_command(c)
 
@@ -95,7 +100,12 @@ class MumjolandiaCli(Thread):
         return prompt
 
     def __call_shutdown(self):
-        print('Exiting...')
-        time.sleep(2)
+        logging.info("Update succeeded. Restarting...")
         self.data_passer.pass_command(CommandFactory().get_command("exit"))
         self.exit_flag = True
+
+    def __shutdown_server(self):
+        if ConfigLoader.get_config().background_server == 'true':
+            MumjolandiaConnectionHandler(port=ConfigLoader.get_config().background_server_port,
+                                         server_address="127.0.0.1",
+                                         ).send_message("exit")
