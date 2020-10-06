@@ -3,15 +3,14 @@ import os
 import threading
 from queue import Queue
 
-import sys
-
+import time
 
 from src.modules.command.command_factory import CommandFactory
+from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.mumjolandia.mumjolandia_data_passer import MumjolandiaDataPasser
 from src.modules.mumjolandia.mumjolandia_thread import MumjolandiaThread
-from src.modules.mumjolandia.cli.mumjolandia_cli import MumjolandiaCli
-from src.modules.mumjolandia.config_loader import ConfigLoader
-from src.utils.notificator import Notificator
+from src.modules.mumjolandia.ui.cli.mumjolandia_cli import MumjolandiaCli
+from src.modules.mumjolandia.ui.server.mumjolandia_server import MumjolandiaServer
 
 
 class MumjolandiaStarter:
@@ -28,12 +27,21 @@ class MumjolandiaStarter:
         self.mumjolandia_thread = None
         self.__run_init()
 
-    def run_cli(self):
-        logging.info('Starting CLI')
+    def run(self):
         self.__run_mumjolandia()
+        if ConfigLoader.get_config().background_server == 'true':
+            self.run_server()
+        self.run_cli()
+
+    def run_cli(self):
         cli = MumjolandiaCli(self.data_passer, self.commands)
         cli.setName('cli thread')
         cli.start()
+
+    def run_server(self):
+        server = MumjolandiaServer(self.data_passer)
+        server.setName('mumjolandia server')
+        server.start()
 
     def get_mumjolandia_thread(self):
         return self.mumjolandia_thread
@@ -43,7 +51,6 @@ class MumjolandiaStarter:
         self.commands.append(CommandFactory().get_command('exit'))
 
     def __run_mumjolandia(self):
-        logging.info('Starting mumjolandia')
         self.mumjolandia_thread = MumjolandiaThread(self.command_queue_request,
                                                     self.command_queue_response,
                                                     self.command_responded_event)

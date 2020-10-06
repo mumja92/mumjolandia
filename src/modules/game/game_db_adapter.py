@@ -82,7 +82,7 @@ class GameDbAdapter:
     def __init_database(self):
         file = Path(self.db_location)
         if not file.is_file():
-            logging.info('Creating new database')
+            logging.debug('Creating new database')
             self.__create_new_db()
         else:
             conn = sqlite3.connect(self.db_location)

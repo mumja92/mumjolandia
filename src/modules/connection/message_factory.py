@@ -1,3 +1,5 @@
+import logging
+
 from src.interface.connection.message import Message
 
 
@@ -11,4 +13,5 @@ class MessageFactory:
             return Message(data)
         if type(data) is str:
             return Message(data.encode('utf-8'))
+        logging.error("Message creation failed")
         return None

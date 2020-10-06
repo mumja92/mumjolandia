@@ -9,6 +9,8 @@ class MumjolandiaConfigObject(PODTemplate):
                  task_io_method,
                  server_address,
                  server_port,
+                 background_server,
+                 background_server_port,
                  shared_preferences_location):
         self.log_level = log_level
         self.log_to_display = log_to_display
@@ -16,4 +18,6 @@ class MumjolandiaConfigObject(PODTemplate):
         self.task_io_method = task_io_method
         self.server_address = server_address
         self.server_port = server_port
+        self.background_server = background_server
+        self.background_server_port = background_server_port
         self.shared_preferences_location = shared_preferences_location

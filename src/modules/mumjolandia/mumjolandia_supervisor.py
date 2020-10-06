@@ -11,10 +11,9 @@ class MumjolandiaSupervisor:
 
     def execute(self, command):
         try:
-            logging.info(self.__class__.__name__ + ' - parsing command: ' + str(command.arguments))
+            logging.debug(self.__class__.__name__ + ' - parsing command: ' + str(command.arguments))
             return self.command_parsers[command.arguments[0]](command.arguments[1:])
         except KeyError:        # command parser doesn't exist
-            logging.info('Unrecognized command: ' + str(command.arguments))
             return self.command_parsers['unrecognized_command'](command.arguments)
         except IndexError:
             return self.command_parsers['null'](command.arguments)

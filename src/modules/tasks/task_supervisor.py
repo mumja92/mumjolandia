@@ -36,10 +36,10 @@ class TaskSupervisor(MumjolandiaSupervisor):
         self.__add_command_parsers()
 
         if self.storage_type == TaskStorageType.xml:
-            logging.info("using xml file: " + self.task_file_location)
+            logging.debug("using xml file: " + self.task_file_location)
             self.task_loader = TaskLoaderXml(self.task_file_location)
         elif self.storage_type == TaskStorageType.pickle:
-            logging.info("using pickle file: " + self.task_file_location)
+            logging.debug("using pickle file: " + self.task_file_location)
             self.task_loader = ObjectLoaderPickle(self.task_file_location)
         else:
             logging.error("Unrecognized storage type: '" + str(self.storage_type.name) + "' - using xml instead")
@@ -93,7 +93,7 @@ class TaskSupervisor(MumjolandiaSupervisor):
             except IncorrectDateFormatException:
                 logging.warning("Task '" + name + "' not added - incorrect date format")
                 return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_incorrect_date_format)
-            logging.info("Added task '" + name + "'")
+            logging.debug("Added task '" + name + "'")
             self.__save_if_allowed()
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_added,
                                              arguments=[name, len(self.tasks) - 1])

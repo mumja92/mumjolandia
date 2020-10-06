@@ -32,10 +32,10 @@ class MumjolandiaThread(Thread):
         self.__init()
 
     def __del__(self):
-        logging.info('mumjolandia thread exiting')
+        logging.info('mumjolandia exited')
 
     def run(self):
-        logging.info('mumjolandia thread started')
+        logging.info('mumjolandia started')
         while True:
             command = self.__get_next_command()
             if self.__execute_command(command):

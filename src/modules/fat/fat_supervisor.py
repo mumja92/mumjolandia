@@ -28,7 +28,7 @@ class FatSupervisor(MumjolandiaSupervisor):
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.fat_incorrect_date_format)
         except IncorrectVariableTypeException:
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.fat_add_must_be_float)
-        logging.info("Added '" + value + "'")
+        logging.debug("Added '" + value + "'")
         self.__save()
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.fat_added, arguments=[value])
 

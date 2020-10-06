@@ -65,6 +65,7 @@ class MumjolandiaReturnValue(Enum):
     # connection
     connection_help = 47
     connection_server_start = 52
+    connection_server_start_fail = 79
     connection_client_send_ok = 51
     connection_failed = 54
     # game
@@ -94,4 +95,4 @@ class MumjolandiaReturnValue(Enum):
     utils_get = 75
     utils_shared_preferences_get = 77
     utils_update_ok = 78
-    utils_update_fail = 79
+    utils_update_fail = 80

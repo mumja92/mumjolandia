@@ -1,6 +1,6 @@
 <config>
     <!--'CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET'-->
-    <log_level>warning</log_level>
+    <log_level>info</log_level>
     <!--'True, False'-->
     <log_to_display>true</log_to_display>
     <!--'True, False'-->
@@ -10,7 +10,11 @@
     <!--'xxx.xxx.xxx.xxx'-->
     <server_address>127.0.0.1</server_address>
     <!--'1024-65535'-->
-    <server_port>3333</server_port>
+    <server_port>3334</server_port>
+    <!--'True, False' - always starts local server during startup-->
+    <background_server>true</background_server>
+    <!--'1024-65535'-->
+    <background_server_port>3335</background_server_port>
     <!--[string]-->
     <shared_preferences_location>data/shared_preferences.pickle</shared_preferences_location>
 </config>
