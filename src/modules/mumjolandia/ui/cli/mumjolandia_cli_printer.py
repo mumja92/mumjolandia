@@ -44,6 +44,7 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.task_find.name] = self.view_task_search
 
         self.views[MumjolandiaReturnValue.food_get_ok.name] = self.view_food_get_ok
+        self.views[MumjolandiaReturnValue.food_list_ok.name] = self.view_food_list_ok
         self.views[MumjolandiaReturnValue.food_get_wrong_index.name] = self.view_food_get_wrong_index
         self.views[MumjolandiaReturnValue.food_help.name] = self.view_default_response
         self.views[MumjolandiaReturnValue.food_file_broken.name] = self.view_food_file_broken
@@ -194,6 +195,9 @@ class MumjolandiaCliPrinter:
 
     def view_food_get_ok(self, return_value):
         print(PolishUtfToAscii.translate(return_value.arguments[0]))
+
+    def view_food_list_ok(self, return_value):
+        print((return_value.arguments[0]))
 
     def view_food_get_wrong_index(self, return_value):
         print('Wrong recipe index: '+return_value.arguments[0])

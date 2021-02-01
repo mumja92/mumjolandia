@@ -67,14 +67,22 @@ class FoodSupervisor(MumjolandiaSupervisor):
         return meal_id
 
     def __add_command_parsers(self):
-        self.command_parsers['ls'] = self.__command_print
+        self.command_parsers['get'] = self.__command_get
         self.command_parsers['help'] = self.__command_help
         self.command_parsers['ingredients'] = self.__command_ingredient
         self.command_parsers['i'] = self.__command_ingredient
+        self.command_parsers['lists'] = self.__command_list
+        self.command_parsers['l'] = self.__command_list
+        self.command_parsers['ls'] = self.__command_list
 
-    def __command_print(self, args):
+    def __command_list(self, args):
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_list_ok,
+                                         arguments=[self.__get_database_indexes()])
+
+    def __command_get(self, args):
         try:
-            recipe = self.get_recipe_day(int(args[0]))
+            index = self.__get_database_indexes()[int(args[0])]
+            recipe = self.get_recipe_day(index)
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_get_ok, arguments=[recipe])
         except (IndexError, ValueError):
             try:
@@ -85,9 +93,12 @@ class FoodSupervisor(MumjolandiaSupervisor):
                                                  arguments=[''])
 
     def __command_help(self, args):
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_help, arguments=['get [id]\n'
-                                                                                             '[i]ngredients [id]\n'
-                                                                                             ''])
+        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_help,
+                                         arguments=[
+                                             'get [id]\n'
+                                             '[i]ngredients [id]\n'
+                                             '[l]ist\n'
+                                             ''])
 
     def __command_ingredient(self, args):
         try:
@@ -120,3 +131,9 @@ class FoodSupervisor(MumjolandiaSupervisor):
                                                     (recipe.dinner.name, ingredients_dinner),
                                                     (recipe.supper.name, ingredients_tea),
                                                     (recipe.tea.name, ingredients_supper)])
+
+    def __get_database_indexes(self):
+        return_value = []
+        for x in self.db_helper.get_recipes_ids():
+            return_value.append(x[0])
+        return return_value
