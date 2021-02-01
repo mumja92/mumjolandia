@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 import zipfile
@@ -5,7 +6,11 @@ import urllib.request
 import ssl
 
 from pathlib import Path
-from distutils.dir_util import copy_tree
+try:
+    from distutils.dir_util import copy_tree
+    distutils_available = True
+except ModuleNotFoundError:
+    distutils_available = False
 from urllib.error import HTTPError
 
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
@@ -62,6 +67,9 @@ class UtilsSupervisor(MumjolandiaSupervisor):
                                          arguments=[SharedPreferences().get_all()])
 
     def __command_update(self, args):
+        if not distutils_available:
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_update_fail,
+                                             arguments=['Distutils not available. Please run \'sudo apt install python3-distutils\''])
         branch = "master"
         if len(args):
             branch = args[0]
