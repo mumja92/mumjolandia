@@ -32,6 +32,7 @@ class MumjolandiaReturnValue(Enum):
     task_find = 76
     # food
     food_get_wrong_index = 16
+    food_list_ok = 80
     food_get_ok = 17
     food_help = 18
     food_file_broken = 19
@@ -95,4 +96,4 @@ class MumjolandiaReturnValue(Enum):
     utils_get = 75
     utils_shared_preferences_get = 77
     utils_update_ok = 78
-    utils_update_fail = 80
+    utils_update_fail = 81
