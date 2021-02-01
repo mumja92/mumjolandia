@@ -27,7 +27,7 @@ class TestMumjolandiaSanity(TestCase):
         self.assertEqual(os.path.isfile(ConfigLoader.get_mumjolandia_location() + 'data/notes.pickle'), False)
         self.mumjolandia_starter.set_commands(["note add 'test note'", "note add 'second test note'"])
         with HiddenPrints():
-            self.mumjolandia_starter.run_cli()
+            self.mumjolandia_starter.run()
         self.mumjolandia_starter.get_mumjolandia_thread().join()
         self.assertEqual(os.path.isfile(ConfigLoader.get_mumjolandia_location() + 'data/notes.pickle'), True)
         note = ObjectLoaderPickle('data/notes.pickle').get()
