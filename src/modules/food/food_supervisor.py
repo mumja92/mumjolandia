@@ -102,7 +102,7 @@ class FoodSupervisor(MumjolandiaSupervisor):
 
     def __command_ingredient(self, args):
         try:
-            recipe = self.get_recipe_day(int(args[0]))
+            recipe = self.get_recipe_day(self.__get_database_indexes()[int(args[0])])
         except (IndexError, ValueError):
             try:
                 return MumjolandiaResponseObject(status=MumjolandiaReturnValue.food_get_wrong_index,
