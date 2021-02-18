@@ -49,6 +49,8 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.food_help.name] = self.view_default_response
         self.views[MumjolandiaReturnValue.food_file_broken.name] = self.view_food_file_broken
         self.views[MumjolandiaReturnValue.food_ingredient_ok.name] = self.view_food_ingredient_ok
+        self.views[MumjolandiaReturnValue.food_set_ok.name] = self.view_food_set_ok
+        self.views[MumjolandiaReturnValue.food_meal_ok.name] = self.view_food_meal_ok
 
         self.views[MumjolandiaReturnValue.fat_get_ok.name] = self.view_fat_get_ok
         self.views[MumjolandiaReturnValue.fat_delete_success.name] = self.view_fat_delete_ok
@@ -194,13 +196,19 @@ class MumjolandiaCliPrinter:
             print('[' + str(i).rjust(max_width, ' ') + ']' + str(t))
 
     def view_food_get_ok(self, return_value):
-        print(PolishUtfToAscii.translate(return_value.arguments[0]))
+        print(PolishUtfToAscii.translate(return_value.arguments[0][0]))
+        print()
+        for row in return_value.arguments[1]:
+            print(row)
+        print()
+        print(PolishUtfToAscii.translate(return_value.arguments[0][1]))
 
     def view_food_list_ok(self, return_value):
-        print((return_value.arguments[0]))
+        for row in return_value.arguments:
+            print(row)
 
     def view_food_get_wrong_index(self, return_value):
-        print('Wrong recipe index: '+return_value.arguments[0])
+        print('Wrong meal index: ' + return_value.arguments[0])
 
     def view_food_file_broken(self, return_value):
         print('Database file: "' + return_value.arguments[0] + '" is broken')
@@ -222,6 +230,25 @@ class MumjolandiaCliPrinter:
         print("\nSupper (" + PolishUtfToAscii.translate(return_value.arguments[4][0]) + "): ")
         __view_food_ingredient_ok_print(return_value.arguments[4][1])
         print("")
+
+    def view_food_set_ok(self, return_value):
+        print(str(return_value.arguments[0]) + ' set to: ' + str(return_value.arguments[1]))
+
+    def view_food_meal_ok(self, return_value):
+        def __print_meal_name(name, meal):
+            if meal[0] is None:
+                print(name + '[-]: None')
+            else:
+                print(name + '[' + str(meal[0]) + ']: ' + meal[1])
+
+        __print_meal_name('    Breakfast', return_value.arguments[0][0])
+        __print_meal_name('2nd breakfast', return_value.arguments[0][1])
+        __print_meal_name('       Dinner', return_value.arguments[0][2])
+        __print_meal_name('          Tea', return_value.arguments[0][3])
+        __print_meal_name('       Supper', return_value.arguments[0][4])
+        print()
+        for ingredient in return_value.arguments[1]:
+            print(ingredient[0] + ' ' + str(ingredient[2]) + ' ' + ingredient[1])
 
     def view_fat_get_ok(self, return_value):
         try:

@@ -34,9 +34,11 @@ class MumjolandiaReturnValue(Enum):
     food_get_wrong_index = 16
     food_list_ok = 80
     food_get_ok = 17
+    food_meal_ok = 82
     food_help = 18
     food_file_broken = 19
     food_ingredient_ok = 32
+    food_set_ok = 81
     # fat
     fat_incorrect_date_format = 20
     fat_delete_success = 21
@@ -96,4 +98,4 @@ class MumjolandiaReturnValue(Enum):
     utils_get = 75
     utils_shared_preferences_get = 77
     utils_update_ok = 78
-    utils_update_fail = 81
+    utils_update_fail = 83
