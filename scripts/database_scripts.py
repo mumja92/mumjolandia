@@ -22,9 +22,9 @@ def get_recipes_ids():
     return return_value
 
 
-def add_meal_from_file():
+def add_meals_from_file(meal_type=None):
     m = MealLoaderFromFile(meal_data_location)
-    x = m.load_meals()
+    x = m.load_meals(meal_type)
     s = FoodSupervisor(db_location)
     r = RecipeDay(x[0], x[1], x[2], x[3], x[4])
     s.add_recipe_day(r)

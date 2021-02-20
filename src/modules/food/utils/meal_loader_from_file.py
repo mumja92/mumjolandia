@@ -26,7 +26,9 @@ class MealLoaderFromFile:
     def __init__(self, filename):
         self.filename = filename
 
-    def load_meals(self):
+    # meal_type 1-5
+    # if passed_meal_type is None load only 5 meals to be saved as complete 5-meal recipe
+    def load_meals(self, passed_meal_type=None):
         with open(self.filename, 'r') as f:
             m_name = ''
             m_desc = ''
@@ -48,7 +50,10 @@ class MealLoaderFromFile:
                     s = ''.join(line.split())
                     if s == '<>':
                         state = State.name
-                        m_type = self.__inc_meal_type(m_type)
+                        if passed_meal_type is None:
+                            m_type = self.__inc_meal_type(m_type)
+                        else:
+                            m_type = int(passed_meal_type)
                         meals.append(MealFactory.get_meal(m_name, m_desc, MealType(m_type), ingredients))
                         continue
                     ingredients.append(self.__line_to_ingredient(line))

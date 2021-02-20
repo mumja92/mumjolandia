@@ -58,9 +58,9 @@ class FoodSupervisor(MumjolandiaSupervisor):
         return m
 
     def __insert_meal(self, meal):
-        meal_id = self.db_helper.get_meal_id_if_exists(meal.name, meal.meal, meal.type.value)
+        meal_id = self.db_helper.get_meal_id_if_exists(meal.name, meal.recipe, meal.type.value)
         if meal_id is None:
-            meal_id = self.db_helper.get_new_meal_id(meal.type.value, meal.name, meal.meal)
+            meal_id = self.db_helper.get_new_meal_id(meal.type.value, meal.name, meal.recipe)
         ingredient_list = []
         for i in meal.ingredients:
             ingredient_list.append([self.db_helper.get_ingredient_id(i.name), i.amount, i.amount_type])
