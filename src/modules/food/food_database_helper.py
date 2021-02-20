@@ -23,6 +23,53 @@ class FoodDatabaseHelper:
         conn.close()
         return return_value
 
+    def get_meal(self, meal_id):
+        if not isinstance(meal_id, int):
+            return None
+        conn = sqlite3.connect(self.db_location)
+        c = conn.cursor()
+        try:
+            c.execute('''SELECT * FROM MEAL WHERE id_meal = ''' + str(meal_id))
+            return_value = c.fetchall()
+        except sqlite3.IntegrityError as e:
+            return_value = 'sqlite error: ' + e.args[0]
+        conn.close()
+        return return_value
+
+    def get_meal_ingredients(self, meal_id):
+        if meal_id is None:
+            return None
+        conn = sqlite3.connect(self.db_location)
+        c = conn.cursor()
+        try:
+            c.execute('''
+            SELECT meal.name as name, ingradient.name as 'ingradient', amount_type.name as 'amount type', amount as 'amount' 
+            FROM meal_ingradients 
+            INNER JOIN meal ON meal.id_meal = meal_ingradients.fk_meal_id 
+            INNER JOIN ingradient ON ingradient.id_ingradient = meal_ingradients.fk_ingradient_id 
+            INNER JOIN amount_type ON amount_type.id_amount_type = meal_ingradients.fk_amount_type
+            WHERE meal.id_meal = 
+            ''' + str(meal_id))
+            return_value = c.fetchall()
+        except sqlite3.IntegrityError as e:
+            return_value = 'sqlite error: ' + e.args[0]
+        conn.close()
+        return return_value
+
+    def get_meals(self, fk_meal_type=None):
+        conn = sqlite3.connect(self.db_location)
+        c = conn.cursor()
+        try:
+            if isinstance(fk_meal_type, int):
+                c.execute('''SELECT * FROM meal WHERE fk_meal_type = ''' + str(fk_meal_type))
+            else:
+                c.execute('''SELECT * FROM meal''')
+            return_value = c.fetchall()
+        except sqlite3.IntegrityError as e:
+            return_value = 'sqlite error: ' + e.args[0]
+        conn.close()
+        return return_value
+
     def get_recipes_day(self, recipe_id):
         return_value = 0
         conn = sqlite3.connect(self.db_location)
