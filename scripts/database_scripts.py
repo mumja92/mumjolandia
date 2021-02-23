@@ -26,5 +26,9 @@ def add_meals_from_file(meal_type=None):
     m = MealLoaderFromFile(meal_data_location)
     x = m.load_meals(meal_type)
     s = FoodSupervisor(db_location)
-    r = RecipeDay(x[0], x[1], x[2], x[3], x[4])
-    s.add_recipe_day(r)
+    if meal_type is None:
+        r = RecipeDay(x[0], x[1], x[2], x[3], x[4])
+        s.add_recipe_day(r)
+    else:
+        for meal in x:
+            s.insert_meal(meal)

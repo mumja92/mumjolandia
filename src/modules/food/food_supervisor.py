@@ -39,8 +39,8 @@ class FoodSupervisor(MumjolandiaSupervisor):
     def add_recipe_day(self, recipe):
         if not self.is_db_ok:
             raise FoodFileBrokenException
-        ids = [self.__insert_meal(recipe.breakfast), self.__insert_meal(recipe.second_breakfast),
-               self.__insert_meal(recipe.dinner), self.__insert_meal(recipe.tea), self.__insert_meal(recipe.supper)]
+        ids = [self.insert_meal(recipe.breakfast), self.insert_meal(recipe.second_breakfast),
+               self.insert_meal(recipe.dinner), self.insert_meal(recipe.tea), self.insert_meal(recipe.supper)]
         self.db_helper.insert_recipe_day(ids[0], ids[1], ids[2], ids[3], ids[4])
 
     def __init(self):
@@ -57,7 +57,7 @@ class FoodSupervisor(MumjolandiaSupervisor):
         m = MealFactory().get_meal(name, recipe, meal_type, ingredients)
         return m
 
-    def __insert_meal(self, meal):
+    def insert_meal(self, meal):
         meal_id = self.db_helper.get_meal_id_if_exists(meal.name, meal.recipe, meal.type.value)
         if meal_id is None:
             meal_id = self.db_helper.get_new_meal_id(meal.type.value, meal.name, meal.recipe)

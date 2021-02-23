@@ -48,6 +48,7 @@ INSERT INTO `amount_type` VALUES (4,'ml');
 INSERT INTO `amount_type` VALUES (5,'handful');
 INSERT INTO `amount_type` VALUES (6,'slice');
 INSERT INTO `amount_type` VALUES (7,'spoon');
+INSERT INTO `amount_type` VALUES (8,'cm');
 CREATE UNIQUE INDEX IF NOT EXISTS `ix_meal_ingradients` ON `meal_ingradients` (
 	`fk_meal_id`,
 	`fk_ingradient_id`
