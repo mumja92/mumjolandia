@@ -40,6 +40,7 @@ class MealLoaderFromFile:
                 if state == State.name:
                     ingredients = []
                     m_name = ' '.join(line.split())
+                    print(m_name)
                     state = State.description
                     continue
                 if state == State.description:
@@ -83,11 +84,10 @@ class MealLoaderFromFile:
             return 6
         elif amount_type == 'spoon':
             return 7
+        elif amount_type == 'cm':
+            return 8
         else:
-            print('ERROR ERROR ERROR')
-            print('ERROR ERROR ERROR')
-            print('ERROR ERROR ERROR')
-            print('Dla: "' + str(line) + '"')
+            print('New unsupported type: ' + str(line))
             return 0
 
     def __inc_meal_type(self, n):
