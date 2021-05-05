@@ -14,3 +14,4 @@ class MumjolandiaCliMode(Enum):
     weather = 9
     utils = 10
     pompejanka = 11
+    planner = 12

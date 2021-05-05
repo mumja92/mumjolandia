@@ -99,3 +99,5 @@ class MumjolandiaReturnValue(Enum):
     utils_shared_preferences_get = 77
     utils_update_ok = 78
     utils_update_fail = 83
+    # planner
+    planner_help = 84

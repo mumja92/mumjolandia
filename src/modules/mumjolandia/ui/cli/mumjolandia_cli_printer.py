@@ -22,7 +22,7 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.mumjolandia_exit.name] = self.view_exit
         self.views[MumjolandiaReturnValue.mumjolandia_unrecognized_parameters.name] = \
             self.view_unrecognized_parameters
-        self.views[MumjolandiaReturnValue.mumjolandia_help.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.mumjolandia_help.name] = self.view_default_list_response
 
         self.views[MumjolandiaReturnValue.task_get.name] = self.view_task_print
         self.views[MumjolandiaReturnValue.task_added.name] = self.view_task_added
@@ -108,6 +108,8 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.utils_update_ok.name] = self.view_utils_update_ok
         self.views[MumjolandiaReturnValue.utils_update_fail.name] = self.view_utils_update_fail
 
+        self.views[MumjolandiaReturnValue.planner_help.name] = self.view_default_response
+
     def view_mumjolandia_none(self, return_value):
         pass
 
@@ -128,6 +130,10 @@ class MumjolandiaCliPrinter:
 
     def view_default_response(self, return_value):
         print(str(return_value.arguments[0]))
+
+    def view_default_list_response(self, return_value):
+        for argument in return_value.arguments:
+            print(str(argument))
 
     def view_unrecognized_command(self, return_value):
         print('Unrecognized command: ', return_value.arguments, sep=' ', end='\n', file=sys.stdout, flush=False)
