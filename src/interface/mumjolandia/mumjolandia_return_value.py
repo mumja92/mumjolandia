@@ -101,3 +101,9 @@ class MumjolandiaReturnValue(Enum):
     utils_update_fail = 83
     # planner
     planner_help = 84
+    planner_get_ok = 85
+    planner_get_fail = 86
+    planner_add_ok = 87
+    planner_add_fail = 88
+    planner_remove_ok = 89
+    planner_remove_fail = 90

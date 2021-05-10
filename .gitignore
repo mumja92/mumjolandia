@@ -12,6 +12,7 @@ data/jedzonko.db
 data/periodic_tasks.xml
 data/passwords.pickle
 data/shared_preferences.pickle
+data/plans.pickle
 data/notes.*
 data/events.xml
 data/meal_recipes_backup/

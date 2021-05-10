@@ -109,6 +109,12 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.utils_update_fail.name] = self.view_utils_update_fail
 
         self.views[MumjolandiaReturnValue.planner_help.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.planner_get_ok.name] = self.view_planner_get
+        self.views[MumjolandiaReturnValue.planner_get_fail.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.planner_add_ok.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.planner_add_fail.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.planner_remove_fail.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.planner_remove_ok.name] = self.view_default_response
 
     def view_mumjolandia_none(self, return_value):
         pass
@@ -352,3 +358,16 @@ class MumjolandiaCliPrinter:
     def view_utils_update_fail(self, return_value):
         print("Update failed")
         print(return_value.arguments[0])
+
+    def view_planner_get(self, return_value):
+        def print_plan(plan):
+            print("Date: " + str(plan.date))
+            for planner_task in plan.planner_tasks:
+                print(planner_task.time + "| " + str(planner_task.description))
+        if isinstance(return_value.arguments[0], list):
+            print("plans:")
+            for plan in return_value.arguments[0]:
+                print_plan(plan)
+        else:
+            print("plan:")
+            print_plan(return_value.arguments[0])
