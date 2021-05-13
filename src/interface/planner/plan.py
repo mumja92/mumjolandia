@@ -11,6 +11,13 @@ class Plan(PODTemplate):
         self.date = DateHelper.get_today_short(date_shift)
         self.planner_tasks: [PlannerTask] = []
 
+    def __str__(self):
+        return_value = str(self.date) + "\n"
+        return_value += "tasks:\n"
+        for planner_task in self.planner_tasks:
+            return_value += str(planner_task)
+        return return_value
+
     def add_task(self, task_name: str, duration: int, task_date: str):
         planner_task = PlannerTaskFactory.get(task_date, duration, task_name)
         if planner_task is None:

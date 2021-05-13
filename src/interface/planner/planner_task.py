@@ -6,3 +6,9 @@ class PlannerTask(PODTemplate):
         self.time = time
         self.duration = duration_minutes
         self.description = description
+
+    def __str__(self):
+        return_value = str(self.time) + "\n"
+        return_value += str(self.duration) + "\n"
+        return_value += str(self.description) + "\n"
+        return return_value

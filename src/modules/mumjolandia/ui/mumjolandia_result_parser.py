@@ -5,6 +5,7 @@ class MumjolandiaResultParser:
     def __init__(self):
         self.response_dict = {'default': self.__parse_default,
                               MumjolandiaReturnValue.task_get.name: self.__parse_task_ls,
+                              MumjolandiaReturnValue.planner_get_ok.name: self.__parse_planner_get_ok,
                               }
 
     def parse(self, mumjolandia_response_object):
@@ -20,4 +21,11 @@ class MumjolandiaResultParser:
         return_value = str(response_object.status) + "\n"
         for index, task in zip(response_object.arguments[0], response_object.arguments[1]):
             return_value += str(index) + "\t" + str(task) + "\n"
+        return return_value
+
+    def __parse_planner_get_ok(self, response_object):
+        return_value = ""
+        return_value += str(response_object.status) + "\n"
+        for plan in response_object.arguments[0]:
+            return_value += str(plan)
         return return_value
