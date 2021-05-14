@@ -57,7 +57,7 @@ class MumjolandiaThread(Thread):
         self.supervisors['game'] = GameSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/games.db')
         self.supervisors['note'] = NoteSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/notes.pickle')
         self.supervisors['password'] = PasswordSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/passwords.pickle')
-        self.supervisors['planner'] = PlannerSupervisor()
+        self.supervisors['planner'] = PlannerSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/plans.pickle')
         self.supervisors['pompejanka'] = PompejankaSupervisor()
         self.supervisors['task'] = TaskSupervisor(storage_type=task_storage_type)
         self.supervisors['utils'] = UtilsSupervisor()
