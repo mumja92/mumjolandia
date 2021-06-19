@@ -24,12 +24,19 @@ class Plan(PODTemplate):
             return False
         else:
             if self.__validate_task_time(planner_task):
+                for task in self.planner_tasks:
+                    if task.time == task_date:
+                        return self.modify_task(task_name, duration, task_date)
                 self.planner_tasks.append(planner_task)
                 return True
             return False
 
     def modify_task(self, task_name: str, duration: int, task_date: str):
-        logging.warning("Not implemented")
+        for task in self.planner_tasks:
+            if task.time == task_date:
+                task.duration = duration
+                task.description = task_name
+                return True
         return False
 
     def remove_task(self, hour: str):
