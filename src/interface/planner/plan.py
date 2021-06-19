@@ -23,7 +23,7 @@ class Plan(PODTemplate):
         if planner_task is None:
             return False
         else:
-            if self.__validate_task_time(planner_task):
+            if self.__validate_task_time(planner_task.time, planner_task.duration):
                 for task in self.planner_tasks:
                     if task.time == task_date:
                         return self.modify_task(task_name, duration, task_date)
@@ -57,6 +57,43 @@ class Plan(PODTemplate):
             current_index += 1
         return None
 
-    def __validate_task_time(self, task):
-        # todo: implement checking if task can be added at this time
+    def __validate_task_time(self, time: str, duration: int):
+        # get int time for easier calculations
+        if time[0] == "0":
+            new_hour = int(time[1])
+        else:
+            new_hour = int(time[0:2])
+        if time[3] == "0":
+            new_minute = int(time[4])
+        else:
+            new_minute = int(time[3:5])
+        for existing_task in self.planner_tasks:
+            if existing_task.time[0] == "0":
+                existing_hour = int(existing_task.time[1])
+            else:
+                existing_hour = int(existing_task.time[0:2])
+            if existing_task.time[3] == "0":
+                existing_minute = int(existing_task.time[4])
+            else:
+                existing_minute = int(existing_task.time[3:5])
+            if new_hour == existing_hour and new_minute == existing_minute:
+                return False
+            if new_hour > existing_hour or (new_hour == existing_hour and new_minute > existing_minute):
+                # new task is after existing task
+                free_hour = existing_hour
+                free_minute = existing_minute + existing_task.duration
+                while free_minute > 59:
+                    free_hour += 1
+                    free_minute -= 60
+                if free_hour > new_hour or (free_hour == new_hour and free_minute > new_minute):
+                    return False
+            else:
+                # new task is before existing task
+                free_hour = new_hour
+                free_minute = new_minute + duration
+                while free_minute > 59:
+                    free_hour += 1
+                    free_minute -= 60
+                if free_hour > existing_hour or (free_hour == existing_hour and free_minute > existing_minute):
+                    return False
         return True
