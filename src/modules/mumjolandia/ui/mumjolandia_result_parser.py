@@ -1,4 +1,5 @@
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
+from src.interface.planner.plan import Plan
 
 
 class MumjolandiaResultParser:
@@ -26,6 +27,9 @@ class MumjolandiaResultParser:
     def __parse_planner_get_ok(self, response_object):
         return_value = ""
         return_value += str(response_object.status) + "\n"
-        for plan in response_object.arguments[0]:
-            return_value += str(plan)
+        if isinstance(response_object.arguments[0], Plan):  # if there is only one plan - arg[0] is plan object
+            return_value += str(response_object.arguments[0])
+        else:   # if there is more plans - arg[0] is list object with plans
+            for plan in response_object.arguments[0]:
+                return_value += str(plan)
         return return_value
