@@ -53,9 +53,10 @@ class PlannerSupervisor(MumjolandiaSupervisor):
         except (ValueError, IndexError):  # one of arguments doesn't exist, or int(x) failed
             return MumjolandiaResponseObject(status=MumjolandiaReturnValue.planner_add_fail,
                                              arguments=['Incorrect argument: day: ' + str(day) + ' hour: ' + str(hour) + ' duration: ' + str(duration) + ' name: ' + str(name)])
-        return_value = self.plans_handler.add(day, hour, duration, name)
-        return MumjolandiaResponseObject(status=MumjolandiaReturnValue.planner_add_ok,
-                                         arguments=[return_value])
+        if self.plans_handler.add(day, hour, duration, name):
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.planner_add_ok, arguments=[])
+        else:
+            return MumjolandiaResponseObject(status=MumjolandiaReturnValue.planner_add_fail, arguments=[])
 
     def __command_remove(self, args):
         day = None

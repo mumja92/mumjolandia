@@ -18,7 +18,6 @@ class PlansHandler:
         add_success = self.plans[plan_id].add_task(name, duration, hour)
         if add_success:
             self.__save()
-            dupa = self.object_loader_pickle.get()
         return add_success
 
     def remove(self, day_shift: int, hour: str):
