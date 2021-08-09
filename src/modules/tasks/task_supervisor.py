@@ -89,7 +89,10 @@ class TaskSupervisor(MumjolandiaSupervisor):
         else:
             name = ' '.join(args[0:])
             try:
-                self.tasks.append(TaskFactory.get_task(name))
+                self.tasks.append(TaskFactory.get_task(
+                    name,
+                    date_to_finish=str(DateHelper.get_today_long()),
+                ))
             except IncorrectDateFormatException:
                 logging.warning("Task '" + name + "' not added - incorrect date format")
                 return MumjolandiaResponseObject(status=MumjolandiaReturnValue.task_incorrect_date_format)

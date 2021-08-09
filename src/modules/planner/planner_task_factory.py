@@ -22,7 +22,7 @@ class PlannerTaskFactory:
         try:
             if not isinstance(time, str):
                 return False
-            if len(time) is 5:
+            if len(time) == 5:
                 if time[2] != ':':
                     return False
                 if int(time[0]) > 2 or int(time[0]) < 0:
@@ -32,7 +32,7 @@ class PlannerTaskFactory:
                     return False
                 int(time[4])
                 return True
-            if len(time) is 4:
+            if len(time) == 4:
                 if time[1] != ':':
                     return False
                 int(time[0])
