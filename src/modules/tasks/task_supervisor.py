@@ -1,6 +1,7 @@
 import datetime
 import logging
 
+from src.interface.tasks.task_type import TaskType
 from src.modules.tasks.periodic.periodic_task_generator import PeriodicTaskGenerator
 
 from src.interface.mumjolandia.incorrect_date_format_exception import IncorrectDateFormatException
@@ -175,17 +176,11 @@ class TaskSupervisor(MumjolandiaSupervisor):
                 t.status = TaskStatus.done
             else:
                 t.status = TaskStatus.not_done
-            a = t.status
-            b = t.date_to_finish > DateHelper.get_today_short()
-
-            # todo: below part requires date_finished to be stored. Can be uncommented after
-            # if not (t.status == TaskStatus.done and t.date_to_finish < DateHelper.get_today_short()):
-            #     if t.date_finished is not None and t.date_finished.replace(hour=0, minute=0, second=0) < today.replace(hour=0, minute=0, second=0):
-            #         continue    # don't show task if it is done in previous days
-            # temporary workaround (not showing if task is done today, but works as intended otherwise)
-            if not t.status == TaskStatus.done:
-                return_list.insert(0, t)
-                return_indexes.insert(0, self.__translate_periodic_task_id(n))
+            if t.type is TaskType.event and t.status is TaskStatus.done:
+                if today.date() > t.date_to_finish:
+                    continue
+            return_list.insert(0, t)
+            return_indexes.insert(0, self.__translate_periodic_task_id(n))
         return MumjolandiaResponseObject(status=return_status, arguments=[return_indexes, return_list])
 
     def __command_help(self, args):
