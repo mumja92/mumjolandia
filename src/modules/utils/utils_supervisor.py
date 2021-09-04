@@ -6,6 +6,9 @@ import urllib.request
 import ssl
 
 from pathlib import Path
+
+from src.utils.helpers import RandomUtils
+
 try:
     from distutils.dir_util import copy_tree
     distutils_available = True
@@ -49,12 +52,7 @@ class UtilsSupervisor(MumjolandiaSupervisor):
                                          ])
 
     def __command_ip(self, args):
-        # todo: use 'with' statement and handle exceptions
-        import socket
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        ip_address = s.getsockname()[0]
-        s.close()
+        ip_address = RandomUtils.get_ip()
         return MumjolandiaResponseObject(status=MumjolandiaReturnValue.utils_get,
                                          arguments=[str(ip_address)])
 

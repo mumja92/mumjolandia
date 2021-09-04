@@ -1,9 +1,12 @@
+import logging
+
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.modules.connection.mumjolandia_connection_handler import MumjolandiaConnectionHandler
 from src.modules.mumjolandia.config_loader import ConfigLoader
 from src.modules.mumjolandia.mumjolandia_supervisor import MumjolandiaSupervisor
 from src.modules.mumjolandia.mumjolandia_updater import MumjolandiaUpdater
+from src.utils.helpers import RandomUtils
 from src.utils.socket.socket_client import SocketClient
 
 
@@ -35,6 +38,10 @@ class ConnectionSupervisor(MumjolandiaSupervisor):
         run_server_once = True
         if len(args) > 0:
             run_server_once = False
+            logging.info("Starting server\nip: " + RandomUtils.get_ip() + "\nport: " + ConfigLoader.get_config().server_port)
+        # todo: workaround for broken cmd logger
+        if RandomUtils.get_platform() == 'windows':
+            print("Starting server\nip: " + RandomUtils.get_ip() + "\nport: " + ConfigLoader.get_config().server_port)
         return MumjolandiaConnectionHandler(int(ConfigLoader.get_config().server_port)).start_server(run_server_once)
 
     def __command_send_message(self, args):

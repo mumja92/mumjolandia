@@ -17,6 +17,7 @@ class ConfigLoader:
     mumjolandiaLocation = str(pathlib.Path(sys.argv[0]).parent.absolute()) + '/'
     if not sys.argv[0].endswith('/main.py'):
         logging.critical("Please run mumjolandia via main.py")
+        logging.critical(sys.argv[0])
 
     @staticmethod
     def set_mumjolandia_location(location):

@@ -1,6 +1,7 @@
 import datetime
 import logging
 import platform
+import socket
 import os
 
 
@@ -47,3 +48,12 @@ class RandomUtils:
         else:
             logging.warning('Unrecognized platform: ' + platform.system())
             return 'unrecognized'
+
+    @staticmethod
+    def get_ip():
+        # todo: use 'with' statement and handle exceptions
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip_address = s.getsockname()[0]
+        s.close()
+        return ip_address
