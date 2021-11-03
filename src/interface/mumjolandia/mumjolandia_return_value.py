@@ -71,6 +71,10 @@ class MumjolandiaReturnValue(Enum):
     connection_server_start_fail = 79
     connection_client_send_ok = 51
     connection_failed = 54
+    connection_pwd = 90
+    connection_ls = 91
+    connection_get = 92
+    connection_command_fail = 93
     # game
     event_get_ok = 48
     event_help = 49
@@ -106,4 +110,9 @@ class MumjolandiaReturnValue(Enum):
     planner_add_ok = 87
     planner_add_fail = 88
     planner_remove_ok = 89
-    planner_remove_fail = 90
+    planner_remove_fail = 94
+
+    rootfs_cd_ok = 95
+    rootfs_no_ok = 96
+    rootfs_ls_ok = 97
+    rootfs_pwd_ok = 98

@@ -14,6 +14,7 @@ from src.modules.note.note_supervisor import NoteSupervisor
 from src.modules.password.password_supervisor import PasswordSupervisor
 from src.modules.planner.planner_supervisor import PlannerSupervisor
 from src.modules.pompejanka.pompejanka_supervisor import PompejankaSupervisor
+from src.modules.rootfs.rootfs_supervisor import RootFSSupervisor
 from src.modules.tasks.task_supervisor import TaskSupervisor
 from src.modules.utils.utils_supervisor import UtilsSupervisor
 from src.modules.weather.weather_supervisor import WeatherSupervisor
@@ -59,6 +60,7 @@ class MumjolandiaThread(Thread):
         self.supervisors['password'] = PasswordSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/passwords.pickle')
         self.supervisors['planner'] = PlannerSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/plans.pickle')
         self.supervisors['pompejanka'] = PompejankaSupervisor()
+        self.supervisors['rootfs'] = RootFSSupervisor()
         self.supervisors['task'] = TaskSupervisor(storage_type=task_storage_type)
         self.supervisors['utils'] = UtilsSupervisor()
         self.supervisors['weather'] = WeatherSupervisor()
@@ -78,6 +80,8 @@ class MumjolandiaThread(Thread):
         self.command_parsers['pl'] = self.__command_planner
         self.command_parsers['pompejanka'] = self.__command_pompejanka
         self.command_parsers['p'] = self.__command_pompejanka
+        self.command_parsers['rootfs'] = self.__command_rootfs
+        self.command_parsers['r'] = self.__command_rootfs
         self.command_parsers['ssh'] = self.__command_connection
         self.command_parsers['task'] = self.__command_task
         self.command_parsers['t'] = self.__command_task
@@ -153,6 +157,9 @@ class MumjolandiaThread(Thread):
 
     def __command_pompejanka(self, command):
         return self.supervisors['pompejanka'].execute(command)
+
+    def __command_rootfs(self, command):
+        return self.supervisors['rootfs'].execute(command)
 
     def __command_utils(self, command):
         return self.supervisors['utils'].execute(command)

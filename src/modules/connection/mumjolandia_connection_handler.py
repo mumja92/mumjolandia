@@ -1,12 +1,9 @@
-import os
-
 import logging
 
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
-from src.modules.connection.message_factory import MessageFactory
+from src.utils.rootfs_manager import RootFSManager
 from src.modules.connection.remote_command_executor import RemoteCommandExecutor
-from src.modules.mumjolandia.mumjolandia_updater import MumjolandiaUpdater
 from src.utils.socket.socket_client import SocketClient
 from src.utils.socket.socket_server import SocketServer
 
@@ -18,6 +15,8 @@ class MumjolandiaConnectionHandler:
         self.server_accepted_networks_mask = server_accepted_networks_mask
 
         self.server_loop_exit_flag = None
+
+        self.rootfs_manager = RootFSManager()
 
     def start_server(self, run_once=True):
         logging.debug('Starting server; ' + self.server_accepted_networks_mask + ":" + str(self.port))
@@ -56,20 +55,31 @@ class MumjolandiaConnectionHandler:
             self.server_loop_exit_flag = True
             return_value = 'closing server'
         # this is not tested
-        elif message == 'update':
-            update_file = MumjolandiaUpdater.pack_source()
-            with open(update_file, 'rb') as f:
-                data = f.read()
-            os.remove(update_file)
-            msg_return = MessageFactory().get(data) #this is message what to do with it? monkaS
-        # not tested as well
-        elif message.startswith('get '):
-            if os.path.isfile(message.get_string()[4:]):
-                with open(message.get_string()[4:], 'rb') as f:
-                    data = f.read()
-                msg_return = MessageFactory().get(data)
+        # elif message == 'update':
+        #     update_file = MumjolandiaUpdater.pack_source()
+        #     with open(update_file, 'rb') as f:
+        #         data = f.read()
+        #     os.remove(update_file)
+        #     msg_return = MessageFactory().get(data)     # this is message what to do with it? monkaS
+        # # not tested
+        # elif message.startswith('get '):
+        #     if os.path.isfile(message.get_string()[4:]):
+        #         with open(message.get_string()[4:], 'rb') as f:
+        #             data = f.read()
+        #         msg_return = MessageFactory().get(data)
+        #     else:
+        #         msg_return = MessageFactory().get('')
+        elif message == 'pwd':
+            return_value = self.rootfs_manager.pwd()
+        elif message.startswith('ls'):
+            return_value = self.rootfs_manager.ls(message[3:])
+            if return_value is None:
+                return_value = "directory doesn't exist"
+        elif message.startswith('cd'):
+            if len(message) > 3:
+                return_value = self.rootfs_manager.cd(message[3:])
             else:
-                msg_return = MessageFactory().get('')
+                return_value = self.rootfs_manager.cd()
         else:
             return_value = RemoteCommandExecutor().execute(message)
         return return_value

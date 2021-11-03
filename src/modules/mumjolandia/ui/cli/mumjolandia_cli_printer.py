@@ -82,6 +82,10 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.connection_server_start_fail.name] = self.view_connection_server_start_fail
         self.views[MumjolandiaReturnValue.connection_client_send_ok.name] = self.view_default_response
         self.views[MumjolandiaReturnValue.connection_failed.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.connection_pwd.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.connection_get.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.connection_ls.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.connection_command_fail.name] = self.view_default_response
 
         self.views[MumjolandiaReturnValue.event_get_ok.name] = self.view_event_get_ok
         self.views[MumjolandiaReturnValue.event_help.name] = self.view_default_response
@@ -115,6 +119,11 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.planner_add_fail.name] = self.view_default_response
         self.views[MumjolandiaReturnValue.planner_remove_fail.name] = self.view_default_response
         self.views[MumjolandiaReturnValue.planner_remove_ok.name] = self.view_default_response
+
+        self.views[MumjolandiaReturnValue.rootfs_cd_ok.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.rootfs_ls_ok.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.rootfs_no_ok.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.rootfs_pwd_ok.name] = self.view_default_response
 
     def view_mumjolandia_none(self, return_value):
         pass
