@@ -7,7 +7,7 @@ class RootFSManager:
         self.__current_directory = "."
 
     def cd(self, path=None):
-        if path is None:
+        if path is None or len(path) == 0:
             self.__current_directory = "."
         elif os.path.isdir(Path.joinpath(Path(self.__get_cwd()), path)):
             self.__current_directory = Path.joinpath(Path(self.__get_cwd()), path)
@@ -23,7 +23,7 @@ class RootFSManager:
             command_args = "."
         try:
             dir_content = os.listdir(Path.joinpath(Path(self.__get_cwd()), path))
-        except FileNotFoundError:
+        except (FileNotFoundError, PermissionError) as e:
             dir_content = None
 
         if dir_content is None:
@@ -37,6 +37,7 @@ class RootFSManager:
                     return_value.append("&" + entity)
                 else:
                     return_value.append("*" + entity)
+
         return '\n'.join(return_value)
 
     def __get_cwd(self):
