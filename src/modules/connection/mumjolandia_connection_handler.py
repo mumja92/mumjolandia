@@ -70,16 +70,16 @@ class MumjolandiaConnectionHandler:
         #     else:
         #         msg_return = MessageFactory().get('')
         elif message == 'pwd':
-            return_value = self.rootfs_manager.pwd()
+            return_value = "pwd\n" + self.rootfs_manager.pwd()
         elif message.startswith('ls'):
-            return_value = self.rootfs_manager.ls(message[3:])
+            return_value = "ls\n" + self.rootfs_manager.ls(message[3:])
             if return_value is None:
                 return_value = "directory doesn't exist"
         elif message.startswith('cd'):
             if len(message) > 3:
-                return_value = self.rootfs_manager.cd(message[3:])
+                return_value = "cd\n" + self.rootfs_manager.cd(message[3:])
             else:
-                return_value = self.rootfs_manager.cd()
+                return_value = "cd\n" + self.rootfs_manager.cd()
         else:
             return_value = RemoteCommandExecutor().execute(message)
         return return_value
