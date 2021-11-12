@@ -5,6 +5,7 @@ from src.interface.mumjolandia.mumjolandia_cli_mode import MumjolandiaCliMode
 from src.interface.mumjolandia.mumjolandia_response_object import MumjolandiaResponseObject
 from src.interface.mumjolandia.mumjolandia_return_value import MumjolandiaReturnValue
 from src.interface.tasks.task_storage_type import TaskStorageType
+from src.modules.config.config_supervisor import ConfigSupervisor
 from src.modules.connection.connection_supervisor import ConnectionSupervisor
 from src.modules.fat.fat_supervisor import FatSupervisor
 from src.modules.food.food_supervisor import FoodSupervisor
@@ -53,6 +54,7 @@ class MumjolandiaThread(Thread):
             logging.error('Storage type: "' + self.config_object.task_io_method + '" is incorrect. Using xml instead. ')
             task_storage_type = TaskStorageType.xml
         self.supervisors['connection'] = ConnectionSupervisor()
+        self.supervisors['config'] = ConfigSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/config.xml')
         self.supervisors['fat'] = FatSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/fat.pickle')
         self.supervisors['food'] = FoodSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/jedzonko.db')
         self.supervisors['game'] = GameSupervisor(ConfigLoader.get_mumjolandia_location() + 'data/games.db')
@@ -66,7 +68,7 @@ class MumjolandiaThread(Thread):
         self.supervisors['weather'] = WeatherSupervisor()
 
         self.command_parsers['connection'] = self.__command_connection
-        self.command_parsers['c'] = self.__command_connection
+        self.command_parsers['config'] = self.__command_config
         self.command_parsers['exit'] = self.__command_exit
         self.command_parsers['fat'] = self.__command_fat
         self.command_parsers['food'] = self.__command_food
@@ -135,6 +137,9 @@ class MumjolandiaThread(Thread):
 
     def __command_connection(self, command):
         return self.supervisors['connection'].execute(command)
+
+    def __command_config(self, command):
+        return self.supervisors['config'].execute(command)
 
     def __command_help(self, command):
         return_value = []

@@ -16,3 +16,4 @@ class MumjolandiaCliMode(Enum):
     pompejanka = 11
     planner = 12
     rootfs = 13
+    config = 14

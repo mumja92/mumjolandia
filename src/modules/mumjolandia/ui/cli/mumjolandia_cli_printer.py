@@ -125,6 +125,11 @@ class MumjolandiaCliPrinter:
         self.views[MumjolandiaReturnValue.rootfs_no_ok.name] = self.view_default_response
         self.views[MumjolandiaReturnValue.rootfs_pwd_ok.name] = self.view_default_response
 
+        self.views[MumjolandiaReturnValue.config_set_ok.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.config_set_nook.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.config_get_ok.name] = self.view_default_response
+        self.views[MumjolandiaReturnValue.config_get_fail.name] = self.view_default_response
+
     def view_mumjolandia_none(self, return_value):
         pass
 
