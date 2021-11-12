@@ -40,5 +40,17 @@ class RootFSManager:
 
         return '\n'.join(return_value)
 
+    def get_file(self, name: str):
+        path = Path(self.__get_cwd().joinpath(name))
+        if path.is_file():
+            with open(name, "rb") as in_file:
+                return in_file.read()
+        else:
+            return None
+
+    def put_file(self, _bytes: bytes, name: str):
+        with open(self.__get_cwd().joinpath(name), "wb") as out_file:
+            out_file.write(_bytes)
+
     def __get_cwd(self):
         return os.path.normpath(Path.joinpath(Path(os.getcwd()), self.__current_directory).absolute())
