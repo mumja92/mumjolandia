@@ -95,13 +95,14 @@ class MumjolandiaThread(Thread):
 
     def __execute_command(self, command):
         command_to_pass = copy.copy(command)
-        try:
+        if len(command_to_pass.arguments) > 1:
             command_to_pass.arguments = command_to_pass.arguments[1:]
-        except IndexError:
+        else:
             command_to_pass.arguments = []
-        try:
+
+        if command.arguments[0] in self.command_parsers:
             return_value = self.command_parsers[command.arguments[0]](command_to_pass)
-        except KeyError:
+        else:
             logging.debug("Unrecognized command: '" + str(command) + "'")
             return_value = MumjolandiaResponseObject(status=MumjolandiaReturnValue.mumjolandia_unrecognized_command,
                                                      arguments=command)
