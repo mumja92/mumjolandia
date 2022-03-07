@@ -1,12 +1,9 @@
-import os
 import socket
 
 import logging
 
-from src.modules.command.command_factory import CommandFactory
 from src.modules.connection.message_factory import MessageFactory
 from src.modules.connection.remote_command_executor import RemoteCommandExecutor
-from src.modules.mumjolandia.mumjolandia_updater import MumjolandiaUpdater
 
 
 class SocketServer:
@@ -35,7 +32,7 @@ class SocketServer:
         self.socket_server.close()
 
     def receive(self):
-        received_message = MessageFactory.get(self.__receive_message(self.connect))
+        received_message = self.__receive_message(self.connect)
         logging.debug(received_message.get_string())
         return received_message.get_string()
 
@@ -49,7 +46,10 @@ class SocketServer:
         len_bytes = b''
         while len(len_bytes) < 4:   # first 4 bytes are length of message
             len_bytes += connection.recv(1)
+        status_bytes = b''
+        while len(status_bytes) < 2:  # next 2 bytes are status
+            status_bytes += connection.recv(1)
         bytes_received = b''
         while len(bytes_received) < int.from_bytes(len_bytes, byteorder='big', signed=False):
             bytes_received += connection.recv(1024)
-        return bytes_received
+        return MessageFactory().get(bytes_received, int.from_bytes(status_bytes, byteorder='big', signed=False))

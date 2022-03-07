@@ -1,8 +1,8 @@
-from enum import Enum, unique
+from enum import unique, IntEnum
 
 
 @unique
-class MumjolandiaReturnValue(Enum):
+class MumjolandiaReturnValue(IntEnum):
     mumjolandia_none = 0
     mumjolandia_unrecognized_parameters = 11
     mumjolandia_unrecognized_command = 2
