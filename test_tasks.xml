@@ -1,0 +1,4 @@
+<tasks>
+  <task name="task1" description="unknown" date_added="2018-10-25 00:00:00" date_to_finish="2018-10-25 00:00:00" date_finished="None" priority="unknown" type="unknown" status="not_done" reminder="0">none</task>
+  <task name="task drugi" description="unknown" date_added="2018-10-25 00:00:00" date_to_finish="2018-10-25 00:00:00" date_finished="None" priority="unknown" type="unknown" status="not_done" reminder="0">none</task>
+</tasks>

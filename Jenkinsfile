@@ -9,7 +9,8 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
+                cd mumjolandia/tests
+                pytest
             }
         }
         stage('Deploy') {
