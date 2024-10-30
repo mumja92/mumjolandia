@@ -2,22 +2,19 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Building..'
+                checkout scm
             }
         }
         stage('Test') {
             steps {
                 sh '''
+                    pwd
+                    ls -la
                     cd mumjolandia/tests
                     pytest
                 '''
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
             }
         }
     }
