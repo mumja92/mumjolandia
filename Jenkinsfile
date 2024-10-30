@@ -12,7 +12,7 @@ pipeline {
                 sh '''
                     pwd
                     ls -la
-                    cd mumjolandia/tests
+                    cd tests
                     pytest
                 '''
             }
