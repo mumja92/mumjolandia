@@ -9,8 +9,10 @@ pipeline {
         }
         stage('Test') {
             steps {
-                cd mumjolandia/tests
-                pytest
+                sh '''
+                    cd mumjolandia/tests
+                    pytest
+                '''
             }
         }
         stage('Deploy') {
