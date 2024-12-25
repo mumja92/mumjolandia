@@ -1,0 +1,9 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: Test
+    image: python:3.9
+    commands:
+      - cd tests
+      - pytest
