@@ -1,9 +1,15 @@
 kind: pipeline
-name: default
+type: docker
+name: hello-world
+
+trigger:
+  branch:
+    - master
+  event:
+    - push
 
 steps:
-  - name: Test
-    image: python:3.9
+  - name: say-hello
+    image: busybox
     commands:
-      - cd tests
-      - pytest
+      - echo hello-world
