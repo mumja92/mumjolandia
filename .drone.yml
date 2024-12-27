@@ -1,9 +1,0 @@
-kind: pipeline
-type: docker
-name: hello-world
-
-steps:
-  - name: say-hello
-    image: busybox
-    commands:
-      - echo hello-world
