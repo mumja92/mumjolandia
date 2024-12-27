@@ -4,11 +4,18 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                sh '''
-                    cd tests
-                    pytest
-                '''
+                script {
+                    docker.image('python:3.9').inside {
+                        sh '''
+                            python -m pip install --upgrade pip
+                            pip install pytest
+                            cd tests
+                            pytest
+                        '''
+                    }
+                }
             }
         }
     }
 }
+
